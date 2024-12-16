@@ -1,7 +1,14 @@
-#This is going to be the file to initiate the app, and it will be on the starting menu by default.
+# This is going to be the file to initiate the app, and it will be on the starting menu by default.
+# Imports of other scripts/logics
+import os
 import pygame
 
+# Initiliasation of pygame
 pygame.init()
+
+# Set working directory to main.py's directory. This makes sure the game will always launch from the right directory, making sure that we don't get
+# weird errors saying that "there is no such file in this directory" or something alike
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Function to create the main window
 def create_main_surface():
@@ -12,24 +19,25 @@ def create_main_surface():
 # Create the main game surface
 screen = create_main_surface()
 
-# Screen background color
-screen_color = (0, 0, 0)
+# [Commented this out because it is redundant. I haven't deleted it because I don't know if we'd still need it for something else?]
+# # Screen background color
+# screen_color = (0, 0, 0)
 
 
-# The game loop
-running = True
-while running:
+# # The game loop
+# running = True
+# while running:
 
-    # Set the screen's color
-    screen.fill(screen_color)
+#     # Set the screen's color
+#     screen.fill(screen_color)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
     
     
-    # Update the display
-    pygame.display.flip()
+#     # Update the display
+#     pygame.display.flip()
     
 # Button data
 buttons = [
