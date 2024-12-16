@@ -20,7 +20,7 @@ player = Player(x=300, y=200, size=40, color=(0, 255, 0), speed=3)
 
 # The game loop
 running = True
-while running:
+while running == True:
 
     # Set the screen's color
     screen.fill(screen_color)
