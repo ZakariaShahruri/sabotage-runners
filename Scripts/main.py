@@ -3,7 +3,6 @@ import os
 import pygame
 from player import Player
 
-#small change
 # Initiliasation of pygame
 pygame.init()
 
