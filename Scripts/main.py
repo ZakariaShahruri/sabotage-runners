@@ -5,13 +5,20 @@ import pygame
 pygame.init()
 
 # Display and Title settings
-screen = pygame.display.set_mode((400, 800), pygame.RESIZABLE)
+screen = pygame.display.set_mode((600, 400), pygame.RESIZABLE)
+screen_color = (0, 0, 0)
 Title = pygame.display.set_caption("Game")
 
 # The game loop
 running = True
 while running:
+
+    # Set the screen's color
+    screen.fill(screen_color)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            #test
+    
+    # Update the display
+    pygame.display.flip()
