@@ -1,9 +1,14 @@
 # Imports of other scripts/logics
+import os
 import pygame
 from player import Player
 
 # Initiliasation of pygame
 pygame.init()
+
+# Set working directory to main.py's directory. This makes sure the game will always launch from the right directory, making sure that we don't get
+# weird errors saying that "there is no such file in this directory" or something alike
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Display and Title settings
 screen = pygame.display.set_mode((600, 400), pygame.RESIZABLE)
