@@ -1,6 +1,5 @@
-#class Player:
+# Imports of other scripts/logics
 import pygame
 
-import main
+# Initiliasation of pygame
 pygame.init()
-
