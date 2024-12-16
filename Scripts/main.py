@@ -23,3 +23,13 @@ while running:
     
     # Update the display
     pygame.display.flip()
+
+class State:
+    def __init__(self):
+        self.x = 0
+
+    def update(self, value):
+        if value >= 0 :
+            self.x += value
+        else:
+            self.x -= value
