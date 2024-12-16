@@ -20,7 +20,7 @@ background_surface = pygame.image.load('images/dcbc8b76-6720-4fe2-91fd-0b418cedf
 player = Player(x=300, y=200, size=40, speed=7)
 # The game loop
 running = True
-while running:
+while running == True:
 
     # Set the screen's color
     screen.fill(screen_color)
