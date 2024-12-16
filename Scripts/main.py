@@ -1,5 +1,6 @@
 # Imports of other scripts/logics
 import pygame
+from player import Player
 
 # Initiliasation of pygame
 pygame.init()
@@ -9,6 +10,7 @@ screen = pygame.display.set_mode((600, 400), pygame.RESIZABLE)
 screen_color = (0, 0, 0)
 Title = pygame.display.set_caption("Sabotage Runners")
 
+player = Player(x=300, y=200, size=40, color=(0, 255, 0), speed=.5)
 # The game loop
 running = True
 while running:
@@ -19,6 +21,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    
+    keys = pygame.key.get_pressed()
+    # Update player position
+    player.handle_movement(keys, screen.get_width(), screen.get_height())
+    # Draw the player
+    player.draw(screen)
     
     
     # Update the display
