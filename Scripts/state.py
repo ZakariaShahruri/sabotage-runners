@@ -15,6 +15,7 @@ class State:
         self.x = x
         self.y = y
         self.path = path
+        self.image = pygame.image.load(self.path)
         self.size = size
         self.is_collidable = is_collidable
         self.speed = 0  # Default speed, can be overridden
