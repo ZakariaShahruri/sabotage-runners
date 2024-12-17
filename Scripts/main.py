@@ -19,8 +19,10 @@ def main():
     # Create player
     player1 = Player(path="../Images/players/player1_idle1.png" , x=300, y=200)
     player2 = Player(path="../Images/players/player1_idle1.png", x=300, y=150)
+    
+    rock = State(path="../Images/rocket.webp", x=50, y=50)
 
-    # The game loop
+    # The game loopd
     running = True
     clock = pygame.time.Clock()
 
@@ -45,6 +47,7 @@ def main():
         # Render player
         player1.render(screen)
         player2.render(screen)
+        
 
         # Update display
         pygame.display.flip()
