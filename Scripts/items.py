@@ -96,7 +96,7 @@ def generate_random_item(screen_width, screen_height):
     """
     item_classes = [
         BananaItem, 
-        FreezeItem, 
+        FreezeItem,
         SpeedUpItem, 
         SlowDownItem,  
         MirrorItem, 

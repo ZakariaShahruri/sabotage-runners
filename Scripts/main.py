@@ -33,8 +33,9 @@ def game_loop():
     player2.opponent = player1
 
     # Item management
-    current_item = generate_random_item(WIDTH, HEIGHT)
-    item_spawned = True
+    active_items = []  # List to store items
+    ITEM_SPAWN_EVENT = pygame.USEREVENT + 1
+    pygame.time.set_timer(ITEM_SPAWN_EVENT, 3000)  # Set a timer to spawn items every 3 seconds
 
     # The game loop
     running = True
@@ -45,6 +46,10 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            # Spawn new items every 3 seconds
+            if event.type == ITEM_SPAWN_EVENT:
+                active_items.append(generate_random_item(WIDTH, HEIGHT))
 
             # Reset item effects
             if event.type == pygame.USEREVENT:
@@ -69,15 +74,15 @@ def game_loop():
         player1.handle_movement("WASD", keys, WIDTH, HEIGHT)
         player2.handle_movement("arrows", keys, WIDTH, HEIGHT)
 
-        # Render and check item collision
-        if item_spawned:
-            current_item.render(screen)
-            if player1.check_collision(current_item):
-                current_item.use(player1, player2)
-                item_spawned = False
-            if player2.check_collision(current_item):
-                current_item.use(player2, player1)
-                item_spawned = False
+        # Render and check item collisions
+        for item in active_items[:]:  # Use a copy of the list to safely remove items
+            item.render(screen)
+            if player1.check_collision(item):
+                item.use(player1, player2)
+                active_items.remove(item)
+            elif player2.check_collision(item):
+                item.use(player2, player1)
+                active_items.remove(item)
 
         # Render players
         player1.render(screen)
@@ -160,4 +165,3 @@ def menu():
 
 if __name__ == "__main__":
     menu()
-
