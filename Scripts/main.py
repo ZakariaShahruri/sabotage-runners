@@ -18,7 +18,7 @@ def main():
 
     # Create player
     player1 = Player(path="../Images/players/player1_idle1.png" , x=20, y=300)
-    player2 = Player(path="../Images/players/player1_idle1.png", x=1200, y=300)
+    player2 = Player(path="../Images/players/player2_idle1.png", x=1200, y=300)
     
     
 
