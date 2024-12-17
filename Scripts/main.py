@@ -12,8 +12,8 @@ pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Display and Title settings
-screen = pygame.display.set_mode((screen_w, screen_h), fullscreen)
-Title = pygame.display.set_caption("Sabotage Runners")
+screen = pygame.display.set_mode((screen_w, screen_h), resizable)
+title
 background_surface = pygame.image.load('../Images/dcbc8b76-6720-4fe2-91fd-0b418cedfa3e.webp')
 
 player = Player(x=300, y=200, size=40, speed=7)
