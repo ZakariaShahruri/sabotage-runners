@@ -1,54 +1,65 @@
-# Imports of other scripts/logics
 import os
 import pygame
 from player import Player
-from config import *
-
-# Initiliasation of pygame
-pygame.init()
-
-# Set working directory to main.py's directory. This makes sure the game will always launch from the right directory, making sure that we don't get
-# weird errors saying that "there is no such file in this directory" or something alike
+from state import State
+# Set working directory to main.py's directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# Display and Title settings
-screen = pygame.display.set_mode((screen_w, screen_h), resizable)
-title
-background_surface = pygame.image.load('../Images/dcbc8b76-6720-4fe2-91fd-0b418cedfa3e.webp')
+def main():
+    # Initialization of pygame
+    pygame.init()
 
-player = Player(x=300, y=200, size=40, speed=7)
-
-# The game loop
-running = True
-while running:
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    # Draw the background
-    screen.blit(background_surface,(0,0))
-
-    # Player handling
-    keys = pygame.key.get_pressed()
-    player.handle_movement(keys, screen.get_width(), screen.get_height())
-    player.draw(screen)
+    # Screen setup
+    screen_width, screen_height = 1280, 720
+    screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
+    pygame.display.set_caption("Sabotage Runners")
     
-    # Update the display and set FPS to 120
-    pygame.display.update()
-    clock.tick(120)
+    screen_color = (0, 0, 0)
 
-# This is essentially the opposite of pygame.init() and closes the pygame library, might have to be moved to the bottom of the script.
-# [Quick note, I am not sure if this is even necessary, I added it just in case]
-pygame.quit()
+    # Create player
+    player1 = Player(path="../Images/players/player1_idle1.png" , x=20, y=300)
+    player2 = Player(path="../Images/players/player2_idle1.png", x=1200, y=300)
+    
+    
 
-# Not sure if we should switch this around with the game loop or not. It feels weird to me to define classes and stuff after having started the game loop.
-class State:
-    def __init__(self):
-        self.x = 0
+    
 
-    def update(self, value):
-        if value >= 0 :
-            self.x += value
-        else:
-            self.x -= value
+    # The game loopd
+    running = True
+    clock = pygame.time.Clock()
+
+    while running:
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # Get pressed keys
+        keys = pygame.key.get_pressed()
+
+        # Clear the screen
+        screen.fill(screen_color)
+        background = pygame.image.load("../Images/background.png")
+        background = pygame.transform.scale(background, (1280, 720))
+        screen.blit(background, (0,0))
+
+        # Handle player movement
+        player1.handle_movement("WASD",keys, screen_width, screen_height)
+        player2.handle_movement("arrows",keys, screen_width, screen_height)
+        # Render player
+        player1.render(screen)
+        player2.render(screen)
+        
+        
+
+        # Update display
+        pygame.display.flip()
+
+        # Limit FPS to 60
+        clock.tick(60)
+
+    # Close pygame
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()

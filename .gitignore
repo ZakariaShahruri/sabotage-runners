@@ -195,9 +195,7 @@ pyrightconfig.json
 # Ignore these file types
 *.jpg
 *.jpeg
-*.png
 *.wav
-*.mp3
 *.ogg
 *.midi
 *.zip
