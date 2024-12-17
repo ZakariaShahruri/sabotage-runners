@@ -51,36 +51,3 @@ class SoundEffects:
     def play_mirrored(self):
         """Play the mirrored power-up sound effect."""
         self.mirrored.play()
-
-# Example Usage
-if __name__ == "__main__":
-    try:
-        # Initialize sound effects
-        sound_effects = SoundEffects()
-        print("Sound effects test started...")
-
-        input("Press Enter to play banana slip sound...")
-        sound_effects.play_banana_slip()
-
-        input("Press Enter to play freeze sound...")
-        sound_effects.play_freeze()
-
-        input("Press Enter to play speed-up sound...")
-        sound_effects.play_speed_up()
-
-        input("Press Enter to play slow down sound...")
-        sound_effects.play_slow_down()
-
-        input("Press Enter to play teleport sound...")
-        sound_effects.play_teleport()
-
-        input("Press Enter to play shield sound...")
-        sound_effects.play_shield()
-
-        input("Press Enter to play mirrored sound...")
-        sound_effects.play_mirrored()
-
-        print("Exiting sound effects test...")
-
-    finally:
-        pygame.quit()
