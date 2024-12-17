@@ -10,17 +10,19 @@ def main():
     pygame.init()
 
     # Screen setup
-    screen_width, screen_height = 800, 533
+    screen_width, screen_height = 1280, 720
     screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
     pygame.display.set_caption("Sabotage Runners")
     
     screen_color = (0, 0, 0)
 
     # Create player
-    player1 = Player(path="../Images/players/player1_idle1.png" , x=300, y=200)
-    player2 = Player(path="../Images/players/player1_idle1.png", x=300, y=150)
+    player1 = Player(path="../Images/players/player1_idle1.png" , x=20, y=300)
+    player2 = Player(path="../Images/players/player1_idle1.png", x=1200, y=300)
     
-    rock = State(path="../Images/rocket.webp", x=50, y=50)
+    player2.image = pygame.transform.flip(player2.image, True, False)
+
+    
 
     # The game loopd
     running = True
@@ -37,13 +39,13 @@ def main():
 
         # Clear the screen
         screen.fill(screen_color)
-        background = pygame.image.load("../Images/background.webp")
+        background = pygame.image.load("../Images/background.png")
+        background = pygame.transform.scale(background, (1280, 720))
         screen.blit(background, (0,0))
 
         # Handle player movement
         player1.handle_movement("WASD",keys, screen_width, screen_height)
         player2.handle_movement("arrows",keys, screen_width, screen_height)
-
         # Render player
         player1.render(screen)
         player2.render(screen)
