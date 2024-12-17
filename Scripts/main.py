@@ -2,6 +2,7 @@
 import os
 import pygame
 from player import Player
+from config import *
 
 # Initiliasation of pygame
 pygame.init()
@@ -11,37 +12,31 @@ pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Display and Title settings
-screen = pygame.display.set_mode((600, 400), pygame.RESIZABLE)
-screen_color = (0, 0, 0)
-Title = pygame.display.set_caption("Sabotage Runners")
+screen = pygame.display.set_mode((screen_w, screen_h), resizable)
+title
+background_surface = pygame.image.load('../Images/dcbc8b76-6720-4fe2-91fd-0b418cedfa3e.webp')
 
-# Defined player in main [Adds more readability this way imo, also sped up the player as it felt quite slow :)]
-player = Player(x=300, y=200, size=40, color=(0, 255, 0), speed=3)
+player = Player(x=300, y=200, size=40, speed=7)
 
 # The game loop
 running = True
 while running:
 
-    # Set the screen's color
-    screen.fill(screen_color)
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-    # Player handling [potentially better way to section this off? just a suggestion]
+
+    # Draw the background
+    screen.blit(background_surface,(0,0))
+
+    # Player handling
     keys = pygame.key.get_pressed()
-    # Update player position
     player.handle_movement(keys, screen.get_width(), screen.get_height())
-    # Draw the player
     player.draw(screen)
     
-    
-    # Update the display
-    pygame.display.flip()
-
-    # Limit FPS to 60 [This should fix the weird feeling of the player movement]
-    pygame.time.Clock().tick(60)
+    # Update the display and set FPS to 120
+    pygame.display.update()
+    clock.tick(120)
 
 # This is essentially the opposite of pygame.init() and closes the pygame library, might have to be moved to the bottom of the script.
 # [Quick note, I am not sure if this is even necessary, I added it just in case]

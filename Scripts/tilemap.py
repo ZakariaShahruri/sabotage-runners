@@ -3,3 +3,5 @@ import pygame
 
 # Initiliasation of pygame
 pygame.init()
+
+# Class for tilemap
