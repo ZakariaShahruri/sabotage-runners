@@ -201,5 +201,6 @@ pyrightconfig.json
 *.zip
 *.7z
 *.rar
+*.kra
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
