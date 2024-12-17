@@ -18,13 +18,7 @@ Title = pygame.display.set_caption("Sabotage Runners")
 clock = pygame.time.Clock()
 background_surface = pygame.image.load('images/dcbc8b76-6720-4fe2-91fd-0b418cedfa3e.webp')
 
-<<<<<<< HEAD
 player = Player(x=300, y=200, size=40, speed=7)
-=======
-# Defined player in main [Adds more readability this way imo, also sped up the player as it felt quite slow :)]
-player = Player(x=300, y=200, size=40, color=(0, 255, 0), speed=3)
-
->>>>>>> 373882f3ed17a379427c1fae4d34c245c7bb07cf
 # The game loop
 running = True
 while running:
@@ -35,12 +29,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-<<<<<<< HEAD
     screen.blit(background_surface,(0,0))
-=======
-    
-    # Player handling [potentially better way to section this off? just a suggestion]
->>>>>>> 373882f3ed17a379427c1fae4d34c245c7bb07cf
     keys = pygame.key.get_pressed()
     # Update player position
     player.handle_movement(keys, screen.get_width(), screen.get_height())
