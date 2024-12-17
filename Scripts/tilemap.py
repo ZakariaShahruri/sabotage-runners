@@ -1,16 +1,13 @@
 # Imports of other scripts/logics
 import pygame
 from main import screen
+from state import State
 
 # Initiliasation of pygame
 pygame.init()
 
 # Tile settings
-WIDTH, HEIGHT = 1280, 720
 tilesize = 32
-rect_x, rect_y = 0, 0
-wall = pygame.draw.rect(screen, (255,255,255), (rect_x, rect_y, 32, 32))
-air = ''
 
 # Tilemaps
 tilemap_1 = [
@@ -51,7 +48,7 @@ tilemap_2 = [
     'W......................................W',
     'W......................................W',
     'W......................................W',
-    'WwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwW',
+    'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
     'W......................................W',
     'W......................................W',
     'W......................................W',
@@ -64,21 +61,3 @@ tilemap_2 = [
     'W......................................W',
     'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
 ]
-
-# Tilemap creation logic
-def create_map(tilemap):
-    game_objects = []
-
-    for y, row in enumerate(tilemap):
-        for x, tile in enumerate(row):
-            if tile == 'W':
-                #Create a wall
-                game_objects.append((wall, x * tilesize, y * tilesize))
-
-            elif tile == '.':
-                 game_objects.append((air, x * tilesize, y * tilesize))
-
-    return game_objects
-
-# Generate tilemap_1
-game_objects = create_map(tilemap_1)

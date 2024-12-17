@@ -3,6 +3,7 @@ import sys
 import pygame
 from player import Player
 from items import generate_random_item
+from tilemap import *
 
 # Set working directory to main.py's directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -26,8 +27,8 @@ def game_loop():
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
     # Create players
-    player1 = Player(path="../Images/players/player1_idle1.png", x=20, y=300)
-    player2 = Player(path="../Images/players/player2_idle1.png", x=1200, y=300)
+    player1 = Player(path="../Images/player1/player1_idle1.png", x=20, y=300)
+    player2 = Player(path="../Images/player2/player2_idle1.png", x=1200, y=300)
 
     # Set opponents
     player1.opponent = player2
