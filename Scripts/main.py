@@ -9,6 +9,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
 def game_loop():
     """This function handles the main game logic."""
@@ -16,7 +17,7 @@ def game_loop():
     pygame.init()
 
     # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    screen
     pygame.display.set_caption("Sabotage Runners")
     
     # Colors
