@@ -6,7 +6,7 @@ class Player:
         self.y = y
         self.size = size
         self.speed = speed
-        self.image = pygame.image.load('images/Unarmed_Walk_full.png')
+        self.image = pygame.image.load('../Images/download.png')
         self.image = pygame.transform.scale(self.image, (113, 200))
         
     def draw(self, screen):
