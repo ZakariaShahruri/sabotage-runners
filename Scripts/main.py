@@ -40,11 +40,11 @@ def game_loop():
     running = True
     clock = pygame.time.Clock()
 
-        while running:
-            # Handle events
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
+    while running:
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
             # Reset item effects
             if event.type == pygame.USEREVENT:
@@ -53,6 +53,8 @@ def game_loop():
             if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
                 player1.speed = 10
                 player2.speed = 10
+                player1.is_shielded = False
+                player2.is_shielded = False
                 player1.controls_reversed = False
                 player2.controls_reversed = False
 
@@ -62,11 +64,6 @@ def game_loop():
         # Clear the screen and draw the background
         screen.fill(screen_color)
         screen.blit(background, (0, 0))
-            # Clear the screen
-            screen.blit(menu_cover, (0,0))
-            background = pygame.image.load("../Images/background.png")
-            background = pygame.transform.scale(background, (1280, 720))
-            screen.blit(background, (0, 0))
 
         # Handle player movement
         player1.handle_movement("WASD", keys, WIDTH, HEIGHT)
@@ -86,11 +83,11 @@ def game_loop():
         player1.render(screen)
         player2.render(screen)
 
-            # Update display
-            pygame.display.flip()
+        # Update display
+        pygame.display.flip()
 
-            # Limit FPS to 60
-            clock.tick(60)
+        # Limit FPS to 60
+        clock.tick(60)
 
     # Close pygame
     pygame.quit()
@@ -163,4 +160,4 @@ def menu():
 
 if __name__ == "__main__":
     menu()
-    menu()
+
