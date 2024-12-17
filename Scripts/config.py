@@ -7,5 +7,7 @@ pygame.init()
 # Screen settings
 screen_w = 1980
 screen_h = 1020
+resizable = pygame.RESIZABLE
 fullscreen = pygame.FULLSCREEN
 clock = pygame.time.Clock()
+title = pygame.display.set_caption("Sabotage Runners")
