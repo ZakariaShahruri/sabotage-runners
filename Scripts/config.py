@@ -8,3 +8,4 @@ pygame.init()
 screen_w = 1980
 screen_h = 1020
 fullscreen = pygame.FULLSCREEN
+clock = pygame.time.Clock()
