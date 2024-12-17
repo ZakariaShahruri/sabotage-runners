@@ -20,7 +20,7 @@ def main():
     player1 = Player(path="../Images/players/player1_idle1.png" , x=20, y=300)
     player2 = Player(path="../Images/players/player1_idle1.png", x=1200, y=300)
     
-    player2.image = pygame.transform.flip(player2.image, True, False)
+    
 
     
 
@@ -49,6 +49,7 @@ def main():
         # Render player
         player1.render(screen)
         player2.render(screen)
+        
         
 
         # Update display
