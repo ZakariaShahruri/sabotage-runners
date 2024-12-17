@@ -1,118 +1,113 @@
+import os
 import pygame
-from random import choice
-from sound_effects import SoundEffects
-
-pygame.init()
+import random
+from state import State
 
 # Paths to power-up images
-banana_image = "../items/banana_item.png"
-freeze_image = "../items/freeze_item.png"
-mirror_image = "../items/mirror_item.png"
-shield_image = "../items/shield_item.png"
-slow_image = "../items/slow_item.png"
-speed_image = "../items/speed_item.png"
-teleport_image = "../items/teleport_item.png"
+ITEM_DIR = "../Images/items/"
+banana_image = "../images/items/banana_item.png"
+freeze_image = "../Images/items/freeze_item.png"
+mirror_image = "../Images/items/mirror_item.png"
+slow_image = "../Images/items/slow_item.png"
+speed_image = "../Images/items/speed_item.png"
+teleport_image = "../Images/items/teleport_item.png"
 
-class Item(pygame.sprite.Sprite):
-    def __init__(self, image_path, x, y):
+class Item(State):
+    def __init__(self, x, y, image_path):
         """Base class for all items."""
-        super().__init__()
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        super().__init__(x, y, path=image_path, size=40, is_collidable=True)
+        # Resize the image to a consistent size
+        self.image = pygame.transform.scale(self.image, (50, 50))
+        
+
+    def use(self, player1, player2):
+        """Base method to be overridden by specific item types"""
+        raise NotImplementedError("Subclasses must implement use method")
 
 class BananaItem(Item):
     def __init__(self, x, y):
-        super().__init__(banana_image, x, y)
-        self.sound_effect = SoundEffects()
+        super().__init__(x, y, banana_image)
 
-    def use(self, opponent):
-        """Throw the banana to stun the opponent when they step on it."""
-        self.sound_effect.play_banana_slip()
-        # Code to stun opponent for a short duration, e.g., temporarily disable movement
+    def use(self, player1, player2):
+        """Throw the banana to stun the opponent when they collide."""
+        target = player2 if player1 == player2.opponent else player1
+        target.speed = 0  # Temporarily stop the player
+        pygame.time.set_timer(pygame.USEREVENT, 2000)  # Reset speed after 2 seconds
 
 class FreezeItem(Item):
     def __init__(self, x, y):
-        super().__init__(freeze_image, x, y)
-        self.sound_effect = SoundEffects()
+        super().__init__(x, y, freeze_image)
 
-    def use(self, opponent):
+    def use(self, player1, player2):
         """Freeze the opponent instantly."""
-        self.sound_effect.play_freeze()
-        # Code to freeze the opponent for a short time, e.g., disable movement
+        target = player2 if player1 == player2.opponent else player1
+        target.speed = 0  # Freeze the player
+        pygame.time.set_timer(pygame.USEREVENT + 1, 3000)  # Unfreeze after 3 seconds
 
 class SpeedUpItem(Item):
     def __init__(self, x, y):
-        super().__init__(speed_image, x, y)
-        self.sound_effect = SoundEffects()
+        super().__init__(x, y, speed_image)
 
-    def use(self, player):
+    def use(self, player1, player2):
         """Increase the player's speed temporarily."""
-        self.sound_effect.play_speed_up()
-        # Code to speed up the player for a short duration
+        player = player1
+        player.speed *= 1.5  # Boost speed
+        pygame.time.set_timer(pygame.USEREVENT + 2, 5000)  # Reset speed after 5 seconds
 
 class SlowDownItem(Item):
     def __init__(self, x, y):
-        super().__init__(slow_image, x, y)
-        self.sound_effect = SoundEffects()
+        super().__init__(x, y, slow_image)
 
-    def use(self, opponent):
+    def use(self, player1, player2):
         """Slow down the opponent temporarily."""
-        self.sound_effect.play_slow_down()
-        # Code to slow down the opponent for a short duration
-
-class ShieldItem(Item):
-    def __init__(self, x, y):
-        super().__init__(shield_image, x, y)
-        self.sound_effect = SoundEffects()
-
-    def use(self, player):
-        """Give the player a shield to protect from items."""
-        self.sound_effect.play_shield()
-        # Code to grant the player a shield, e.g., immunity for a short duration
+        target = player2 if player1 == player2.opponent else player1
+        target.speed *= 0.5  # Slow down
+        pygame.time.set_timer(pygame.USEREVENT + 3, 3000)  # Reset speed after 3 seconds
 
 class MirrorItem(Item):
     def __init__(self, x, y):
-        super().__init__(mirror_image, x, y)
-        self.sound_effect = SoundEffects()
+        super().__init__(x, y, mirror_image)
 
-    def use(self, opponent):
+    def use(self, player1, player2):
         """Reverse the opponent's controls."""
-        self.sound_effect.play_mirrored()
-        # Code to reverse the opponent's controls for a short duration
+        target = player2 if player1 == player2.opponent else player1
+        target.controls_reversed = True
+        pygame.time.set_timer(pygame.USEREVENT + 5, 3000)  # Reset controls after 3 seconds
 
 class TeleportItem(Item):
     def __init__(self, x, y):
-        super().__init__(teleport_image, x, y)
-        self.sound_effect = SoundEffects()
+        super().__init__(x, y, teleport_image)
 
-    def use(self, opponent):
+    def use(self, player1, player2):
         """Teleport the opponent to their spawn point."""
-        self.sound_effect.play_teleport()
-        # Code to teleport the opponent back to their spawn
+        target = player2 if player1 == player2.opponent else player1
+        target.x, target.y = target.spawn_x, target.spawn_y
 
-# Example usage in the game loop:
-if __name__ == "__main__":
-    # Example to test power-up usage
-    sound_effects = SoundEffects()
+def generate_random_item(screen_width, screen_height):
+    """
+    Generate a random item at a random location on the screen
     
-    # Create items
-    banana = BananaItem(100, 100)
-    freeze = FreezeItem(200, 200)
-    speed_up = SpeedUpItem(300, 300)
-    slow_down = SlowDownItem(400, 400)
-    shield = ShieldItem(500, 500)
-    mirror = MirrorItem(600, 600)
-    teleport = TeleportItem(700, 700)
+    Args:
+        screen_width (int): Width of the game screen
+        screen_height (int): Height of the game screen
     
-    # Simulate using the items
-    banana.use(opponent="Player2")
-    freeze.use(opponent="Player2")
-    speed_up.use(player="Player1")
-    slow_down.use(opponent="Player2")
-    shield.use(player="Player1")
-    mirror.use(opponent="Player2")
-    teleport.use(opponent="Player2")
-
-    pygame.quit()
+    Returns:
+        Item: A randomly selected item
+    """
+    item_classes = [
+        BananaItem, 
+        FreezeItem, 
+        SpeedUpItem, 
+        SlowDownItem,  
+        MirrorItem, 
+        TeleportItem
+    ]
+    
+    # Randomly choose an item class
+    chosen_item_class = random.choice(item_classes)
+    
+    # Generate random position, ensuring some padding from screen edges
+    x = random.randint(50, screen_width - 100)
+    y = random.randint(50, screen_height - 100)
+    
+    return chosen_item_class(x, y)
