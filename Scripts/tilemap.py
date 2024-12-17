@@ -3,5 +3,3 @@ import pygame
 
 # Initiliasation of pygame
 pygame.init()
-
-# Tileset
