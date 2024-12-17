@@ -2,6 +2,7 @@
 import os
 import pygame
 from player import Player
+from config import *
 
 # Initiliasation of pygame
 pygame.init()
@@ -11,7 +12,7 @@ pygame.init()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Display and Title settings
-screen = pygame.display.set_mode((600, 400), pygame.RESIZABLE)
+screen = pygame.display.set_mode((screen_w, screen_h), fullscreen)
 screen_color = (0, 0, 0)
 Title = pygame.display.set_caption("Sabotage Runners")
 
