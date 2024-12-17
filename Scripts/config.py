@@ -4,4 +4,7 @@ import pygame
 # Initiliasation of pygame
 pygame.init()
 
-# Class for tilemap
+# Screen settings
+screen_w = 1980
+screen_h = 1020
+fullscreen = pygame.FULLSCREEN
