@@ -1,7 +1,7 @@
 import pygame
 
 class State:
-    def __init__(self, x, y, size=40, color=(0, 255, 0), is_collidable=False):
+    def __init__(self, x, y, path, size=40, is_collidable=False):
         """
         Base class for game objects
         
@@ -14,8 +14,8 @@ class State:
         """
         self.x = x
         self.y = y
+        self.path = path
         self.size = size
-        self.color = color
         self.is_collidable = is_collidable
         self.speed = 0  # Default speed, can be overridden
 
@@ -38,9 +38,9 @@ class State:
         # if screen_height is not None:
         #     self.y = max(0, min(self.y, screen_height - self.size))
 
-    def render(self, surface):
+    def render(self, screen):
 
-        pygame.draw.rect(surface, self.color, (self.x, self.y, self.size, self.size))
+        screen.blit(self.image, (self.x,self.y))
 
     def get_rect(self):
 

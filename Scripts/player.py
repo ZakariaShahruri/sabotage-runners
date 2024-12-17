@@ -2,9 +2,12 @@ import pygame
 from state import State
 
 class Player(State):
-    def __init__(self, x, y, size=40, color=(0, 255, 0), speed=5):
-        super().__init__(x, y, size, color, is_collidable=True)
+    def __init__(self, x, y, path, size=40, speed=5):
+        super().__init__(x, y, path, size, is_collidable=True)
         self.speed = speed
+        self.path = path
+        self.image = pygame.image.load(self.path)
+        self.image = pygame.transform.scale(self.image, (46, 80))
 
     def handle_movement(self, controls, keys, screen_width, screen_height):
         # Reset movement

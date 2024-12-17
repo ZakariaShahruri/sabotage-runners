@@ -17,8 +17,8 @@ def main():
     screen_color = (0, 0, 0)
 
     # Create player
-    player1 = Player(x=300, y=200)
-    player2 = Player(x=300, y=150)
+    player1 = Player(path="../Images/players/player1_idle1.png" , x=300, y=200)
+    player2 = Player(path="../Images/players/player1_idle1.png", x=300, y=150)
 
     # The game loop
     running = True
@@ -37,8 +37,7 @@ def main():
         screen.fill(screen_color)
         background = pygame.image.load("../Images/background.webp")
         screen.blit(background, (0,0))
-        if player1.check_collision(player2):
-            print("HI")
+
         # Handle player movement
         player1.handle_movement("WASD",keys, screen_width, screen_height)
         player2.handle_movement("arrows",keys, screen_width, screen_height)
