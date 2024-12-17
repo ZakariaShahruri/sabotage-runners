@@ -1,33 +1,42 @@
 import pygame
+from state import State
 
-class Player:
-    def __init__(self, x, y, size, speed):
-        self.x = x
-        self.y = y
-        self.size = size
+class Player(State):
+    def __init__(self, x, y, path, size=40, speed=5):
+        super().__init__(x, y, path, size, is_collidable=True)
         self.speed = speed
-        self.image = pygame.image.load('../Images/download.png')
-        self.image = pygame.transform.scale(self.image, (113, 200))
-        
-    def draw(self, screen):
-        screen.blit(self.image, (self.x, self.y))
+        self.path = path
+        self.image = pygame.image.load(self.path)
+        self.image = pygame.transform.scale(self.image, (46, 80))
 
-    def handle_movement(self, keys, screen_width, screen_height):
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.x -= self.speed
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.x += self.speed
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.y -= self.speed
-        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.y += self.speed
+    def handle_movement(self, controls, keys, screen_width, screen_height):
+        # Reset movement
+        dx = 0
+        dy = 0
 
-        # Keep player within screen bounds
-        self.x = max(0, min(self.x, screen_width - self.size))
-        self.y = max(0, min(self.y, screen_height - self.size))
+        # Check movement keys
+        if controls == "WASD":
+            if keys[pygame.K_a]:
+                dx = -self.speed
+            if keys[pygame.K_d]:
+                dx = self.speed
+            if keys[pygame.K_w]:
+                dy = -self.speed
+            if keys[pygame.K_s]:
+                dy = self.speed
 
-    # def draw(self, surface):
-    #     pygame.draw.rect(surface, self.color, (self.x, self.y, self.size, self.size))
+        elif controls == "arrows":
+            if keys[pygame.K_LEFT]:
+                dx = -self.speed
+            if keys[pygame.K_RIGHT]:
+                dx = self.speed
+            if keys[pygame.K_UP]:
+                dy = -self.speed
+            if keys[pygame.K_DOWN]:
+                dy = self.speed
+
+        # Update position with boundary checking
+        self.update(dx, dy, screen_width, screen_height)
 
 
 
