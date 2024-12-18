@@ -4,6 +4,7 @@ import sys
 import random
 from player import Player
 from items import generate_random_item
+from tilemap import tilemap_1
 
 class GameLogic:
     def __init__(self, width, height, get_font):
@@ -62,7 +63,7 @@ class GameLogic:
             current_time - self.last_item_spawn_time >= self.item_spawn_interval):
             
             # Generate a new item
-            new_item = generate_random_item(self.width, self.height)
+            new_item = generate_random_item(tilemap_1 ,self.width, self.height)
             self.active_items.append(new_item)
             
             # Update last spawn time
