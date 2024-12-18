@@ -57,7 +57,7 @@ def game_loop():
         game_logic.player2.render(screen)
 
         # Render walls
-        walls = draw_map(first_map, '../Images/fence.png', screen)
+        walls = draw_map(first_map, '../Images/stone.png', screen)
 
         # Handle player movement
         game_logic.handle_movement(keys, walls)
