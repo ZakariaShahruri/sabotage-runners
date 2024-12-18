@@ -170,12 +170,12 @@ class GameLogic:
             event (pygame.event.Event): Pygame event
         """
         if event.type == pygame.USEREVENT:
-            self.player1.speed = 10
-            self.player2.speed = 10
+            self.player1.speed = 5
+            self.player2.speed = 5
         
         if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
-            self.player1.speed = 10
-            self.player2.speed = 10
+            self.player1.speed = 5
+            self.player2.speed = 5
             self.player1.is_shielded = False
             self.player2.is_shielded = False
             self.player1.controls_reversed = False

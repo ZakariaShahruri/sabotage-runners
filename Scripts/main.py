@@ -40,7 +40,7 @@ def game_loop():
     pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
-    background = pygame.image.load("../Images/Assets/background.png")
+    background = pygame.image.load("../Images/default_map.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
     # Create game logic instance
@@ -115,8 +115,8 @@ def game_loop():
         # Update display
         pygame.display.flip()
 
-        # Limit FPS to 120
-        clock.tick(120)
+        # Limit FPS to 60
+        clock.tick(60)
 
     # Close pygame
     stop_music()

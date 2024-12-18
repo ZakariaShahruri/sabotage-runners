@@ -5,7 +5,7 @@ from state import State
 from tilemap import *
 
 # Paths to power-up images
-ITEM_DIR = "../Images/items/"
+
 banana_image = "../images/items/banana_item.png"
 freeze_image = "../Images/items/freeze_item.png"
 mirror_image = "../Images/items/mirror_item.png"
@@ -25,15 +25,15 @@ class Item(State):
         """Base method to be overridden by specific item types"""
         raise NotImplementedError("Subclasses must implement use method")
 
-class BananaItem(Item):
-    def __init__(self, x, y):
-        super().__init__(x, y, banana_image)
+# class BananaItem(Item):
+#     def __init__(self, x, y):
+#         super().__init__(x, y, banana_image)
 
-    def use(self, player1, player2):
-        """Throw the banana to stun the opponent when they collide."""
-        target = player2 if player1 == player2.opponent else player1
-        target.speed = 0  # Temporarily stop the player
-        pygame.time.set_timer(pygame.USEREVENT, 2000)  # Reset speed after 2 seconds
+#     def use(self, player1, player2):
+#         """Throw the banana to stun the opponent when they collide."""
+#         target = player2 if player1 == player2.opponent else player1
+#         target.speed = 0  # Temporarily stop the player
+#         pygame.time.set_timer(pygame.USEREVENT, 2000)  # Reset speed after 2 seconds
 
 class FreezeItem(Item):
     def __init__(self, x, y):
@@ -43,7 +43,7 @@ class FreezeItem(Item):
         """Freeze the opponent instantly."""
         target = player2 if player1 == player2.opponent else player1
         target.speed = 0  # Freeze the player
-        pygame.time.set_timer(pygame.USEREVENT + 1, 5000)  # Unfreeze after 3 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 1, 4000)  # Unfreeze after 3 seconds
 
 class SpeedUpItem(Item):
     def __init__(self, x, y):
@@ -52,7 +52,7 @@ class SpeedUpItem(Item):
     def use(self, player1, player2):
         """Increase the player's speed temporarily."""
         player = player1
-        player.speed *= 1.8  # Boost speed
+        player.speed *= 1.5  # Boost speed
         pygame.time.set_timer(pygame.USEREVENT + 2, 5000)  # Reset speed after 5 seconds
 
 class SlowDownItem(Item):
