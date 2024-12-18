@@ -132,7 +132,7 @@ class GameLogic:
         if self.player1.is_moving == False:
             self.player1.animate(self.idle1, 0.1)
         else:
-            self.player1.animate(self.attack1, .2)
+            self.player1.animate(self.run1, .2)
 
 
         if self.player2.is_moving == False:
