@@ -130,13 +130,13 @@ class GameLogic:
         if self.player1.is_moving == False:
             self.player1.animate(self.idle1, 0.1)
         else:
-            self.player1.animate(self.run1, 1)
+            self.player1.animate(self.run1, .2)
 
 
         if self.player2.is_moving == False:
             self.player2.animate(self.idle2, 0.1)
         else:
-            self.player2.animate(self.run2, 1)
+            self.player2.animate(self.run2, .2)
 
 
     def render_scores(self, screen):
@@ -148,8 +148,8 @@ class GameLogic:
         """
         # Render scores
         score_font = self.get_font(36)
-        player1_score_text = score_font.render(f"Player 1: {self.player1_score}", True, (255, 255, 255))
-        player2_score_text = score_font.render(f"Player 2: {self.player2_score}", True, (255, 255, 255))
+        player1_score_text = score_font.render(f"Player 1: {self.player2_score}", True, (255, 255, 255))
+        player2_score_text = score_font.render(f"Player 2: {self.player1_score}", True, (255, 255, 255))
         screen.blit(player1_score_text, (20, 20))
         screen.blit(player2_score_text, (self.width - 400, 20))
 
