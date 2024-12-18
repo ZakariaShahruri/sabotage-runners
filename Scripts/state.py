@@ -34,10 +34,10 @@ class State:
         self.y += dy
 
         # Optional boundary checking
-        # if screen_width is not None:
-        #     self.x = max(0, min(self.x, screen_width - self.size))
-        # if screen_height is not None:
-        #     self.y = max(0, min(self.y, screen_height - self.size))
+        if screen_width is not None:
+            self.x = max(0, min(self.x, screen_width - self.size))
+        if screen_height is not None:
+            self.y = max(0, min(self.y, screen_height - self.size))
 
     def render(self, screen):
 

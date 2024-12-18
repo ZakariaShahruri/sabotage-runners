@@ -14,6 +14,7 @@ def get_font(size):
 
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
 
 #Colors
