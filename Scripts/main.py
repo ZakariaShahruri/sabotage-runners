@@ -45,17 +45,33 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            
+                
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    game_logic.player1.facing_right = False
+                if event.key == pygame.K_d:
+                    game_logic.player1.facing_right = True
+                print(game_logic.player1.facing_right)
+                
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    game_logic.player2.facing_right = True
+                if event.key == pygame.K_LEFT:
+                    game_logic.player2.facing_right = False
+                print(game_logic.player2.facing_right)
+       
             # Reset item effects
             game_logic.reset_item_effects(event)
-
+            
+        
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
 
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
-
+            
+        
         # Render walls
         walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
 
