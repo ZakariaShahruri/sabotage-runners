@@ -36,8 +36,8 @@ class GameLogic:
         # Animation lists
         self.idle1 = ["../Images/player1/player1_idle1.png", "../Images/player1/player1_idle2.png", "../Images/player1/player1_idle3.png", "../Images/player1/player1_idle4.png"]
         self.walk = ["../Images/player1/player1_walk1.png", "../Images/player1/player1_walk2.png", "../Images/player1/player1_walk3.png", "../Images/player1/player1_walk4.png"]
-        self.idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png"]
-        self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
+        self.idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png", "../Images/player2/player2_idle3.png", "../Images/player2/player2_idle4.png"]
+        self.run1 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
         
         # Item management
         self.active_items = []
@@ -129,13 +129,13 @@ class GameLogic:
         if self.player1.is_moving == False:
             self.player1.animate(self.idle1, 0.1)
         else:
-            self.player1.animate(self.run1, 0.15)
+            self.player1.animate(self.walk, 0.15)
 
 
         if self.player2.is_moving == False:
             self.player2.animate(self.idle2, 0.1)
         else:
-            self.player2.animate(self.idle2, 0.15)
+            self.player2.animate(self.run1, 0.15)
 
 
     def render_scores(self, screen):
