@@ -184,5 +184,5 @@ class GameLogic:
             'player1_score': self.player1_score,
             'player2_score': self.player2_score,
             'game_over': self.game_over,
-            'winner': 'Player 1' if self.player1_score >= self.max_score else 'Player 2' if self.player2_score >= self.max_score else None
+            'winner': 'Player 1' if self.player2_score >= self.max_score else 'Player 2' if self.player1_score >= self.max_score else None
         }
