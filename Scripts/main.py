@@ -47,10 +47,6 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
             
-            # Spawn new items
-            if event.type == game_logic.item_spawn_event:
-                pass  # This is now handled in game_logic
-            
             # Reset item effects
             game_logic.reset_item_effects(event)
 

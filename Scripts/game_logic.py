@@ -1,6 +1,7 @@
 import os
 import pygame
 import sys
+import random
 from player import Player
 from items import generate_random_item
 
@@ -33,14 +34,50 @@ class GameLogic:
         self.player2.opponent = self.player1
         
         # Animation lists
-        self.idle1 = ["../Images/player1/player1_idle1.png", "../Images/player1/player1_idle2.png"]
+        self.idle1 = ["../Images/player1/player1_idle1.png", "../Images/player1/player1_idle2.png", "../Images/player1/player1_idle3.png", "../Images/player1/player1_idle4.png"]
+        self.walk = ["../Images/player1/player1_walk1.png", "../Images/player1/player1_walk2.png", "../Images/player1/player1_walk3.png", "../Images/player1/player1_walk4.png"]
         self.idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png"]
+        self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
         
         # Item management
         self.active_items = []
-        self.item_spawn_event = pygame.USEREVENT + 1
-        pygame.time.set_timer(self.item_spawn_event, 3000)  # Spawn items every 3 seconds
+        self.last_item_spawn_time = pygame.time.get_ticks()
+        self.item_spawn_interval = 3000  # 3 seconds between item spawn attempts
+        self.max_items = 4
 
+    def manage_items(self, screen):
+        """
+        Carefully manage item spawning and collision
+        
+        Args:
+            screen (pygame.Surface): Game screen to render items
+        """
+        current_time = pygame.time.get_ticks()
+        
+        # Check if it's time to spawn a new item
+        if (len(self.active_items) < self.max_items and 
+            current_time - self.last_item_spawn_time >= self.item_spawn_interval):
+            
+            # Generate a new item
+            new_item = generate_random_item(self.width, self.height)
+            self.active_items.append(new_item)
+            
+            # Update last spawn time
+            self.last_item_spawn_time = current_time
+
+        # Render and check item collisions
+        for item in self.active_items[:]:
+            item.render(screen)
+            if self.player1.check_collision(item):
+                item.use(self.player1, self.player2)
+                self.active_items.remove(item)
+            elif self.player2.check_collision(item):
+                item.use(self.player2, self.player1)
+                self.active_items.remove(item)
+
+   
+   
+   
     def reset_players(self):
         """Reset players to their initial positions"""
         self.player1.x = 20
@@ -85,31 +122,21 @@ class GameLogic:
         self.player1.handle_movement("WASD", keys, self.width, self.height)
         self.player2.handle_movement("arrows", keys, self.width, self.height)
 
+    #animatetion here
+    
     def animate_players(self):
         """Animate players with idle animations"""
-        self.player1.animate(self.idle1, 0.06)
-        self.player2.animate(self.idle2, 0.06)
+        if self.player1.is_moving == False:
+            self.player1.animate(self.idle1, 0.1)
+        else:
+            self.player1.animate(self.run1, 0.15)
 
-    def manage_items(self, screen):
-        """
-        Manage item spawning and collision
-        
-        Args:
-            screen (pygame.Surface): Game screen to render items
-        """
-        # Spawn new items if fewer than 4
-        if len(self.active_items) < 4:
-            self.active_items.append(generate_random_item(self.width, self.height))
 
-        # Render and check item collisions
-        for item in self.active_items[:]:
-            item.render(screen)
-            if self.player1.check_collision(item):
-                item.use(self.player1, self.player2)
-                self.active_items.remove(item)
-            elif self.player2.check_collision(item):
-                item.use(self.player2, self.player1)
-                self.active_items.remove(item)
+        if self.player2.is_moving == False:
+            self.player2.animate(self.idle2, 0.1)
+        else:
+            self.player2.animate(self.idle2, 0.15)
+
 
     def render_scores(self, screen):
         """

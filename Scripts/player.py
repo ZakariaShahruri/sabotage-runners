@@ -37,12 +37,18 @@ class Player(State):
             else:
                 if keys[pygame.K_a]:
                     dx = -self.speed
+                    self.is_moving = True
                 if keys[pygame.K_d]:
                     dx = self.speed
+                    self.is_moving = True
                 if keys[pygame.K_w]:
                     dy = -self.speed
+                    self.is_moving = True
                 if keys[pygame.K_s]:
                     dy = self.speed
+                    self.is_moving = True
+                if not keys[pygame.K_w] and not keys[pygame.K_a] and not keys[pygame.K_s] and not keys[pygame.K_d]:
+                    self.is_moving = False
 
         elif controls == "arrows":
             # If controls are reversed, swap the keys
@@ -58,12 +64,18 @@ class Player(State):
             else:
                 if keys[pygame.K_LEFT]:
                     dx = -self.speed
+                    self.is_moving = True
                 if keys[pygame.K_RIGHT]:
                     dx = self.speed
+                    self.is_moving = True
                 if keys[pygame.K_UP]:
                     dy = -self.speed
+                    self.is_moving = True
                 if keys[pygame.K_DOWN]:
                     dy = self.speed
+                    self.is_moving = True
+                if not keys[pygame.K_UP] and not keys[pygame.K_LEFT] and not keys[pygame.K_DOWN] and not keys[pygame.K_RIGHT]:
+                    self.is_moving = False
 
         # Update position with boundary checking
         self.update(dx, dy, screen_width, screen_height)
@@ -74,8 +86,9 @@ class Player(State):
                 break
     
     def animate(self, action, speed):
-        self.image = pygame.image.load(action[int(self.current_frame)])
-        self.image = pygame.transform.scale(self.image, (52, 91))
-        self.current_frame += speed
-        if self.current_frame >= len(action):
-            self.current_frame = 0
+            self.current_frame += speed
+            self.current_frame %= len(action)
+            if self.current_frame >= len(action):
+                self.current_frame = 0
+            self.image = pygame.image.load(action[int(self.current_frame)])
+            self.image = pygame.transform.scale(self.image, (52, 91))
