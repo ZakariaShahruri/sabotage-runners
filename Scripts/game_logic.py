@@ -150,14 +150,15 @@ class GameLogic:
             screen (pygame.Surface): Game screen to render scores
         """
         # Render scores
-        score_font = self.get_font(36)
-        player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))
-        player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
-        screen.blit(player1_score_text, (20, 20))
-        screen.blit(player2_score_text, (self.width - 400, 20))
         scoreboard = pygame.image.load("../Images/scoreboard_sign.png")
         scoreboard = pygame.transform.scale(scoreboard,(83,94))
         screen.blit(scoreboard, (593,0))
+        score_font = self.get_font(25)
+        player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))
+        player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
+        screen.blit(player1_score_text, (605, 55))
+        screen.blit(player2_score_text, (self.width - 635, 55))
+
    
    
    
