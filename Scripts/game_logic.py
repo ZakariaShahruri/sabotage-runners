@@ -28,6 +28,7 @@ class GameLogic:
         # Create players
         self.player1 = Player(path="../Images/player1/player1_idle1.png", x=20, y=300)
         self.player2 = Player(path="../Images/player2/player2_idle1.png", x=1200, y=300)
+        self.player2.image = pygame.transform.flip(self.player2.image, True, False)
         
         # Set opponents
         self.player1.opponent = self.player2
@@ -35,9 +36,10 @@ class GameLogic:
         
         # Animation lists
         self.idle1 = ["../Images/player1/player1_idle1.png", "../Images/player1/player1_idle2.png", "../Images/player1/player1_idle3.png", "../Images/player1/player1_idle4.png"]
-        self.walk = ["../Images/player1/player1_walk1.png", "../Images/player1/player1_walk2.png", "../Images/player1/player1_walk3.png", "../Images/player1/player1_walk4.png"]
+        self.walk1 = ["../Images/player1/player1_walk1.png", "../Images/player1/player1_walk2.png", "../Images/player1/player1_walk3.png", "../Images/player1/player1_walk4.png"]
         self.idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png", "../Images/player2/player2_idle3.png", "../Images/player2/player2_idle4.png"]
-        self.run1 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
+        self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
+        self.run2 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
         
         # Item management
         self.active_items = []
@@ -129,13 +131,13 @@ class GameLogic:
         if self.player1.is_moving == False:
             self.player1.animate(self.idle1, 0.1)
         else:
-            self.player1.animate(self.walk, 0.15)
+            self.player1.animate(self.run1, .2)
 
 
         if self.player2.is_moving == False:
             self.player2.animate(self.idle2, 0.1)
         else:
-            self.player2.animate(self.run1, 0.15)
+            self.player2.animate(self.run2, .2)
 
 
     def render_scores(self, screen):
@@ -147,8 +149,8 @@ class GameLogic:
         """
         # Render scores
         score_font = self.get_font(36)
-        player1_score_text = score_font.render(f"Player 1: {self.player1_score}", True, (255, 255, 255))
-        player2_score_text = score_font.render(f"Player 2: {self.player2_score}", True, (255, 255, 255))
+        player1_score_text = score_font.render(f"Player 1: {self.player2_score}", True, (255, 255, 255))
+        player2_score_text = score_font.render(f"Player 2: {self.player1_score}", True, (255, 255, 255))
         screen.blit(player1_score_text, (20, 20))
         screen.blit(player2_score_text, (self.width - 400, 20))
 
@@ -182,5 +184,5 @@ class GameLogic:
             'player1_score': self.player1_score,
             'player2_score': self.player2_score,
             'game_over': self.game_over,
-            'winner': 'Player 1' if self.player1_score >= self.max_score else 'Player 2' if self.player2_score >= self.max_score else None
+            'winner': 'Player 1' if self.player2_score >= self.max_score else 'Player 2' if self.player1_score >= self.max_score else None
         }
