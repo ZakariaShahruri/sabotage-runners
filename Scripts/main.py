@@ -34,10 +34,9 @@ def game_loop():
     running = True
     clock = pygame.time.Clock()
     
-    # Draw the map
+    # Assign the tilemaps
     first_map = tilemap_1
     
-
     while running:
         # Get pressed keys
         keys = pygame.key.get_pressed()
@@ -58,7 +57,7 @@ def game_loop():
         game_logic.player2.render(screen)
 
         # Render walls
-        walls = draw_map(first_map, screen)
+        walls = draw_map(first_map, '../Images/fence.png', screen)
 
         # Handle player movement
         game_logic.handle_movement(keys, walls)
