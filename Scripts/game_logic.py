@@ -151,11 +151,16 @@ class GameLogic:
         """
         # Render scores
         score_font = self.get_font(36)
-        player1_score_text = score_font.render(f"Player 1: {self.player2_score}", True, (255, 255, 255))
-        player2_score_text = score_font.render(f"Player 2: {self.player1_score}", True, (255, 255, 255))
+        player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))
+        player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
         screen.blit(player1_score_text, (20, 20))
         screen.blit(player2_score_text, (self.width - 400, 20))
-
+        scoreboard = pygame.image.load("../Images/scoreboard_sign.png")
+        scoreboard = pygame.transform.scale(scoreboard,(83,94))
+        screen.blit(scoreboard, (593,0))
+   
+   
+   
     def reset_item_effects(self, event):
         """
         Reset item effects when specific events occur
