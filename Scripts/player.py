@@ -17,7 +17,7 @@ class Player(State):
         self.opponent = None  # Will be set in main game loop
         self.current_frame = 0
 
-    def handle_movement(self, controls, keys, screen_width, screen_height):
+    def handle_movement(self, controls, keys, screen_width, screen_height, walls):
         # Reset movement
         dx = 0
         dy = 0
@@ -80,6 +80,10 @@ class Player(State):
         # Update position with boundary checking
         self.update(dx, dy, screen_width, screen_height)
         
+        for wall in walls:
+            if self.check_collision(wall):
+                self.update(-dx, -dy, screen_width, screen_height)
+                break
     
     def animate(self, action, speed):
             self.current_frame += speed
