@@ -175,7 +175,7 @@ def show_controls():
         # Update the Screen
         pygame.display.update()
 
-def show_objective():
+#def show_objective():
 
 
 def show_options():

@@ -36,6 +36,7 @@ def game_loop():
     
     # Assign the tilemaps
     first_map = tilemap_1
+    
     game_logic.player2.facing_right = False
     while running:
         # Get pressed keys
