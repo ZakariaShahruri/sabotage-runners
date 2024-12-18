@@ -28,6 +28,7 @@ class GameLogic:
         # Create players
         self.player1 = Player(path="../Images/player1/player1_idle1.png", x=20, y=300)
         self.player2 = Player(path="../Images/player2/player2_idle1.png", x=1200, y=300)
+        self.player2.image = pygame.transform.flip(self.player2.image, True, False)
         
         # Set opponents
         self.player1.opponent = self.player2

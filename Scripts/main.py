@@ -36,7 +36,7 @@ def game_loop():
     
     # Assign the tilemaps
     first_map = tilemap_1
-    
+    game_logic.player2.facing_right = False
     while running:
         # Get pressed keys
         keys = pygame.key.get_pressed()
@@ -51,14 +51,12 @@ def game_loop():
                     game_logic.player1.facing_right = False
                 if event.key == pygame.K_d:
                     game_logic.player1.facing_right = True
-                print(game_logic.player1.facing_right)
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     game_logic.player2.facing_right = True
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
-                print(game_logic.player2.facing_right)
        
             # Reset item effects
             game_logic.reset_item_effects(event)
