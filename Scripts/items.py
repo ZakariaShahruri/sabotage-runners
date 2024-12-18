@@ -2,6 +2,7 @@ import os
 import pygame
 import random
 from state import State
+from tilemap import *
 
 # Paths to power-up images
 ITEM_DIR = "../Images/items/"
@@ -83,12 +84,21 @@ class TeleportItem(Item):
         target = player2 if player1 == player2.opponent else player1
         target.x, target.y = target.spawn_x, target.spawn_y
 
-def generate_random_item(screen_width, screen_height):
+def generate_random_item(tilemap, screen_width, screen_height):
     """
     Generate a random item at a random location on the screen
     Returns:
         Item: A randomly selected item
     """
+    available = []
+    for y, row in enumerate(tilemap):
+        for x, tile in enumerate(row):
+            if tile == '.':
+                available.append(tilesize)
+    
+    if not available:
+        return None
+
     item_classes = [
         FreezeItem,
         SpeedUpItem,

@@ -30,7 +30,7 @@ tilemap_1 = [
     '..........W..................W..........',
     '..........W..................W..........',
     '..........W..................W..........',
-    'SSSSSSSSSSWSSSSSSSSSSSSSSSSSSWSSSSSSSSSS',
+    '..........W..................W..........',
     'SSSSSSSSSSWSSSSSSSSSSSSSSSSSSWSSSSSSSSSS',
     'FFFFFFFFFFWFFFFFFFFFFFFFFFFFFWFFFFFFFFFF',
 ]
