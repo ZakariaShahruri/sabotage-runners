@@ -20,11 +20,11 @@ def game_loop():
     pygame.init()
 
     # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
     pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
-    background = pygame.image.load("../Images/background.png")
+    background = pygame.image.load("../Images/Assets/background.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
     # Create game logic instance
@@ -57,7 +57,7 @@ def game_loop():
         game_logic.player2.render(screen)
 
         # Render walls
-        walls = draw_map(first_map, '../Images/stone.png', screen)
+        walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
 
         # Handle player movement
         game_logic.handle_movement(keys, walls)
