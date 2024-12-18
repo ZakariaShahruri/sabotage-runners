@@ -93,7 +93,7 @@ def generate_random_item(tilemap, screen_width, screen_height):
     available = []
     for y, row in enumerate(tilemap):
         for x, tile in enumerate(row):
-            if tile == '.':
+            if tile == '.' and not tile == 'W' and not tile == 'S':
                 available.append(tilesize)
     
     if not available:
@@ -111,7 +111,7 @@ def generate_random_item(tilemap, screen_width, screen_height):
     chosen_item_class = random.choice(item_classes)
     
     # Generate random position, ensuring some padding from screen edges
-    x = random.randint(50, screen_width - 100)
-    y = random.randint(50, screen_height - 100)
+    x = random.randint(50, screen_width - 200)
+    y = random.randint(50, screen_height - 200)
     
     return chosen_item_class(x, y)
