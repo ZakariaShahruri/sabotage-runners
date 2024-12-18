@@ -95,11 +95,10 @@ def generate_random_item(screen_width, screen_height):
         Item: A randomly selected item
     """
     item_classes = [
-        BananaItem, 
         FreezeItem,
-        SpeedUpItem, 
-        SlowDownItem,  
-        MirrorItem, 
+        SpeedUpItem,
+        SlowDownItem,
+        MirrorItem,
         TeleportItem
     ]
     
