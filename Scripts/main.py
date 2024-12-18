@@ -3,6 +3,7 @@ import sys
 import pygame
 from button import Button
 from game_logic import GameLogic 
+from tilemap import *
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +34,10 @@ def game_loop():
     running = True
     clock = pygame.time.Clock()
     
+    # Draw the map
+    first_map = tilemap_1
+    walls = draw_map(first_map)
+
     while running:
         # Get pressed keys
         keys = pygame.key.get_pressed()
@@ -53,12 +58,12 @@ def game_loop():
         screen.blit(background, (0, 0))
 
         # Handle player movement
-        game_logic.handle_movement(keys)
+        game_logic.handle_movement(keys, walls)
         
         # Animate players
         game_logic.animate_players()
         
-        # Check for scoring
+        # Check for scoringdddddddddd
         game_logic.check_scoring()
         
         # Manage items
