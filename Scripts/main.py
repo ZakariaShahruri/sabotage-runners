@@ -1,11 +1,10 @@
 import os
 import sys
 import pygame
-from player import Player
-from items import generate_random_item
 from button import Button
+from game_logic import GameLogic 
 
-# Set working directory to main.py's directory
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 #getting fonts
@@ -14,15 +13,6 @@ def get_font(size):
 
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-
-
-#Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GRAY = (200, 200, 200)
-LIGHT_GRAY = (170, 170, 170)
-BLUE = (0, 122, 204)
 
 def game_loop():
     # Initialization of pygame
@@ -36,33 +26,14 @@ def game_loop():
     background = pygame.image.load("../Images/background.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-    # Create players
-    player1 = Player(path="../Images/player1/player1_idle1.png", x=20, y=300)
-    player2 = Player(path="../Images/player2/player2_idle1.png", x=1200, y=300)
+    # Create game logic instance
+    game_logic = GameLogic(WIDTH, HEIGHT, get_font)
     
-    
-    # Set opponents
-    player1.opponent = player2
-    player2.opponent = player1
-    
-    #adding animation lists
-    idle1 = ["../Images/player1/player1_idle1.png", "../Images/player1/player1_idle2.png"]
-    walk = ["../Images/player1/player1_walk1.png", "../Images/player1/player1_walk2.png", "../Images/player1/player1_walk3.png", "../Images/player1/player1_walk4.png", ]
-    idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png"]
-    
-
-    # Item management
-    active_items = []  # List to store items
-    item_spawn_event = pygame.USEREVENT + 1
-    pygame.time.set_timer(item_spawn_event, 3000)  # Set a timer to spawn items every 3 seconds
-
     # The game loop
     running = True
     clock = pygame.time.Clock()
     
-
     while running:
-        
         # Get pressed keys
         keys = pygame.key.get_pressed()
         
@@ -71,49 +42,41 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
             
-            # Spawn new items every 3 seconds
-            if len(active_items) < 4:
-                if event.type == item_spawn_event:
-                    active_items.append(generate_random_item(WIDTH, HEIGHT))
-
+            # Spawn new items
+            if event.type == game_logic.item_spawn_event:
+                pass  # This is now handled in game_logic
+            
             # Reset item effects
-            if event.type == pygame.USEREVENT:
-                player1.speed = 10
-                player2.speed = 10
-            if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
-                player1.speed = 10
-                player2.speed = 10
-                player1.is_shielded = False
-                player2.is_shielded = False
-                player1.controls_reversed = False
-                player2.controls_reversed = False
-
-        
+            game_logic.reset_item_effects(event)
 
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
 
         # Handle player movement
-        player1.handle_movement("WASD", keys, WIDTH, HEIGHT)
-        player2.handle_movement("arrows", keys, WIDTH, HEIGHT)
+        game_logic.handle_movement(keys)
         
-        player1.animate(idle1, 0.06)
-        player2.animate(idle2,0.06)
-
+        # Animate players
+        game_logic.animate_players()
         
-        # Render and check item collisions
-        for item in active_items[:]:  # Use a copy of the list to safely remove items
-            item.render(screen)
-            if player1.check_collision(item):
-                item.use(player1, player2)
-                active_items.remove(item)
-            elif player2.check_collision(item):
-                item.use(player2, player1)
-                active_items.remove(item)
+        # Check for scoring
+        game_logic.check_scoring()
+        
+        # Manage items
+        game_logic.manage_items(screen)
 
         # Render players
-        player1.render(screen)
-        player2.render(screen)
+        game_logic.player1.render(screen)
+        game_logic.player2.render(screen)
+
+        # Render scores
+        game_logic.render_scores(screen)
+
+        # Check for game over
+        game_state = game_logic.get_game_state()
+        if game_state['game_over']:
+            # You can add a game over screen or restart logic here
+            print(f"{game_state['winner']} wins!")
+            running = False
 
         # Update display
         pygame.display.flip()
