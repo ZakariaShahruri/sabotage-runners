@@ -1,9 +1,14 @@
 import pygame
 import sys
 import main
+import 
 
 # Initialize Pygame
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load("../music/background_music.mp3")
+pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
+pygame.mixer.music.play(-1)  # Start the music
 
 # Screen Settings
 SCREEN_WIDTH = 1280
@@ -25,9 +30,8 @@ header_font = pygame.font.SysFont("Arial", 30, bold=True)
 BACKGROUND_IMAGE = pygame.image.load("../menu_images/menu_background.png")
 BACKGROUND_IMAGE = pygame.transform.scale(BACKGROUND_IMAGE, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Load Darker Background Image
-BACKGROUND_DARKER = pygame.image.load("../menu_images/background_darker.png")
-BACKGROUND_DARKER = pygame.transform.scale(BACKGROUND_DARKER, (SCREEN_WIDTH, SCREEN_HEIGHT))
+OPTIONS_BACKGROUND = pygame.image.load("../menu_images/background_darker.png")
+OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 class Button:
     def __init__(self, text, x, y, width, height, callback):
@@ -80,27 +84,137 @@ def play_game():
     main.game_loop()
 
 def show_controls():
-    print("Controls button clicked! Show controls screen...")
+    # Load and display the controls image
+    controls_image = pygame.image.load("../menu_images/controls_image.png")
+    controls_image = pygame.transform.scale(controls_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    
+    while True:
+        screen.blit(controls_image, (0, 0))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return  # Go back to the main menu
+
+        pygame.display.update()
 
 def show_objective():
-    print("Objective button clicked! Show objectives screen...")
+    # Load multiple images for objectives
+    objective_images = [
+        pygame.image.load("C:\Pygames\projectweek-2425-bcs-48\menu_images\objective_image.png"),
+        pygame.image.load("C:\Pygames\projectweek-2425-bcs-48\menu_images\items_image.png")
+    ]
+    objective_images = [pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)) for img in objective_images]
+    
+    current_image_index = 0
+
+    while True:
+        screen.blit(objective_images[current_image_index], (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:  # Next image
+                    current_image_index = (current_image_index + 1) % len(objective_images)
+                elif event.key == pygame.K_LEFT:  # Previous image
+                    current_image_index = (current_image_index - 1) % len(objective_images)
+                elif event.key == pygame.K_ESCAPE:  # Exit to menu
+                    return
+
+        pygame.display.update()
 
 def show_options():
-    print("Options button clicked! Show options menu...")
+    """Display the options menu."""
+    # Options settings
+    options = {
+        "Music": True,  # Example toggle for music
+        "Fullscreen": False,  # Example toggle for fullscreen
+    }
+    
+    # Create buttons for each option
+    option_buttons = []
+    y_offset = 150
+    for option, value in options.items():
+        button = Button(
+            f"{option}: {'ON' if value else 'OFF'}",
+            SCREEN_WIDTH // 2 - 200,
+            y_offset,
+            400,
+            50,
+            lambda opt=option: toggle_option(opt, options)
+        )
+        option_buttons.append(button)
+        y_offset += 70
+
+    back_button = Button(
+        "Back to Menu",
+        SCREEN_WIDTH // 2 - 100,
+        y_offset,
+        200,
+        50,
+        main_menu
+    )
+    option_buttons.append(back_button)
+
+    # Options menu loop
+    while True:
+        screen.blit(OPTIONS_BACKGROUND, (0, 0))
+
+        header_surface = header_font.render("Options Menu", True, WHITE)
+        header_rect = header_surface.get_rect(center=(SCREEN_WIDTH // 2, 80))
+        screen.blit(header_surface, header_rect)
+
+        for button in option_buttons:
+            button.draw(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        detect_button_click(option_buttons)
+        pygame.display.update()
+
+def toggle_option(option, options):
+    """Toggle the specified option and update button text."""
+    options[option] = not options[option]
+    
+    # Handle specific option changes
+    if option == "Music":
+        if options[option]:
+            print("Music enabled.")
+            # Add your music enabling code here
+        else:
+            print("Music disabled.")
+            # Add your music disabling code here
+    elif option == "Fullscreen":
+        if options[option]:
+            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+            print("Fullscreen enabled.")
+        else:
+            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+            print("Fullscreen disabled.")
 
 def draw_credits():
-    """Render credits with better alignment and scrollable feature."""
-    scroll_y = 0  # Add scrolling logic here if needed
-    screen.blit(BACKGROUND_DARKER, (0, 0))
+    # Load and display the credits image
+    credits_image = pygame.image.load("../menu_images/credits_image.png")
+    credits_image = pygame.transform.scale(credits_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    
+    while True:
+        screen.blit(credits_image, (0, 0))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return  # Go back to the main menu
 
-    y_offset = 100
-    for line in credits_text:
-        text_surface = font.render(line, True, WHITE)
-        text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, y_offset))
-        screen.blit(text_surface, text_rect)
-        y_offset += 35
-
-    pygame.display.update()
+        pygame.display.update()
 
 def quit_game():
     print("Quit button clicked! Exiting the game...")
