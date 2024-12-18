@@ -2,12 +2,12 @@ import pygame
 from state import State
 
 class Player(State):
-    def __init__(self, x, y, path, size=40, speed=10):
+    def __init__(self, x, y, path, size=30, speed=10):
         super().__init__(x, y, path, size, is_collidable=True)
         self.speed = speed
         self.path = path
         self.image = pygame.image.load(self.path)
-        self.image = pygame.transform.scale(self.image, (52, 91))
+        self.image = pygame.transform.scale(self.image, (32, 48))
         self.facing_right = True
         
         
@@ -95,8 +95,8 @@ class Player(State):
                 
             if self.facing_right == True:
                 self.image = pygame.image.load(action[int(self.current_frame)])
-                self.image = pygame.transform.scale(self.image, (52, 91))
+                self.image = pygame.transform.scale(self.image, (32, 48))
             elif self.facing_right == False:
                 self.image = pygame.image.load(action[int(self.current_frame)])
                 self.image = pygame.transform.flip(self.image, True, False)
-                self.image = pygame.transform.scale(self.image, (52, 91))
+                self.image = pygame.transform.scale(self.image, (32, 48))
