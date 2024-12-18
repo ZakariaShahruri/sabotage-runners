@@ -17,7 +17,7 @@ class Item(State):
         """Base class for all items."""
         super().__init__(x, y, path=image_path, size=40, is_collidable=True)
         # Resize the image to a consistent size
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.transform.scale(self.image, (30, 30))
         
 
     def use(self, player1, player2):
