@@ -9,7 +9,7 @@ pygame.init()
 tilesize = 32
 
 # Tilemaps
-tilemap_1 = [
+tilemap_2 = [
     'FFFFFFFFFFFFWFFFFFFFFFFFFFFWFFFFFFFFFFFF',
     '............W..............W............',
     '............W..............W............',
@@ -35,8 +35,7 @@ tilemap_1 = [
     'FFFFFFFFFFWFFFFFFFFFFFFFFFFFFWFFFFFFFFFF',
 ]
 
-tilemap_2 = [
-    'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+tilemap_1 = [
     '........................................',
     '........................................',
     '........................................',
@@ -45,9 +44,6 @@ tilemap_2 = [
     '........................................',
     '........................................',
     '........................................',
-    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
-    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
-    'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
     '........................................',
     '........................................',
     '........................................',
@@ -56,9 +52,13 @@ tilemap_2 = [
     '........................................',
     '........................................',
     '........................................',
-    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
-    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
-    'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+    '........................................',
+    '........................................',
+    '........................................',
+    '........................................',
+    '........................................',
+    '........................................',
+    '........................................',
 ]
 
 # drawing the map
