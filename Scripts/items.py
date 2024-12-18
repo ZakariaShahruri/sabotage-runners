@@ -90,28 +90,49 @@ def generate_random_item(tilemap, screen_width, screen_height):
     Returns:
         Item: A randomly selected item
     """
-    available = []
-    for y, row in enumerate(tilemap):
-        for x, tile in enumerate(row):
-            if tile == '.' and not tile == 'W' and not tile == 'S':
-                available.append(tilesize)
+    # available = []
+    # for y, row in enumerate(tilemap):
+    #     for x, tile in enumerate(row):
+    #         if tile == '.' and not tile == 'W' and not tile == 'S':
+    #             available.append(tilesize)
     
-    if not available:
-        return None
+    # if not available:
+    #     return None
 
-    item_classes = [
-        FreezeItem,
-        SpeedUpItem,
-        SlowDownItem,
-        MirrorItem,
-        TeleportItem
-    ]
+item_classes = [
+    FreezeItem,
+    SpeedUpItem,
+    SlowDownItem,
+    MirrorItem,
+    TeleportItem
+]
     
+spawn_coordinates = [
+        (266, 560),
+        (625, 560),
+        (1000, 560),
+        (1000, 138),
+        (625, 138),
+        (266, 138)
+    ]
+occupied_spawn_points = {coord: False for coord in spawn_coordinates}
+    
+def generate_random_item(tilemap, width, height):
+    global occupied_spawn_points
+
+    available_spawn_points = [coord for coord, occupied in occupied_spawn_points.items() if not occupied]
+
+    if not available_spawn_points:
+            return None  # No available spawn points
+
     # Randomly choose an item class
     chosen_item_class = random.choice(item_classes)
-    
-    # Generate random position, ensuring some padding from screen edges
-    x = random.randint(50, screen_width - 200)
-    y = random.randint(50, screen_height - 200)
-    
+
+    # Randomly select one of the available spawn coordinates
+    x, y = random.choice(available_spawn_points)
+
+    # Mark the spawn point as occupied
+    occupied_spawn_points[(x, y)] = True
+
+    # Return the chosen item class instantiated with the selected coordinates
     return chosen_item_class(x, y)

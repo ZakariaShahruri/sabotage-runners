@@ -22,6 +22,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
+    pygame.mixer.music.set_volume(0.02)
 
 # Function to stop music
 def stop_music():
@@ -81,7 +82,6 @@ def game_loop():
         
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
-
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)

@@ -4,6 +4,7 @@ import sys
 import random
 from player import Player
 from items import generate_random_item
+from items import occupied_spawn_points
 from tilemap import tilemap_1
 
 class GameLogic:
@@ -50,33 +51,28 @@ class GameLogic:
         self.max_items = 4
 
     def manage_items(self, screen):
-        """
-        Carefully manage item spawning and collision
-        
-        Args:
-            screen (pygame.Surface): Game screen to render items
-        """
         current_time = pygame.time.get_ticks()
-        
+
         # Check if it's time to spawn a new item
         if (len(self.active_items) < self.max_items and 
             current_time - self.last_item_spawn_time >= self.item_spawn_interval):
-            
             # Generate a new item
-            new_item = generate_random_item(tilemap_1 ,self.width, self.height)
-            self.active_items.append(new_item)
-            
-            # Update last spawn time
-            self.last_item_spawn_time = current_time
+            new_item = generate_random_item(tilemap_1, self.width, self.height)
+            if new_item:
+                self.active_items.append(new_item)
+                # Update last spawn time
+                self.last_item_spawn_time = current_time
 
         # Render and check item collisions
         for item in self.active_items[:]:
             item.render(screen)
-            if self.player1.check_collision(item):
-                item.use(self.player1, self.player2)
-                self.active_items.remove(item)
-            elif self.player2.check_collision(item):
-                item.use(self.player2, self.player1)
+            if self.player1.check_collision(item) or self.player2.check_collision(item):
+                # Mark the spawn point as available again
+                occupied_spawn_points[(item.x, item.y)] = False
+                if self.player1.check_collision(item):
+                    item.use(self.player1, self.player2)
+                else:
+                    item.use(self.player2, self.player1)
                 self.active_items.remove(item)
 
    
@@ -176,8 +172,6 @@ class GameLogic:
         if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
             self.player1.speed = 5
             self.player2.speed = 5
-            self.player1.is_shielded = False
-            self.player2.is_shielded = False
             self.player1.controls_reversed = False
             self.player2.controls_reversed = False
 
