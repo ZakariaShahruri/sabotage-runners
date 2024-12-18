@@ -40,6 +40,7 @@ class GameLogic:
         self.idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png", "../Images/player2/player2_idle3.png", "../Images/player2/player2_idle4.png"]
         self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
         self.run2 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
+        self.attack1 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
         
         # Item management
         self.active_items = []
@@ -131,7 +132,7 @@ class GameLogic:
         if self.player1.is_moving == False:
             self.player1.animate(self.idle1, 0.1)
         else:
-            self.player1.animate(self.run1, .2)
+            self.player1.animate(self.attack1, .2)
 
 
         if self.player2.is_moving == False:
