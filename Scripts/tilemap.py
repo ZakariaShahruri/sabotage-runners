@@ -30,8 +30,8 @@ tilemap_1 = [
     '........................................',
     '........................................',
     '........................................',
-    '........................................',
-    '........................................',
+    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
     'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
 ]
 
@@ -56,8 +56,8 @@ tilemap_2 = [
     '........................................',
     '........................................',
     '........................................',
-    '........................................',
-    '........................................',
+    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
+    'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS',
     'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW',
 ]
 
@@ -71,5 +71,9 @@ def draw_map(tilemap, image, screen):
                 walls.append(wall)
 
                 wall.render(screen)
+            
+            if tile == 'S':
+                wall = State(x * tilesize, y * tilesize, '../Images/wall.png', size=tilesize, is_collidable=True)
+                walls.append(wall)
     
     return walls
