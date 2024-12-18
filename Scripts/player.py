@@ -7,7 +7,7 @@ class Player(State):
         self.speed = speed
         self.path = path
         self.image = pygame.image.load(self.path)
-        self.image = pygame.transform.scale(self.image, (26, 45))
+        self.image = pygame.transform.scale(self.image, (52, 91))
         
         # New attributes for item interactions
         self.spawn_x = x
@@ -15,6 +15,7 @@ class Player(State):
         self.is_shielded = False
         self.controls_reversed = False
         self.opponent = None  # Will be set in main game loop
+        self.current_frame = 0
 
     def handle_movement(self, controls, keys, screen_width, screen_height):
         # Reset movement
@@ -66,11 +67,11 @@ class Player(State):
 
         # Update position with boundary checking
         self.update(dx, dy, screen_width, screen_height)
-
-
-
-
-
-
-
         
+    
+    def animate(self, action, speed):
+        self.image = pygame.image.load(action[int(self.current_frame)])
+        self.image = pygame.transform.scale(self.image, (52, 91))
+        self.current_frame += speed
+        if self.current_frame >= len(action):
+            self.current_frame = 0
