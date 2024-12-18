@@ -42,7 +42,7 @@ class FreezeItem(Item):
         """Freeze the opponent instantly."""
         target = player2 if player1 == player2.opponent else player1
         target.speed = 0  # Freeze the player
-        pygame.time.set_timer(pygame.USEREVENT + 1, 3000)  # Unfreeze after 3 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 1, 5000)  # Unfreeze after 3 seconds
 
 class SpeedUpItem(Item):
     def __init__(self, x, y):
@@ -51,7 +51,7 @@ class SpeedUpItem(Item):
     def use(self, player1, player2):
         """Increase the player's speed temporarily."""
         player = player1
-        player.speed *= 1.5  # Boost speed
+        player.speed *= 1.8  # Boost speed
         pygame.time.set_timer(pygame.USEREVENT + 2, 5000)  # Reset speed after 5 seconds
 
 class SlowDownItem(Item):
@@ -61,8 +61,8 @@ class SlowDownItem(Item):
     def use(self, player1, player2):
         """Slow down the opponent temporarily."""
         target = player2 if player1 == player2.opponent else player1
-        target.speed *= 0.5  # Slow down
-        pygame.time.set_timer(pygame.USEREVENT + 3, 3000)  # Reset speed after 3 seconds
+        target.speed *= 0.3  # Slow down
+        pygame.time.set_timer(pygame.USEREVENT + 3, 4000)  # Reset speed after 3 seconds
 
 class MirrorItem(Item):
     def __init__(self, x, y):
@@ -86,11 +86,6 @@ class TeleportItem(Item):
 def generate_random_item(screen_width, screen_height):
     """
     Generate a random item at a random location on the screen
-    
-    Args:
-        screen_width (int): Width of the game screen
-        screen_height (int): Height of the game screen
-    
     Returns:
         Item: A randomly selected item
     """
