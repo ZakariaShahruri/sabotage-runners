@@ -84,8 +84,8 @@ def game_loop():
         # Update display
         pygame.display.flip()
 
-        # Limit FPS to 60
-        clock.tick(60)
+        # Limit FPS to 120
+        clock.tick(120)
 
     # Close pygame
     pygame.quit()
