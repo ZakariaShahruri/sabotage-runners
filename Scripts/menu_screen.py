@@ -1,14 +1,10 @@
 import pygame
 import sys
 import main
-import 
 
 # Initialize Pygame
 pygame.init()
 pygame.mixer.init()
-pygame.mixer.music.load("../music/background_music.mp3")
-pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
-pygame.mixer.music.play(-1)  # Start the music
 
 # Screen Settings
 SCREEN_WIDTH = 1280
@@ -32,6 +28,11 @@ BACKGROUND_IMAGE = pygame.transform.scale(BACKGROUND_IMAGE, (SCREEN_WIDTH, SCREE
 
 OPTIONS_BACKGROUND = pygame.image.load("../menu_images/background_darker.png")
 OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Load Music
+pygame.mixer.music.load("../audios/menu_music.mp3")
+pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
+pygame.mixer.music.play(-1)  # Start the music
 
 class Button:
     def __init__(self, text, x, y, width, height, callback):
@@ -127,6 +128,11 @@ def show_objective():
 
         pygame.display.update()
 
+def back_to_menu():
+    pygame.time.delay(200)  # Optional, for smooth transition
+    main_menu()  # Call main menu again to reset the state
+
+
 def show_options():
     """Display the options menu."""
     # Options settings
@@ -145,7 +151,7 @@ def show_options():
             y_offset,
             400,
             50,
-            lambda opt=option: toggle_option(opt, options)
+            lambda opt=option: toggle_option(opt, options, option_buttons)
         )
         option_buttons.append(button)
         y_offset += 70
@@ -156,7 +162,7 @@ def show_options():
         y_offset,
         200,
         50,
-        main_menu
+        back_to_menu
     )
     option_buttons.append(back_button)
 
@@ -179,25 +185,25 @@ def show_options():
         detect_button_click(option_buttons)
         pygame.display.update()
 
-def toggle_option(option, options):
+def toggle_option(option, options, buttons):
     """Toggle the specified option and update button text."""
     options[option] = not options[option]
     
     # Handle specific option changes
     if option == "Music":
         if options[option]:
-            print("Music enabled.")
-            # Add your music enabling code here
+            pygame.mixer.music.play(-1)  # Start the music
         else:
-            print("Music disabled.")
-            # Add your music disabling code here
+            pygame.mixer.music.stop()
     elif option == "Fullscreen":
         if options[option]:
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
-            print("Fullscreen enabled.")
         else:
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-            print("Fullscreen disabled.")
+
+    for button in buttons:
+        if option in button.text:
+            button.text = f"{option}: {'ON' if options[option] else 'OFF'}" 
 
 def draw_credits():
     # Load and display the credits image
@@ -217,7 +223,6 @@ def draw_credits():
         pygame.display.update()
 
 def quit_game():
-    print("Quit button clicked! Exiting the game...")
     pygame.quit()
     sys.exit()
 
