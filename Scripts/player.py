@@ -8,6 +8,8 @@ class Player(State):
         self.path = path
         self.image = pygame.image.load(self.path)
         self.image = pygame.transform.scale(self.image, (52, 91))
+        self.facing_right = True
+        
         
         # New attributes for item interactions
         self.spawn_x = x
@@ -90,5 +92,11 @@ class Player(State):
             self.current_frame %= len(action)
             if self.current_frame >= len(action):
                 self.current_frame = 0
-            self.image = pygame.image.load(action[int(self.current_frame)])
-            self.image = pygame.transform.scale(self.image, (52, 91))
+                
+            if self.facing_right == True:
+                self.image = pygame.image.load(action[int(self.current_frame)])
+                self.image = pygame.transform.scale(self.image, (52, 91))
+            elif self.facing_right == False:
+                self.image = pygame.image.load(action[int(self.current_frame)])
+                self.image = pygame.transform.flip(self.image, True, False)
+                self.image = pygame.transform.scale(self.image, (52, 91))
