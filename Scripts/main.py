@@ -8,6 +8,9 @@ from tilemap import *
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+MENU_MUSIC = "../audios/menu_music.mp3"
+MAIN_MUSIC = "../audios/main_music.mp3"
+
 #getting fonts
 def get_font(size):
     return pygame.font.Font("../fonts/font.ttf", size)
@@ -15,9 +18,22 @@ def get_font(size):
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
 
+# Function to play music
+def play_music(music_path, loop=True):
+    pygame.mixer.music.load(music_path)
+    pygame.mixer.music.play(-1 if loop else 0)
+
+# Function to stop music
+def stop_music():
+    pygame.mixer.music.stop()
+
+
 def game_loop():
     # Initialization of pygame
     pygame.init()
+
+    # Play main game music
+    play_music(MAIN_MUSIC)
 
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
@@ -36,6 +52,7 @@ def game_loop():
     
     # Assign the tilemaps
     first_map = tilemap_1
+    
     game_logic.player2.facing_right = False
     while running:
         # Get pressed keys
@@ -102,12 +119,16 @@ def game_loop():
         clock.tick(120)
 
     # Close pygame
+    stop_music()
     pygame.quit()
     sys.exit()
 
 def menu():
     # Initialize Pygame
     pygame.init()
+
+        # Play menu music
+    play_music(MENU_MUSIC)
 
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -147,6 +168,7 @@ def menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(menu_mouse_pos):
+                    stop_music()
                     game_loop()
                 if option_button.checkForInput(menu_mouse_pos):
                     pass
