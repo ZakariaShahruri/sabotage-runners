@@ -36,7 +36,7 @@ def game_loop():
     
     # Draw the map
     first_map = tilemap_1
-    walls = draw_map(first_map)
+    
 
     while running:
         # Get pressed keys
@@ -53,6 +53,13 @@ def game_loop():
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
 
+        # Render players
+        game_logic.player1.render(screen)
+        game_logic.player2.render(screen)
+
+        # Render walls
+        walls = draw_map(first_map, screen)
+
         # Handle player movement
         game_logic.handle_movement(keys, walls)
         
@@ -64,10 +71,6 @@ def game_loop():
         
         # Manage items
         game_logic.manage_items(screen)
-
-        # Render players
-        game_logic.player1.render(screen)
-        game_logic.player2.render(screen)
 
         # Render scores
         game_logic.render_scores(screen)
