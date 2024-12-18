@@ -110,7 +110,7 @@ def game_loop():
         if game_state['game_over']:
             # You can add a game over screen or restart logic here
             print(f"{game_state['winner']} wins!")
-            running = False
+            menu()
 
         # Update display
         pygame.display.flip()
