@@ -20,7 +20,7 @@ def game_loop():
     pygame.init()
 
     # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
