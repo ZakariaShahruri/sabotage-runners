@@ -82,23 +82,49 @@ item_classes = [
     TeleportItem
 ]
     
-spawn_coordinates = [
+map_spawn_coordinates = {
+    1: [  # Map 1 coordinates (original)
         (266, 560),
         (625, 560),
         (1000, 560),
         (1000, 138),
         (625, 138),
         (266, 138)
+    ],
+    2: [  # Map 2 coordinates (new)
+        (210, 173),
+        (210, 480),
+        (637, 151),
+        (637, 573),
+        (1073, 475),
+        (1073, 225)
     ]
-occupied_spawn_points = {coord: False for coord in spawn_coordinates}
-    
-def generate_random_item(width, height):
-    global occupied_spawn_points
+}
 
-    available_spawn_points = [coord for coord, occupied in occupied_spawn_points.items() if not occupied]
+# Dictionary to track occupied spawn points for each map
+occupied_spawn_points = {
+    1: {},  # Will be initialized when needed
+    2: {}   # Will be initialized when needed
+}
+
+def initialize_spawn_points(map_number):
+    """Initialize or reset spawn points for a specific map"""
+    occupied_spawn_points[map_number] = {coord: False for coord in map_spawn_coordinates[map_number]}
+
+def generate_random_item(width, height, active_map):
+    """Generate a random item for the specified map"""
+    global occupied_spawn_points
+    
+    # Initialize spawn points for the map if not already done
+    if not occupied_spawn_points[active_map]:
+        initialize_spawn_points(active_map)
+    
+    # Get available spawn points for the current map
+    available_spawn_points = [coord for coord, occupied in occupied_spawn_points[active_map].items() 
+                            if not occupied]
 
     if not available_spawn_points:
-            return None  # No available spawn points
+        return None  # No available spawn points
 
     # Randomly choose an item class
     chosen_item_class = random.choice(item_classes)
@@ -106,8 +132,12 @@ def generate_random_item(width, height):
     # Randomly select one of the available spawn coordinates
     x, y = random.choice(available_spawn_points)
 
-    # Mark the spawn point as occupied
-    occupied_spawn_points[(x, y)] = True
+    # Mark the spawn point as occupied for the current map
+    occupied_spawn_points[active_map][(x, y)] = True
 
     # Return the chosen item class instantiated with the selected coordinates
     return chosen_item_class(x, y)
+
+def reset_spawn_points(map_number):
+    """Reset all spawn points for a specific map"""
+    initialize_spawn_points(map_number)

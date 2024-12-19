@@ -1,4 +1,3 @@
-
 import pygame
 import sys
 import main
@@ -12,8 +11,8 @@ pygame.mixer.init()
 # Screen Settings
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
-pygame.display.set_caption("Game Menu")
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
+pygame.display.set_caption("Sabotage Runners")
 
 # Colors
 WHITE = (255, 255, 255)
@@ -37,7 +36,7 @@ OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, S
 pygame.mixer.music.load("../audios/menu_music.mp3")
 pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
 pygame.mixer.music.play(-1)  # Start the music
-pygame.mixer.music.set_volume(0.15)
+pygame.mixer.music.set_volume(0.05)
 
 
 class Button:

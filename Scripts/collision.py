@@ -72,6 +72,14 @@ left_blocks2 = [
     (260,350),(48,382),(80,382),
     (112,382),(144,382),(176,382),
     (208,382),(240,382),(260,382),
+    (250,123),(250,155),(250,187),
+    (282,123),(282,155),(282,187),
+    (314,123),(314,155),(314,187),
+    (330,123),(330,155),(330,187),
+    (250,491),(250,523),(250,555),
+    (282,491),(282,523),(282,555),
+    (314,491),(314,523),(314,555),
+    (330,491),(330,523),(330,555),
 
     # Bottom half of map
     (4,460),(36,460),(68,460),(100,460),
@@ -89,13 +97,18 @@ left_blocks2 = [
 right_blocks1 = [(1280-32-x, y) for x, y in left_blocks1]
 right_blocks2 = [(1280-32-x, y) for x, y in left_blocks2]
 
-left_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks1]
-right_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks1]
+left_rectangles1 = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks1]
+right_rectangles1 = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks1]
+
+left_rectangles2 = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks2]
+right_rectangles2 = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks2]
 
 # Combine both lists
 map1_borders = left_blocks1 + right_blocks1
 map2_borders = left_blocks2 + right_blocks2
-all_rectangles = left_rectangles + right_rectangles
+
+all_rectangles1 = left_rectangles1 + right_rectangles1
+all_rectangles2 = left_rectangles2 + right_rectangles2
 
 def render_border(map, screen):
     borders = []
