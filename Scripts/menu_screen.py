@@ -38,7 +38,6 @@ pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
 pygame.mixer.music.play(-1)  # Start the music
 
 
-
 class Button:
     def __init__(self, text, x, y, width, height, callback):
         self.text = text
@@ -102,7 +101,7 @@ def play_game():
 
 def show_controls():
     # Load and display the controls image
-    controls_image = pygame.image.load("../menu_images/updated_controls.png")
+    controls_image = pygame.image.load("../menu_images/controls_image.png")
     controls_image = pygame.transform.scale(controls_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     while True:
@@ -120,8 +119,8 @@ def show_controls():
 def show_objective():
     # Load multiple images for objectives
     objective_images = [
-        pygame.image.load("../menu_images/updated_objective.png"),
-        pygame.image.load("../menu_images/updated_items.png")
+        pygame.image.load("../menu_images/objective_image.png"),
+        pygame.image.load("../menu_images/items_image.png")
     ]
     objective_images = [pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)) for img in objective_images]
     

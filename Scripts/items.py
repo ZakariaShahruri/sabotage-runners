@@ -22,13 +22,18 @@ class Item(State):
         """Base class for all items."""
         super().__init__(x, y, path=image_path, size=40, is_collidable=True)
         # Resize the image to a consistent size
-        self.image = pygame.transform.scale(self.image, (30, 30))
+        original_width, original_height = self.image.get_size()
+        self.image = pygame.transform.scale(self.image, (int(30*(original_width / original_height)), 30))
         
     def use(self, player1, player2):
         """Base method to be overridden by specific item types"""
         raise NotImplementedError("Subclasses must implement use method")
 
-
+    def get_rect(self):
+        return pygame.Rect(self.x , self.y, self.size-10, self.size-10)
+    
+    
+    
 class FreezeItem(Item):
     def __init__(self, x, y):
         super().__init__(x, y, freeze_image)
@@ -91,14 +96,14 @@ item_classes = [
 ]
     
 map_spawn_coordinates = {
-    1: [  # Map 1 coordinates (original)
-        (266, 560),
-        (625, 560),
-        (1000, 560),
-        (1000, 138),
-        (625, 138),
-        (266, 138)
-    ],
+    1: [(276, 548),
+        (635, 548),
+        (1010, 548),
+        (1010, 126),
+        (635, 126),
+        (276, 126)
+        ]
+,
     2: [  # Map 2 coordinates (new)
         (210, 173),
         (210, 480),
@@ -149,3 +154,5 @@ def generate_random_item(width, height, active_map):
 def reset_spawn_points(map_number):
     """Reset all spawn points for a specific map"""
     initialize_spawn_points(map_number)
+    
+
