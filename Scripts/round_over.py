@@ -14,6 +14,10 @@ def round_over_screen(screen, game_logic, winner_name, get_font):
     """
     running = True
 
+    # Load background image
+    background = pygame.image.load("../menu_images/background_darker.png")
+    background = pygame.transform.scale(background, (screen.get_width(), screen.get_height()))
+
     # Button setup
     font = get_font(50)
     button_font = get_font(30)
@@ -26,7 +30,7 @@ def round_over_screen(screen, game_logic, winner_name, get_font):
     )
 
     while running:
-        screen.fill((0, 0, 0))  # Clear screen with black
+        screen.blit(background, (0, 0))  # Blit background image
         round_over_text = font.render("Round Over!", True, (255, 255, 255))
         winner_text = font.render(f"Winner: {winner_name}", True, (255, 255, 0))
 
