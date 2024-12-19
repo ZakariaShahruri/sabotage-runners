@@ -135,8 +135,6 @@ def game_loop():
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
-
-        print(game_logic.player1.check_collision(game_logic.player2))
             
         
         # Render walls
