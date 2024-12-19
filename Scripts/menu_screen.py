@@ -108,7 +108,7 @@ def show_objective():
     # Load multiple images for objectives
     objective_images = [
         pygame.image.load("../menu_images/objective_image.png"),
-        pygame.image.load("../menu_images/objective_image.png")
+        pygame.image.load("../menu_images/items_image.png")
     ]
     objective_images = [pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)) for img in objective_images]
     
