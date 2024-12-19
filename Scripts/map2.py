@@ -5,6 +5,7 @@ from button import Button
 from game_logic import GameLogic
 from menu_screen import main_menu
 from collision import *
+from items import *
 
 def get_font(size):
     return pygame.font.Font("../fonts/font.ttf", size)
@@ -14,7 +15,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
-    pygame.mixer.music.set_volume(0.15)
+    pygame.mixer.music.set_volume(0.05)
 
 def stop_music():
     pygame.mixer.music.stop()
@@ -24,7 +25,7 @@ def load_map2():
     pygame.init()
 
     # Play main game music
-    play_music("../audios/one_vs_one_music.mp3")
+    # play_music("../audios/one_vs_one_music.mp3")
 
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
@@ -34,8 +35,6 @@ def load_map2():
     background = pygame.image.load("../Images/map2.png")  # Create this new background image
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     
-    hedges = pygame.image.load("../Images/hedges.png")  # Create this new hedges image
-    hedges = pygame.transform.scale(hedges, (WIDTH, HEIGHT))
 
     # Create game logic instance
     game_logic = GameLogic(WIDTH, HEIGHT, get_font)
@@ -96,7 +95,7 @@ def load_map2():
             cooldown_start = pygame.time.get_ticks()
 
         # Handle wall collisions
-        for rectangle in all_rectangles:
+        for rectangle in all_rectangles2:
             if rectangle.colliderect(game_logic.player2.get_rect()):
                 game_logic.player2.x -= 30
             elif rectangle.colliderect(game_logic.player1.get_rect()):
@@ -115,8 +114,9 @@ def load_map2():
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
+
         
-        screen.blit(hedges, (0, 0))
+        print(pygame.mouse.get_pos())
         
         # Render walls using map2 borders
         borders = render_border(map2_borders, screen)
@@ -127,6 +127,9 @@ def load_map2():
         # Animate players
         game_logic.animate_players()
         
+        reset_spawn_points(2)
+        game_logic.manage_items(screen, active_map=2)
+
         # Check for scoring
         game_logic.check_scoring()
         
@@ -145,6 +148,8 @@ def load_map2():
             from round_over import round_over_screen
             round_over_screen(screen, game_logic, winner, get_font)
             play_music("../audios/main_music.mp3")
+
+
 
         # Update display
         pygame.display.flip()

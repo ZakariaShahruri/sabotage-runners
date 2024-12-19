@@ -6,6 +6,8 @@ from game_logic import GameLogic
 from menu_screen import main_menu
 from round_over import round_over_screen
 from collision import *
+from items import *
+
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +26,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
-    pygame.mixer.music.set_volume(0.15)
+    pygame.mixer.music.set_volume(0.05)
 
 # Function to stop music
 def stop_music():
