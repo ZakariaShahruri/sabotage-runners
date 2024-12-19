@@ -143,8 +143,8 @@ def load_map2():
             winner = game_state['winner']
             stop_music()
             # Import here to avoid circular import
-            from round_over import round_over_screen
-            round_over_screen(screen, game_logic, winner, get_font)
+            from end_screen import show_end_screen
+            show_end_screen(winner, True)
             play_music("../audios/main_music.mp3")
 
 
