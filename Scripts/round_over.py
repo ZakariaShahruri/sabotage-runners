@@ -2,11 +2,20 @@ import pygame
 from button import Button
 import sys
 
+pygame.mixer.init()
+
+
+
 def round_over_screen(screen, game_logic, winner_name, get_font):
     """
     Display the round over screen with options to go to the main menu or the next map.
     """
     running = True
+
+    pygame.mixer.music.load("../audios/menu_music.mp3")
+    pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
+    pygame.mixer.music.play(-1)  # Start the music
+    pygame.mixer.music.set_volume(0.05)
 
     # Load background image
     background = pygame.image.load("../menu_images/background_darker.png")
