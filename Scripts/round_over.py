@@ -5,12 +5,6 @@ import sys
 def round_over_screen(screen, game_logic, winner_name, get_font):
     """
     Display the round over screen with options to go to the main menu or the next map.
-
-    Args:
-        screen (pygame.Surface): The game screen.
-        game_logic (GameLogic): Instance of GameLogic to manage transitions.
-        winner_name (str): The name of the round winner.
-        get_font (function): Function to load fonts.
     """
     running = True
 
@@ -30,7 +24,7 @@ def round_over_screen(screen, game_logic, winner_name, get_font):
     )
 
     while running:
-        screen.blit(background, (0, 0))  # Blit background image
+        screen.blit(background, (0, 0))
         round_over_text = font.render("Round Over!", True, (255, 255, 255))
         winner_text = font.render(f"Winner: {winner_name}", True, (255, 255, 0))
 
@@ -50,11 +44,18 @@ def round_over_screen(screen, game_logic, winner_name, get_font):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if main_menu_button.checkForInput(pos):
+                    pygame.time.delay(200)  # Add a small delay for button feedback
+                    # Clean up current game state
+                    pygame.mixer.music.stop()
+                    # Import and start main menu
                     from menu_screen import main_menu
                     main_menu()
+                    return  # Ensure we exit this screen
                 elif next_map_button.checkForInput(pos):
-                    # Logic to load the next map
-                    game_logic.reset_players()  # Reset players
-                    return
+                    pygame.time.delay(200)  # Add a small delay for button feedback
+                    import map2
+                    map2.load_map2()
+                    return  # Ensure we exit this screen
 
         pygame.display.flip()
+        pygame.time.Clock().tick(60)  # Add frame rate control
