@@ -101,6 +101,7 @@ def replay_game():
 
 def back_to_menu():
     """Return to the main menu."""
+    pygame.time.delay(200)
     pygame.mixer.music.stop()
     menu_screen.main_menu()
 
