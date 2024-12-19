@@ -1,108 +1,73 @@
-import pygame
-import sys
-import main
-from menu_screen import *
+import pygame 
 from button import Button
+import sys
 
-# Screen dimensions
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+def show_end_screen(screen, game_logic, winner_name, get_font):
+    """
+    Display the round over screen with options to go to the main menu or the next map.
+    """
+    running = True
 
-# Colors
-WHITE = (255, 255, 255)
-BASE_COLOR = (200, 200, 200)
-HOVER_COLOR = (255, 255, 0)
+    # Load background image
+    background = pygame.image.load("../menu_images/background_darker.png")
+    background = pygame.transform.scale(background, (screen.get_width(), screen.get_height()))
 
-# Initialize Pygame
-pygame.init()
+    # Button setup
+    font = get_font(50)
+    button_font = get_font(30)
 
-
-def show_end_screen(winner, victory=True):
-    """Display the end screen with the winner, score, and options."""
-    pygame.mixer.init()
-
-    try:
-        # Load background image
-        END_SCREEN_BACKGROUND = pygame.image.load("../menu_images/background_darker.png")
-        END_SCREEN_BACKGROUND = pygame.transform.scale(END_SCREEN_BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
-
-        # Play background music
-        pygame.mixer.music.load("../audios/end_screen_music.mp3")
-        pygame.mixer.music.play(-1, 0.0)  # Loop the music indefinitely
-    except pygame.error as e:
-        print(f"Error loading assets: {e}")
-        return
-
-    # Font for the message and buttons
-    end_font = pygame.font.Font(None, 100)
-    button_font = pygame.font.Font(None, 40)
-
-    # Render the winner message
-    end_text = f"{winner} Wins!" if victory else "Game Over"
-    end_text_surface = end_font.render(end_text, True, WHITE)
-    end_text_rect = end_text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
-
-    # Create buttons for replay and exit
-    replay_button = Button(
-        image=None,
-        pos=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80),
-        text_input="Play Again",
-        font=button_font,
-        base_color=BASE_COLOR,
-        hovering_color=HOVER_COLOR,
+    # Create buttons, Next Map comes before Main Menu
+    next_map_button = Button(
+        None, (640, 500), "Play Again", button_font, (255, 255, 255), (255, 255, 0)  # Yellow hover color
+    )
+    main_menu_button = Button(
+        None, (640, 580), "Main Menu", button_font, (255, 255, 255), (255, 255, 0)  # Yellow hover color
     )
 
-    exit_button = Button(
-        image=None,
-        pos=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150),
-        text_input="Main Menu",
-        font=button_font,
-        base_color=BASE_COLOR,
-        hovering_color=HOVER_COLOR,
-    )
+    # Create the round over and winner text
+    round_over_text = font.render("Game Over!", False, (255, 255, 255))
+    winner_text = font.render(f"Winner: {winner_name}", False, (255, 255, 0))
 
-    # Draw the end screen
-    clock = pygame.time.Clock()
-    while True:
-        screen.blit(END_SCREEN_BACKGROUND, (0, 0))
+    # Get the rect positions for text
+    round_over_text_rect = round_over_text.get_rect(center=(screen.get_width() // 2, 200))
+    winner_text_rect = winner_text.get_rect(center=(screen.get_width() // 2, 300))
 
-        # Draw the winner message and score
-        screen.blit(end_text_surface, end_text_rect)
+    while running:
+        screen.blit(background, (0, 0))
 
-        # Update buttons
+        # Draw the round over text
+        screen.blit(round_over_text, round_over_text_rect)
+        screen.blit(winner_text, winner_text_rect)
+
+        # Update buttons with hover effects
         mouse_pos = pygame.mouse.get_pos()
-        replay_button.changeColor(mouse_pos)
-        exit_button.changeColor(mouse_pos)
-        replay_button.update(screen)
-        exit_button.update(screen)
 
+        # Change button colors when hovered over
+        next_map_button.changeColor(mouse_pos)
+        main_menu_button.changeColor(mouse_pos)
+
+        # Render the buttons with the updated colors
+        next_map_button.update(screen)
+        main_menu_button.update(screen)
+
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if replay_button.checkForInput(mouse_pos):
-                    replay_game()
-                if exit_button.checkForInput(mouse_pos):
-                    back_to_menu()
+                pos = pygame.mouse.get_pos()
+                if next_map_button.checkForInput(pos):
+                    pygame.time.delay(200)  # Add a small delay for button feedback
+                    import main
+                    main.game_loop()
+                    return  # Ensure we exit this screen
+                elif main_menu_button.checkForInput(pos):
+                    pygame.time.delay(200)  # Add a small delay for button feedback
+                    pygame.mixer.music.stop()
+                    from menu_screen import main_menu
+                    main_menu()
+                    return  # Ensure we exit this screen
 
-        pygame.display.update()
-        clock.tick(60)
-
-
-def replay_game():
-    """Reset the game and start again."""
-    pygame.mixer.music.stop()
-    main.game_loop()
-
-
-def back_to_menu():
-    """Return to the main menu."""
-    pygame.time.delay(200)
-    pygame.mixer.music.stop()
-    main_menu()
-
-
-if __name__ == "__main__":
-    show_end_screen()
+        pygame.display.flip()
+        pygame.time.Clock().tick(60)  # Add frame rate control
