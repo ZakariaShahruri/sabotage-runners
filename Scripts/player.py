@@ -10,6 +10,7 @@ class Player(State):
         self.image = pygame.transform.scale(self.image, (32, 48))
         self.facing_right = True
         self.attack = False
+        self.hittable = True
         
         
         # New attributes for item interactions
@@ -19,6 +20,15 @@ class Player(State):
         self.controls_reversed = False
         self.opponent = None  # Will be set in main game loop
         self.current_frame = 0
+        self.getting_hit = False
+
+    def knockback(self, other_player, knockback_force=50):
+        """Apply knockback to another player."""
+        if self.attack:
+            if self.facing_right:
+                other_player.x += knockback_force  # Push to the right
+            else:
+                other_player.x -= knockback_force
 
     def handle_movement(self, controls, keys, screen_width, screen_height, walls):
         # Reset movement
