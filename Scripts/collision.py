@@ -7,6 +7,7 @@ pygame.init()
 
 # Left blocks coördinates
 left_blocks1 = [
+    # Idk what is what here, it just works. no touching
     (4,254),(4,398),(36,254),(36,398),
     (66,76),(66,108),(66,140),(66,172),
     (66,204),(66,430),(66,462),(66,494),
@@ -34,18 +35,45 @@ left_blocks1 = [
     ]
 
 left_blocks2 = [
-    (0,254),(),(),(),
+
+    # Top half of map
+    (4,222),(36,222),(68,222),(100,222),
+    (132,222),(132,190),(132,158),
+    (132,126),(132,94),(132,62),
+    (132,30),(164,24),(196,24),
+    (228,24),(260,24),(292,24),
+    (324,24),(356,24),(388,24),
+    (420,24),(452,24),(484,24),
+    (516,24),(548,24),(580,24),
+    (612,24),
+    
+    # Anything in between top and bottom
+    (484,232),(516,232),(548,232),
+    (580,232),(612,232),(484,264),
+    (516,264),(548,264),(580,264),
+    (612,264),(484,296),(516,296),
+    (548,296),(580,296),(612,296),
+
+    # Bottom half of map
+    (4,460),(36,460),(68,460),(100,460),
+    (132,460),(132,492),(132,524),
+    (132,556),(132,588),(132,620),
+    (132,652),(164,652),(196,652),
+    (228,652),(260,652),(292,652),
+    (324,652),(356,652),(388,652),
+    (420,652),(452,652),(484,652),
+    (516,652),(548,652),(580,652),
+    (612,652)
 ]
 
 # Calculate mirrored positions
 right_blocks1 = [(1280-32-x, y) for x, y in left_blocks1]
 
-#right_blocks2 = [(1280-32-x, y) for x, y in left_blocks2]
+right_blocks2 = [(1280-32-x, y) for x, y in left_blocks2]
 
 # Combine both lists
 map1_borders = left_blocks1 + right_blocks1
-
-#map2_borders = left_blocks2 + right_blocks2
+map2_borders = left_blocks2 + right_blocks2
 
 def render_border(map, screen):
     borders = []
