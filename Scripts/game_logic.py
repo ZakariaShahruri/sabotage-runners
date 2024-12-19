@@ -42,7 +42,7 @@ class GameLogic:
         self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
         self.run2 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
         self.attack1 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
-        self.attack2 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
+        self.attack2 = ["../Images/player2/player2_attack1.png", "../Images/player2/player2_attack2.png", "../Images/player2/player2_attack3.png", "../Images/player2/player2_attack4.png", "../Images/player2/player2_attack5.png", "../Images/player2/player2_attack6.png", "../Images/player2/player2_attack7.png", "../Images/player2/player2_attack8.png"]
         
         # Item management
         self.active_items = []
@@ -189,12 +189,12 @@ class GameLogic:
             event (pygame.event.Event): Pygame event
         """
         if event.type == pygame.USEREVENT:
-            self.player1.speed = 5
-            self.player2.speed = 5
+            self.player1.speed = 7
+            self.player2.speed = 7
         
         if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
-            self.player1.speed = 5
-            self.player2.speed = 5
+            self.player1.speed = 7
+            self.player2.speed = 7
             self.player1.controls_reversed = False
             self.player2.controls_reversed = False
 
