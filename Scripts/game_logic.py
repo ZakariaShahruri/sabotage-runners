@@ -171,7 +171,7 @@ class GameLogic:
         """
         # Render scores
         scoreboard = pygame.image.load("../Images/scoreboard_sign.png")
-        scoreboard = pygame.transform.scale(scoreboard,(83,94))
+        scoreboard = pygame.transform.scale(scoreboard,(84,95))
         screen.blit(scoreboard, (593,0))
         score_font = self.get_font(25)
         player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))

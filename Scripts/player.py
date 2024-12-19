@@ -22,7 +22,7 @@ class Player(State):
         self.current_frame = 0
         self.getting_hit = False
 
-    def knockback(self, other_player, knockback_force=50):
+    def knockback(self, other_player, knockback_force=150):
         """Apply knockback to another player."""
         if self.attack:
             if self.facing_right:
