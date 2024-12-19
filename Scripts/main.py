@@ -54,6 +54,8 @@ def game_loop():
     
     # Assign the tilemaps
     first_map = tilemap_1
+
+    timer_start = 0
     
     game_logic.player2.facing_right = False
     while running:
@@ -76,16 +78,43 @@ def game_loop():
                     game_logic.player2.facing_right = True
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
-       
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                if not game_logic.player1.attack:  # Start attack only if not already active
+                    game_logic.player1.attack = True
+                    timer_start = pygame.time.get_ticks()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                if not game_logic.player2.attack:  # Start attack only if not already active
+                    game_logic.player2.attack = True
+                    timer_start = pygame.time.get_ticks()
+
             # Reset item effects
             game_logic.reset_item_effects(event)
+
+        if game_logic.player1.attack:
+            current_p1_time = pygame.time.get_ticks()
+            elapsed_time = current_p1_time - timer_start
+            if elapsed_time >= 750:  # End attack after 300 ms
+                game_logic.player1.attack = False
+                game_logic.player1.current_frame = 0
+
+        if game_logic.player2.attack:
+            current_p2_time = pygame.time.get_ticks()
+            elapsed_time = current_p2_time - timer_start
+            if elapsed_time >= 750:  # End attack after 300 ms
+                game_logic.player2.attack = False
+                game_logic.player2.current_frame = 0
             
         
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
+        
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
+
+        print(game_logic.player1.check_collision(game_logic.player2))
             
         
         # Render walls
