@@ -2,11 +2,16 @@ import os
 import sys
 import pygame
 from button import Button
-from game_logic import GameLogic 
-from tilemap import *
+from game_logic import GameLogic
+from menu_screen import main_menu
+from round_over import round_over_screen
+from collision import *
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+MENU_MUSIC = "../audios/menu_music.mp3"
+MAIN_MUSIC = "../audios/main_music.mp3"
 
 #getting fonts
 def get_font(size):
@@ -15,16 +20,30 @@ def get_font(size):
 # Screen dimensions
 WIDTH, HEIGHT = 1280, 720
 
+# Function to play music
+def play_music(music_path, loop=True):
+    pygame.mixer.music.load(music_path)
+    pygame.mixer.music.play(-1 if loop else 0)
+    pygame.mixer.music.set_volume(0.15)
+
+# Function to stop music
+def stop_music():
+    pygame.mixer.music.stop()
+
+
 def game_loop():
     # Initialization of pygame
     pygame.init()
+
+    # Play main game music
+    play_music(MAIN_MUSIC)
 
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
     pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
-    background = pygame.image.load("../Images/Assets/background.png")
+    background = pygame.image.load("../Images/default_map.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
     # Create game logic instance
@@ -33,9 +52,9 @@ def game_loop():
     # The game loop
     running = True
     clock = pygame.time.Clock()
+
+    timer_start = 0
     
-    # Assign the tilemaps
-    first_map = tilemap_1
     game_logic.player2.facing_right = False
     while running:
         # Get pressed keys
@@ -57,24 +76,70 @@ def game_loop():
                     game_logic.player2.facing_right = True
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
-       
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
+                if not game_logic.player1.attack:  # Start attack only if not already active
+                    game_logic.player1.attack = True
+                    timer_start = pygame.time.get_ticks()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                if not game_logic.player2.attack:  # Start attack only if not already active
+                    game_logic.player2.attack = True
+                    timer_start = pygame.time.get_ticks()
+
             # Reset item effects
             game_logic.reset_item_effects(event)
-            
+
+        if game_logic.player1.attack:
+            current_p1_time = pygame.time.get_ticks()
+            elapsed_time = current_p1_time - timer_start
+            if elapsed_time >= 750:  # End attack after 300 ms
+                game_logic.player1.attack = False
+                game_logic.player1.current_frame = 0
+
+        if game_logic.player2.attack:
+            current_p2_time = pygame.time.get_ticks()
+            elapsed_time = current_p2_time - timer_start
+            if elapsed_time >= 750:  # End attack after 300 ms
+                game_logic.player2.attack = False
+                game_logic.player2.current_frame = 0
+
+
+        if game_logic.player1.check_collision(game_logic.player2) and game_logic.player2.getting_hit == False:       
+            game_logic.player1.knockback(game_logic.player2, knockback_force=150)
+            game_logic.player2.getting_hit = True
+            cooldown_start = pygame.time.get_ticks()
         
+        if game_logic.player2.check_collision(game_logic.player1) and game_logic.player1.getting_hit == False:       
+            game_logic.player2.knockback(game_logic.player1, knockback_force=150)
+            game_logic.player1.getting_hit = True
+            cooldown_start = pygame.time.get_ticks()
+
+        if game_logic.player1.getting_hit:
+            current_p2_cooldown = pygame.time.get_ticks()
+            cooldown_elapsed = current_p2_cooldown - cooldown_start
+            if cooldown_elapsed >= 500:
+                game_logic.player1.getting_hit = False
+
+        if game_logic.player2.getting_hit:
+            current_p1_cooldown = pygame.time.get_ticks()
+            cooldown_elapsed = current_p1_cooldown - cooldown_start
+            if cooldown_elapsed >= 500:
+                game_logic.player2.getting_hit = False
+
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
-
+        
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
             
         
         # Render walls
-        walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
+        borders = render_border(map1_borders, screen)
 
         # Handle player movement
-        game_logic.handle_movement(keys, walls)
+        game_logic.handle_movement(keys, borders)
         
         # Animate players
         game_logic.animate_players()
@@ -88,77 +153,20 @@ def game_loop():
         # Render scores
         game_logic.render_scores(screen)
 
-        # Check for game over
         game_state = game_logic.get_game_state()
         if game_state['game_over']:
-            # You can add a game over screen or restart logic here
-            print(f"{game_state['winner']} wins!")
-            running = False
+            winner = game_state['winner']
+            stop_music()  # Stop current music if needed
+            round_over_screen(screen, game_logic, winner, get_font)
+            play_music(MAIN_MUSIC)  # Restart main music if returning to the game
 
         # Update display
         pygame.display.flip()
 
-        # Limit FPS to 120
-        clock.tick(120)
+        # Limit FPS to 60
+        clock.tick(60)
 
     # Close pygame
+    stop_music()
     pygame.quit()
     sys.exit()
-
-def menu():
-    # Initialize Pygame
-    pygame.init()
-
-    # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Sabotage Runners")
-    menu_cover = pygame.image.load("../Images/menucover.png")
-    
-
-        
-    play_button = Button(image=pygame.image.load("../Images/Play Rect.png"), pos=(640, 250), 
-                            text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-    option_button = Button(image=pygame.image.load("../Images/Options Rect.png"), pos=(640, 400), 
-                            text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-    quit_button = Button(image=pygame.image.load("../Images/Quit Rect.png"), pos=(640, 550), 
-                            text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-
-    # Menu loop
-    running = True
-    while running:
-        screen.blit(menu_cover, (0, 0))
-        
-        menu_text = get_font(70).render("Sabotage Runners", True, "#FFD300")
-        menu_rect = menu_text.get_rect(center=(640, 100))
-        
-        screen.blit(menu_text, menu_rect)
-        
-        menu_mouse_pos = pygame.mouse.get_pos()
-
-        for button in [play_button, option_button, quit_button]:
-            button.changeColor(menu_mouse_pos)
-            button.update(screen)
-
-        pygame.display.flip()
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if play_button.checkForInput(menu_mouse_pos):
-                    game_loop()
-                if option_button.checkForInput(menu_mouse_pos):
-                    pass
-                if quit_button.checkForInput(menu_mouse_pos):
-                    pygame.quit()
-                    sys.exit()
-            
-
-        pygame.display.update()
-
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    menu()

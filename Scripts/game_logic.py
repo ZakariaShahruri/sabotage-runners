@@ -1,9 +1,10 @@
-import os
+
 import pygame
 import sys
 import random
 from player import Player
-from items import generate_random_item
+from items import *
+from sound_effects import SoundEffects
 
 class GameLogic:
     def __init__(self, width, height, get_font):
@@ -40,41 +41,53 @@ class GameLogic:
         self.idle2 = ["../Images/player2/player2_idle1.png", "../Images/player2/player2_idle2.png", "../Images/player2/player2_idle3.png", "../Images/player2/player2_idle4.png"]
         self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
         self.run2 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
+        self.attack1 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
+        self.attack2 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
         
         # Item management
         self.active_items = []
         self.last_item_spawn_time = pygame.time.get_ticks()
         self.item_spawn_interval = 3000  # 3 seconds between item spawn attempts
         self.max_items = 4
+        self.sound_effects = SoundEffects()
 
     def manage_items(self, screen):
-        """
-        Carefully manage item spawning and collision
-        
-        Args:
-            screen (pygame.Surface): Game screen to render items
-        """
         current_time = pygame.time.get_ticks()
-        
+
         # Check if it's time to spawn a new item
         if (len(self.active_items) < self.max_items and 
             current_time - self.last_item_spawn_time >= self.item_spawn_interval):
-            
             # Generate a new item
             new_item = generate_random_item(self.width, self.height)
-            self.active_items.append(new_item)
-            
-            # Update last spawn time
-            self.last_item_spawn_time = current_time
+            if new_item:
+                self.active_items.append(new_item)
+                # Update last spawn time
+                self.last_item_spawn_time = current_time
 
         # Render and check item collisions
         for item in self.active_items[:]:
             item.render(screen)
-            if self.player1.check_collision(item):
-                item.use(self.player1, self.player2)
-                self.active_items.remove(item)
-            elif self.player2.check_collision(item):
-                item.use(self.player2, self.player1)
+            if self.player1.check_collision(item) or self.player2.check_collision(item):
+                # Mark the spawn point as available again
+                occupied_spawn_points[(item.x, item.y)] = False
+                
+                # Play the appropriate sound based on item type
+                if isinstance(item, FreezeItem):
+                    self.sound_effects.play_freeze()
+                elif isinstance(item, SpeedUpItem):
+                    self.sound_effects.play_speed_up()
+                elif isinstance(item, SlowDownItem):
+                    self.sound_effects.play_slow_down()
+                elif isinstance(item, MirrorItem):
+                    self.sound_effects.play_mirrored()
+                elif isinstance(item, TeleportItem):
+                    self.sound_effects.play_teleport()
+                    
+                # Apply the item effect
+                if self.player1.check_collision(item):
+                    item.use(self.player1, self.player2)
+                else:
+                    item.use(self.player2, self.player1)
                 self.active_items.remove(item)
 
    
@@ -114,30 +127,38 @@ class GameLogic:
         
         return point_scored
 
-    def handle_movement(self, keys, walls):
+    def handle_movement(self, keys, borders):
         """
         Handle player movement based on key presses
         
         Args:
             keys (pygame.key.ScancodeWrapper): Pressed keys
         """
-        self.player1.handle_movement("WASD", keys, self.width, self.height, walls)
-        self.player2.handle_movement("arrows", keys, self.width, self.height, walls)
+        self.player1.handle_movement("WASD", keys, self.width, self.height, borders)
+        self.player2.handle_movement("arrows", keys, self.width, self.height, borders)
 
     #animatetion here
     
     def animate_players(self):
         """Animate players with idle animations"""
-        if self.player1.is_moving == False:
-            self.player1.animate(self.idle1, 0.1)
-        else:
+        if self.player1.is_moving == True and self.player1.attack == True:
+            self.player1.animate(self.attack1, 0.5)
+        elif self.player1.is_moving == True:
             self.player1.animate(self.run1, .2)
-
-
-        if self.player2.is_moving == False:
-            self.player2.animate(self.idle2, 0.1)
+        elif self.player1.is_moving == False and self.player1.attack == True:
+            self.player1.animate(self.attack1, 0.5)
         else:
+            self.player1.animate(self.idle1, .1)
+
+        if self.player2.is_moving == True and self.player2.attack == True:
+            self.player2.animate(self.attack2, 0.5)
+        elif self.player2.is_moving == True:
             self.player2.animate(self.run2, .2)
+        elif self.player2.is_moving == False and self.player2.attack == True:
+            self.player2.animate(self.attack2, 0.5)
+        else:
+            self.player2.animate(self.idle2, .1)
+
 
 
     def render_scores(self, screen):
@@ -148,12 +169,18 @@ class GameLogic:
             screen (pygame.Surface): Game screen to render scores
         """
         # Render scores
-        score_font = self.get_font(36)
-        player1_score_text = score_font.render(f"Player 1: {self.player2_score}", True, (255, 255, 255))
-        player2_score_text = score_font.render(f"Player 2: {self.player1_score}", True, (255, 255, 255))
-        screen.blit(player1_score_text, (20, 20))
-        screen.blit(player2_score_text, (self.width - 400, 20))
+        scoreboard = pygame.image.load("../Images/scoreboard_sign.png")
+        scoreboard = pygame.transform.scale(scoreboard,(84,95))
+        screen.blit(scoreboard, (593,0))
+        score_font = self.get_font(25)
+        player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))
+        player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
+        screen.blit(player1_score_text, (605, 55))
+        screen.blit(player2_score_text, (self.width - 635, 55))
 
+   
+   
+   
     def reset_item_effects(self, event):
         """
         Reset item effects when specific events occur
@@ -162,14 +189,12 @@ class GameLogic:
             event (pygame.event.Event): Pygame event
         """
         if event.type == pygame.USEREVENT:
-            self.player1.speed = 10
-            self.player2.speed = 10
+            self.player1.speed = 5
+            self.player2.speed = 5
         
         if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
-            self.player1.speed = 10
-            self.player2.speed = 10
-            self.player1.is_shielded = False
-            self.player2.is_shielded = False
+            self.player1.speed = 5
+            self.player2.speed = 5
             self.player1.controls_reversed = False
             self.player2.controls_reversed = False
 

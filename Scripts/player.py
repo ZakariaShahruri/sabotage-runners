@@ -2,13 +2,15 @@ import pygame
 from state import State
 
 class Player(State):
-    def __init__(self, x, y, path, size=40, speed=10):
+    def __init__(self, x, y, path, size=30, speed=5):
         super().__init__(x, y, path, size, is_collidable=True)
         self.speed = speed
         self.path = path
         self.image = pygame.image.load(self.path)
-        self.image = pygame.transform.scale(self.image, (52, 91))
+        self.image = pygame.transform.scale(self.image, (32, 48))
         self.facing_right = True
+        self.attack = False
+        self.hittable = True
         
         
         # New attributes for item interactions
@@ -18,8 +20,17 @@ class Player(State):
         self.controls_reversed = False
         self.opponent = None  # Will be set in main game loop
         self.current_frame = 0
+        self.getting_hit = False
 
-    def handle_movement(self, controls, keys, screen_width, screen_height, walls):
+    def knockback(self, other_player, knockback_force=150):
+        """Apply knockback to another player."""
+        if self.attack:
+            if self.facing_right:
+                other_player.x += knockback_force  # Push to the right
+            else:
+                other_player.x -= knockback_force
+
+    def handle_movement(self, controls, keys, screen_width, screen_height, borders):
         # Reset movement
         dx = 0
         dy = 0
@@ -82,11 +93,14 @@ class Player(State):
         # Update position with boundary checking
         self.update(dx, dy, screen_width, screen_height)
         
-        for wall in walls:
-            if self.check_collision(wall):
+        for border_block in borders:
+            if self.check_collision(border_block):
                 self.update(-dx, -dy, screen_width, screen_height)
                 break
     
+    def get_rect(self):
+        return pygame.Rect(self.x , self.y + 4, self.size - 3, self.size * 1.4)
+
     def animate(self, action, speed):
             self.current_frame += speed
             self.current_frame %= len(action)
@@ -95,8 +109,8 @@ class Player(State):
                 
             if self.facing_right == True:
                 self.image = pygame.image.load(action[int(self.current_frame)])
-                self.image = pygame.transform.scale(self.image, (52, 91))
+                self.image = pygame.transform.scale(self.image, (32, 48))
             elif self.facing_right == False:
                 self.image = pygame.image.load(action[int(self.current_frame)])
                 self.image = pygame.transform.flip(self.image, True, False)
-                self.image = pygame.transform.scale(self.image, (52, 91))
+                self.image = pygame.transform.scale(self.image, (32, 48))
