@@ -75,12 +75,12 @@ class TeleportItem(Item):
         target = player2 if player1 == player2.opponent else player1
         target.x, target.y = target.spawn_x, target.spawn_y
 
-def generate_random_item(tilemap, screen_width, screen_height):
-    """
-    Generate a random item at a random location on the screen
-    Returns:
-        Item: A randomly selected item
-    """
+# def generate_random_item(tilemap, screen_width, screen_height):
+#     """
+#     Generate a random item at a random location on the screen
+#     Returns:
+#         Item: A randomly selected item
+#     """
     # available = []
     # for y, row in enumerate(tilemap):
     #     for x, tile in enumerate(row):
