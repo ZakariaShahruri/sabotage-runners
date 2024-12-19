@@ -9,6 +9,7 @@ class Player(State):
         self.image = pygame.image.load(self.path)
         self.image = pygame.transform.scale(self.image, (32, 48))
         self.facing_right = True
+        self.attack = False
         
         
         # New attributes for item interactions
@@ -87,6 +88,9 @@ class Player(State):
                 self.update(-dx, -dy, screen_width, screen_height)
                 break
     
+    def get_rect(self):
+        return pygame.Rect(self.x , self.y + 4, self.size - 3, self.size * 1.4)
+
     def animate(self, action, speed):
             self.current_frame += speed
             self.current_frame %= len(action)

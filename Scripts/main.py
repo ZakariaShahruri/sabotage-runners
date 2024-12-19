@@ -2,7 +2,8 @@ import os
 import sys
 import pygame
 from button import Button
-from game_logic import GameLogic 
+from game_logic import GameLogic
+from menu_screen import main_menu
 from tilemap import *
 
 
@@ -53,6 +54,8 @@ def game_loop():
     
     # Assign the tilemaps
     first_map = tilemap_1
+
+    timer_start = 0
     
     game_logic.player2.facing_right = False
     while running:
@@ -75,16 +78,43 @@ def game_loop():
                     game_logic.player2.facing_right = True
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
-       
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                if not game_logic.player1.attack:  # Start attack only if not already active
+                    game_logic.player1.attack = True
+                    timer_start = pygame.time.get_ticks()
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                if not game_logic.player2.attack:  # Start attack only if not already active
+                    game_logic.player2.attack = True
+                    timer_start = pygame.time.get_ticks()
+
             # Reset item effects
             game_logic.reset_item_effects(event)
+
+        if game_logic.player1.attack:
+            current_p1_time = pygame.time.get_ticks()
+            elapsed_time = current_p1_time - timer_start
+            if elapsed_time >= 750:  # End attack after 300 ms
+                game_logic.player1.attack = False
+                game_logic.player1.current_frame = 0
+
+        if game_logic.player2.attack:
+            current_p2_time = pygame.time.get_ticks()
+            elapsed_time = current_p2_time - timer_start
+            if elapsed_time >= 750:  # End attack after 300 ms
+                game_logic.player2.attack = False
+                game_logic.player2.current_frame = 0
             
         
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
+        
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
+
+        print(game_logic.player1.check_collision(game_logic.player2))
             
         
         # Render walls
@@ -110,7 +140,7 @@ def game_loop():
         if game_state['game_over']:
             # You can add a game over screen or restart logic here
             print(f"{game_state['winner']} wins!")
-            menu()
+            main_menu()
 
         # Update display
         pygame.display.flip()
@@ -122,60 +152,3 @@ def game_loop():
     stop_music()
     pygame.quit()
     sys.exit()
-
-def menu():
-    # Initialize Pygame
-    pygame.init()
-
-        # Play menu music
-    play_music(MENU_MUSIC)
-
-    # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Sabotage Runners")
-    menu_cover = pygame.image.load("../menu_images/menu_background.png")
-    
-
-        
-    play_button = Button(image=pygame.image.load("../Images/Play Rect.png"), pos=(640, 250), 
-                            text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-    option_button = Button(image=pygame.image.load("../Images/Options Rect.png"), pos=(640, 400), 
-                            text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-    quit_button = Button(image=pygame.image.load("../Images/Quit Rect.png"), pos=(640, 550), 
-                            text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-
-    # Menu loop
-    running = True
-    while running:
-        screen.blit(menu_cover, (0, 0))
-        
-        menu_mouse_pos = pygame.mouse.get_pos()
-
-        for button in [play_button, option_button, quit_button]:
-            button.changeColor(menu_mouse_pos)
-            button.update(screen)
-
-        pygame.display.flip()
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if play_button.checkForInput(menu_mouse_pos):
-                    stop_music()
-                    game_loop()
-                if option_button.checkForInput(menu_mouse_pos):
-                    pass
-                if quit_button.checkForInput(menu_mouse_pos):
-                    pygame.quit()
-                    sys.exit()
-            
-
-        pygame.display.update()
-
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    menu()
