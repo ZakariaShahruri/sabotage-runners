@@ -4,7 +4,6 @@ import pygame
 from button import Button
 from game_logic import GameLogic
 from menu_screen import main_menu
-from tilemap import *
 from round_over import round_over_screen
 from collision import *
 

@@ -3,7 +3,6 @@ import pygame
 import sys
 import random
 from player import Player
-from tilemap import tilemap_1
 from items import *
 from sound_effects import SoundEffects
 
@@ -59,7 +58,7 @@ class GameLogic:
         if (len(self.active_items) < self.max_items and 
             current_time - self.last_item_spawn_time >= self.item_spawn_interval):
             # Generate a new item
-            new_item = generate_random_item(tilemap_1, self.width, self.height)
+            new_item = generate_random_item(self.width, self.height)
             if new_item:
                 self.active_items.append(new_item)
                 # Update last spawn time
