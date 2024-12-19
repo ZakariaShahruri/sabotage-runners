@@ -133,7 +133,7 @@ def show_objective():
         pygame.display.update()
 
 def back_to_menu():
-    pygame.time.delay(200)  # Optional, for smooth transition
+    pygame.time.delay(200)
     main_menu()  # Call main menu again to reset the state
 
 

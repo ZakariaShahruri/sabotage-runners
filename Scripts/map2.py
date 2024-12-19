@@ -3,7 +3,7 @@ import sys
 import pygame
 from button import Button
 from game_logic import GameLogic
-from menu_screen import main_menu
+from menu_screen import main_menu, screen
 from collision import *
 from items import *
 
@@ -25,11 +25,7 @@ def load_map2():
     pygame.init()
 
     # Play main game music
-    # play_music("../audios/one_vs_one_music.mp3")
-
-    # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
-    pygame.display.set_caption("Sabotage Runners - Map 2")
+    play_music("../audios/one_vs_one_music.mp3")
     
     # Set the background image for map 2
     background = pygame.image.load("../Images/map2.png")  # Create this new background image
