@@ -1,7 +1,7 @@
 import pygame
 import sys
 import main
-import menu_screen
+from menu_screen import *
 from button import Button
 
 # Screen dimensions
@@ -15,8 +15,6 @@ HOVER_COLOR = (255, 255, 0)
 
 # Initialize Pygame
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Sabotage Runners")
 
 
 def show_end_screen(winner, victory=True):
@@ -101,8 +99,9 @@ def replay_game():
 
 def back_to_menu():
     """Return to the main menu."""
+    pygame.time.delay(200)
     pygame.mixer.music.stop()
-    menu_screen.main_menu()
+    main_menu()
 
 
 if __name__ == "__main__":
