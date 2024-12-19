@@ -41,7 +41,7 @@ def game_loop():
     play_music(MAIN_MUSIC)
 
     # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
     pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
