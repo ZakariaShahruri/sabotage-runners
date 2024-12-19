@@ -157,7 +157,7 @@ def game_loop():
         # Animate players
         game_logic.animate_players()
         
-        # Check for scoringdddddddddd
+        # Check for scoring
         game_logic.check_scoring()
         
         # Manage items

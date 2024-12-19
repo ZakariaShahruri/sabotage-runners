@@ -11,8 +11,8 @@ pygame.mixer.init()
 # Screen Settings
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
-pygame.display.set_caption("Sabotage Runners")
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+pygame.display.set_caption("Game Menu")
 
 # Colors
 WHITE = (255, 255, 255)
@@ -34,9 +34,9 @@ OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, S
 
 # Load Music
 pygame.mixer.music.load("../audios/menu_music.mp3")
-pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
+pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
 pygame.mixer.music.play(-1)  # Start the music
-
+pygame.mixer.music.set_volume(0.15)
 
 
 class Button:
@@ -214,14 +214,11 @@ def toggle_option(option, options, buttons):
     # Handle specific option changes
     if option == "Music":
         if options[option]:
-            pygame.time.delay(200)
             pygame.mixer.music.play(-1)  # Start the music
         else:
-            pygame.time.delay(200)
             pygame.mixer.music.stop()
     elif option == "Fullscreen":
         if options[option]:
-            
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         else:
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -264,10 +261,6 @@ def main_menu():
         Button("Quit", 1030 - 100, 650, 200, 50, quit_game),
         Button("Options", 150, 650, 200, 50, show_options)
     ]
-
-    pygame.mixer.music.load("../audios/menu_music.mp3")
-    pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
-    pygame.mixer.music.play(-1)  # Start the music
 
     # Main Menu Loop
     while True:
