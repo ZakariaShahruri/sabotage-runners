@@ -34,7 +34,11 @@ def load_map2():
 
     # Create game logic instance
     game_logic = GameLogic(WIDTH, HEIGHT, get_font)
-    
+
+    # Change to map 2
+    game_logic.change_map(2)
+    # Instantiate TeleportItem
+
     # Game loop
     running = True
     clock = pygame.time.Clock()

@@ -214,10 +214,10 @@ def toggle_option(option, options, buttons):
     # Handle specific option changes
     if option == "Music":
         if options[option]:
-            pygame.time.delay(200)
+            
             pygame.mixer.music.play(-1)  # Start the music
         else:
-            pygame.time.delay(200)
+            
             pygame.mixer.music.stop()
     elif option == "Fullscreen":
         if options[option]:
@@ -265,9 +265,7 @@ def main_menu():
         Button("Options", 150, 650, 200, 50, show_options)
     ]
 
-    pygame.mixer.music.load("../audios/menu_music.mp3")
-    pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
-    pygame.mixer.music.play(-1)  # Start the music
+
 
     # Main Menu Loop
     while True:

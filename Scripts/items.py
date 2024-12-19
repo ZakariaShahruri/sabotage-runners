@@ -4,13 +4,18 @@ import random
 from state import State
 
 # Paths to power-up images
-
 banana_image = "../images/items/banana_item.png"
 freeze_image = "../Images/items/freeze_item.png"
 mirror_image = "../Images/items/mirror_item.png"
 slow_image = "../Images/items/slow_item.png"
 speed_image = "../Images/items/speed_item.png"
 teleport_image = "../Images/items/teleport_item.png"
+
+# Timer durations (in milliseconds)
+FREEZE_DURATION = 4000
+SPEED_UP_DURATION = 5000
+SLOW_DOWN_DURATION = 4000
+MIRROR_DURATION = 5000
 
 class Item(State):
     def __init__(self, x, y, image_path):
@@ -19,7 +24,6 @@ class Item(State):
         # Resize the image to a consistent size
         self.image = pygame.transform.scale(self.image, (30, 30))
         
-
     def use(self, player1, player2):
         """Base method to be overridden by specific item types"""
         raise NotImplementedError("Subclasses must implement use method")
@@ -33,7 +37,8 @@ class FreezeItem(Item):
         """Freeze the opponent instantly."""
         target = player2 if player1 == player2.opponent else player1
         target.speed = 0  # Freeze the player
-        pygame.time.set_timer(pygame.USEREVENT + 1, 4000)  # Unfreeze after 3 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 1, FREEZE_DURATION)  # Unfreeze after the duration
+
 
 class SpeedUpItem(Item):
     def __init__(self, x, y):
@@ -43,7 +48,8 @@ class SpeedUpItem(Item):
         """Increase the player's speed temporarily."""
         player = player1
         player.speed *= 1.5  # Boost speed
-        pygame.time.set_timer(pygame.USEREVENT + 2, 5000)  # Reset speed after 5 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 2, SPEED_UP_DURATION)  # Reset speed after the duration
+
 
 class SlowDownItem(Item):
     def __init__(self, x, y):
@@ -53,7 +59,8 @@ class SlowDownItem(Item):
         """Slow down the opponent temporarily."""
         target = player2 if player1 == player2.opponent else player1
         target.speed *= 0.3  # Slow down
-        pygame.time.set_timer(pygame.USEREVENT + 3, 4000)  # Reset speed after 4 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 3, SLOW_DOWN_DURATION)  # Reset speed after the duration
+
 
 class MirrorItem(Item):
     def __init__(self, x, y):
@@ -63,7 +70,8 @@ class MirrorItem(Item):
         """Reverse the opponent's controls."""
         target = player2 if player1 == player2.opponent else player1
         target.controls_reversed = True
-        pygame.time.set_timer(pygame.USEREVENT + 5, 4000)  # Reset controls after 4 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 5, MIRROR_DURATION)  # Reset controls after the duration
+
 
 class TeleportItem(Item):
     def __init__(self, x, y):
