@@ -33,9 +33,9 @@ OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, S
 
 # Load Music
 pygame.mixer.music.load("../audios/menu_music.mp3")
-pygame.mixer.music.set_volume(0.5)  # Optional: Set volume between 0.0 and 1.0
+pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
 pygame.mixer.music.play(-1)  # Start the music
-pygame.mixer.music.set_volume(0.05)
+
 
 
 class Button:
@@ -196,11 +196,14 @@ def toggle_option(option, options, buttons):
     # Handle specific option changes
     if option == "Music":
         if options[option]:
+            pygame.time.delay(200)
             pygame.mixer.music.play(-1)  # Start the music
         else:
+            pygame.time.delay(200)
             pygame.mixer.music.stop()
     elif option == "Fullscreen":
         if options[option]:
+            
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
         else:
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -241,6 +244,10 @@ def main_menu():
         Button("Credits", SCREEN_WIDTH // 2 - 100, 430, 200, 50, draw_credits),
         Button("Quit", SCREEN_WIDTH // 2 - 100, 500, 200, 50, quit_game),
     ]
+
+    pygame.mixer.music.load("../audios/menu_music.mp3")
+    pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
+    pygame.mixer.music.play(-1)  # Start the music
 
     # Main Menu Loop
     while True:
