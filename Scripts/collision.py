@@ -34,7 +34,7 @@ left_blocks1 = [
     ]
 
 left_blocks2 = [
-    (),(),(),(),
+    (0,254),(),(),(),
 ]
 
 # Calculate mirrored positions
