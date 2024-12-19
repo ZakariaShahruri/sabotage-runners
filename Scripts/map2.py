@@ -28,7 +28,7 @@ def load_map2():
     # play_music("../audios/one_vs_one_music.mp3")
 
     # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
     pygame.display.set_caption("Sabotage Runners - Map 2")
     
     # Set the background image for map 2
@@ -115,8 +115,6 @@ def load_map2():
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
 
-        
-        print(pygame.mouse.get_pos())
         
         # Render walls using map2 borders
         borders = render_border(map2_borders, screen)
