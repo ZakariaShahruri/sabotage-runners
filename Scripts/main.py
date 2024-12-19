@@ -136,7 +136,6 @@ def game_loop():
             
         
         # Render walls
-        #walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
         borders = render_border(map1_borders, screen)
 
         # Handle player movement
