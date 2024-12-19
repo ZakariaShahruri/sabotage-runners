@@ -24,7 +24,7 @@ def load_map2():
     pygame.init()
 
     # Play main game music
-    play_music("../audios/main_music.mp3")
+    play_music("../audios/one_vs_one_music.mp3")
 
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
