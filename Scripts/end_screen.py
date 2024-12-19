@@ -16,10 +16,10 @@ HOVER_COLOR = (255, 255, 0)
 # Initialize Pygame
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("End Screen")
+pygame.display.set_caption("Sabotage Runners")
 
 
-def show_end_screen(winner, score, victory=True):
+def show_end_screen(winner, victory=True):
     """Display the end screen with the winner, score, and options."""
     pygame.mixer.init()
 
@@ -43,10 +43,6 @@ def show_end_screen(winner, score, victory=True):
     end_text = f"{winner} Wins!" if victory else "Game Over"
     end_text_surface = end_font.render(end_text, True, WHITE)
     end_text_rect = end_text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
-
-    # Render the score message
-    score_text_surface = button_font.render(f"Score: {score}", True, WHITE)
-    score_text_rect = score_text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
 
     # Create buttons for replay and exit
     replay_button = Button(
@@ -74,7 +70,6 @@ def show_end_screen(winner, score, victory=True):
 
         # Draw the winner message and score
         screen.blit(end_text_surface, end_text_rect)
-        screen.blit(score_text_surface, score_text_rect)
 
         # Update buttons
         mouse_pos = pygame.mouse.get_pos()
@@ -111,5 +106,4 @@ def back_to_menu():
 
 
 if __name__ == "__main__":
-    # Example call for testing purposes
-    show_end_screen("Player 1", 100, True)
+    show_end_screen()
