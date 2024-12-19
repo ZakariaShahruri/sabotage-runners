@@ -30,7 +30,7 @@ class Player(State):
             else:
                 other_player.x -= knockback_force
 
-    def handle_movement(self, controls, keys, screen_width, screen_height, walls):
+    def handle_movement(self, controls, keys, screen_width, screen_height, borders):
         # Reset movement
         dx = 0
         dy = 0
@@ -93,8 +93,8 @@ class Player(State):
         # Update position with boundary checking
         self.update(dx, dy, screen_width, screen_height)
         
-        for wall in walls:
-            if self.check_collision(wall):
+        for border_block in borders:
+            if self.check_collision(border_block):
                 self.update(-dx, -dy, screen_width, screen_height)
                 break
     
