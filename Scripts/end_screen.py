@@ -3,6 +3,10 @@ from button import Button
 import sys
 
 def show_end_screen(screen, game_logic, winner_name, get_font):
+
+    pygame.mixer.music.load("../audios/end_screen_music.mp3")
+    pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
+    pygame.mixer.music.play(-1)  # Start the music
     """
     Display the round over screen with options to go to the main menu or the next map.
     """
@@ -58,7 +62,8 @@ def show_end_screen(screen, game_logic, winner_name, get_font):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if next_map_button.checkForInput(pos):
-                    pygame.time.delay(200)  # Add a small delay for button feedback
+                    pygame.time.delay(200)
+                      # Add a small delay for button feedback
                     import main
                     main.game_loop()
                     return  # Ensure we exit this screen

@@ -36,7 +36,7 @@ OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, S
 pygame.mixer.music.load("../audios/menu_music.mp3")
 pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
 pygame.mixer.music.play(-1)  # Start the music
-pygame.mixer.music.set_volume(0.15)
+
 
 
 class Button:
