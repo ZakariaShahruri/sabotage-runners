@@ -119,11 +119,17 @@ def game_loop():
             game_logic.player1.getting_hit = True
             cooldown_start = pygame.time.get_ticks()
 
-        for rectangle in all_rectangles:
+        for rectangle in all_rectangles1:
                 if rectangle.colliderect(game_logic.player2.get_rect()):
                     game_logic.player2.x -= 30
                 elif rectangle.colliderect(game_logic.player1.get_rect()):
                     game_logic.player1.x += 30
+        
+        # for rectangle in all_rectangles2:
+        #         if rectangle.colliderect(game_logic.player2.get_rect()):
+        #             game_logic.player2.x -= 30
+        #         elif rectangle.colliderect(game_logic.player1.get_rect()):
+        #             game_logic.player1.x += 30
 
         if game_logic.player1.getting_hit:
             current_p2_cooldown = pygame.time.get_ticks()
@@ -145,6 +151,7 @@ def game_loop():
         game_logic.player2.render(screen)
             
         screen.blit(hedges, (0,0))
+
         # Render walls
         borders = render_border(map1_borders, screen)
 
