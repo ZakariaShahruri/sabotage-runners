@@ -42,6 +42,12 @@ right_blocks1 = [(1280-32-x, y) for x, y in left_blocks1]
 
 #right_blocks2 = [(1280-32-x, y) for x, y in left_blocks2]
 
+left_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks]
+
+right_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks]
+
+all_rectangles = left_rectangles + right_rectangles
+
 # Combine both lists
 map1_borders = left_blocks1 + right_blocks1
 
