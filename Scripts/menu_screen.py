@@ -1,7 +1,10 @@
+
 import pygame
 import sys
 import main
+import os
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # Initialize Pygame
 pygame.init()
 pygame.mixer.init()
