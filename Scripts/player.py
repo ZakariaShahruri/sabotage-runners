@@ -29,7 +29,7 @@ class Player(State):
                 other_player.x += knockback_force  # Push to the right
             else:
                 other_player.x -= knockback_force
-
+    
     def handle_movement(self, controls, keys, screen_width, screen_height, borders):
         # Reset movement
         dx = 0

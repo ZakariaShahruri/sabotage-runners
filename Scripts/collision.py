@@ -59,6 +59,12 @@ copy_blocks = [
 # Calculate mirrored positions
 right_blocks = [(1280-32-x, y) for x, y in copy_blocks]
 
+left_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks]
+
+right_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks]
+
+all_rectangles = left_rectangles + right_rectangles
+
 # Combine both lists
 map1_borders = left_blocks + right_blocks
 
