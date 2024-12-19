@@ -22,6 +22,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
+    pygame.mixer.music.set_volume(0.02)
 
 # Function to stop music
 def stop_music():
@@ -40,7 +41,7 @@ def game_loop():
     pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
-    background = pygame.image.load("../Images/Assets/background.png")
+    background = pygame.image.load("../Images/default_map.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
     # Create game logic instance
@@ -87,7 +88,6 @@ def game_loop():
                     game_logic.player2.attack = True
                     timer_start = pygame.time.get_ticks()
 
-       
             # Reset item effects
             game_logic.reset_item_effects(event)
 
@@ -139,13 +139,13 @@ def game_loop():
         if game_state['game_over']:
             # You can add a game over screen or restart logic here
             print(f"{game_state['winner']} wins!")
-            running = False
+            menu()
 
         # Update display
         pygame.display.flip()
 
-        # Limit FPS to 120
-        clock.tick(120)
+        # Limit FPS to 60
+        clock.tick(60)
 
     # Close pygame
     stop_music()
@@ -162,7 +162,7 @@ def menu():
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Sabotage Runners")
-    menu_cover = pygame.image.load("../Images/menucover.png")
+    menu_cover = pygame.image.load("../menu_images/menu_background.png")
     
 
         
@@ -177,11 +177,6 @@ def menu():
     running = True
     while running:
         screen.blit(menu_cover, (0, 0))
-        
-        menu_text = get_font(70).render("Sabotage Runners", True, "#FFD300")
-        menu_rect = menu_text.get_rect(center=(640, 100))
-        
-        screen.blit(menu_text, menu_rect)
         
         menu_mouse_pos = pygame.mouse.get_pos()
 
