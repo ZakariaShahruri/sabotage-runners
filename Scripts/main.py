@@ -3,7 +3,7 @@ import sys
 import pygame
 from button import Button
 from game_logic import GameLogic
-from menu_screen import main_menu, screen
+from menu_screen import main_menu
 from round_over import round_over_screen
 from collision import *
 from items import *
@@ -39,6 +39,10 @@ def game_loop():
 
     # Play main game music
     play_music(MAIN_MUSIC)
+
+    # Screen setup
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
     background = pygame.image.load("../Images/default_map.png")
