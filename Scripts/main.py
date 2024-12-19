@@ -138,12 +138,16 @@ def game_loop():
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
         
+        game_logic.render_platform(screen, "map1")
+        
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
+        
+        
             
         screen.blit(hedges, (0,0))
-
+        
         # Render walls
         borders = render_border(map1_borders, screen)
 

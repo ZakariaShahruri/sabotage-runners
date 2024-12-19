@@ -186,6 +186,18 @@ class GameLogic:
         player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
         screen.blit(player1_score_text, (605, 55))
         screen.blit(player2_score_text, (self.width - 635, 55))
+        
+        
+    def render_platform(self, screen, map):
+        if map == "map1":
+            platform_image = pygame.image.load("../Images/platform.png")
+            screen.blit((platform_image), (266, 560))
+            screen.blit((platform_image), (625, 560))
+            screen.blit((platform_image), (1000, 560))
+            screen.blit((platform_image), (625, 138))
+            screen.blit((platform_image), (266, 138))
+            screen.blit((platform_image), (1000, 138))
+            
 
    
    
