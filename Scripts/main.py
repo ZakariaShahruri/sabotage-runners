@@ -5,6 +5,7 @@ from button import Button
 from game_logic import GameLogic
 from menu_screen import main_menu
 from tilemap import *
+from collision import *
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -51,9 +52,6 @@ def game_loop():
     # The game loop
     running = True
     clock = pygame.time.Clock()
-    
-    # Assign the tilemaps
-    first_map = tilemap_1
 
     timer_start = 0
     
@@ -113,15 +111,14 @@ def game_loop():
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
-
-        print(game_logic.player1.check_collision(game_logic.player2))
             
         
         # Render walls
-        walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
+        #walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
+        borders = render_border(map1_borders, screen)
 
         # Handle player movement
-        game_logic.handle_movement(keys, walls)
+        game_logic.handle_movement(keys, borders)
         
         # Animate players
         game_logic.animate_players()
