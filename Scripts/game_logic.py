@@ -128,15 +128,15 @@ class GameLogic:
         
         return point_scored
 
-    def handle_movement(self, keys, walls):
+    def handle_movement(self, keys, borders):
         """
         Handle player movement based on key presses
         
         Args:
             keys (pygame.key.ScancodeWrapper): Pressed keys
         """
-        self.player1.handle_movement("WASD", keys, self.width, self.height, walls)
-        self.player2.handle_movement("arrows", keys, self.width, self.height, walls)
+        self.player1.handle_movement("WASD", keys, self.width, self.height, borders)
+        self.player2.handle_movement("arrows", keys, self.width, self.height, borders)
 
     #animatetion here
     
