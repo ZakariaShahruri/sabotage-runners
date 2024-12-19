@@ -45,6 +45,10 @@ def game_loop():
     # set the background image
     background = pygame.image.load("../Images/default_map.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+    
+    hedges = pygame.image.load("../Images/hedges.png")
+    hedges = pygame.transform.scale(hedges, (WIDTH, HEIGHT))
+
 
     # Create game logic instance
     game_logic = GameLogic(WIDTH, HEIGHT, get_font)
@@ -134,7 +138,7 @@ def game_loop():
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
             
-        
+        screen.blit(hedges, (0,0))
         # Render walls
         borders = render_border(map1_borders, screen)
 
