@@ -3,7 +3,6 @@ import pygame
 import sys
 import random
 from player import Player
-from tilemap import tilemap_1
 from items import *
 from sound_effects import SoundEffects
 
@@ -43,7 +42,7 @@ class GameLogic:
         self.run1 = ["../Images/player1/player1_run1.png", "../Images/player1/player1_run2.png", "../Images/player1/player1_run3.png", "../Images/player1/player1_run4.png", "../Images/player1/player1_run5.png", "../Images/player1/player1_run6.png", "../Images/player1/player1_run7.png", "../Images/player1/player1_run8.png"]
         self.run2 = ["../Images/player2/player2_run1.png", "../Images/player2/player2_run2.png", "../Images/player2/player2_run3.png", "../Images/player2/player2_run4.png", "../Images/player2/player2_run5.png", "../Images/player2/player2_run6.png", "../Images/player2/player2_run7.png", "../Images/player2/player2_run8.png"]
         self.attack1 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
-        self.attack2 = ["../Images/player1/player1_attack1.png", "../Images/player1/player1_attack2.png", "../Images/player1/player1_attack3.png", "../Images/player1/player1_attack4.png", "../Images/player1/player1_attack5.png", "../Images/player1/player1_attack6.png", "../Images/player1/player1_attack7.png", "../Images/player1/player1_attack8.png"]
+        self.attack2 = ["../Images/player2/player2_attack1.png", "../Images/player2/player2_attack2.png", "../Images/player2/player2_attack3.png", "../Images/player2/player2_attack4.png", "../Images/player2/player2_attack5.png", "../Images/player2/player2_attack6.png", "../Images/player2/player2_attack7.png", "../Images/player2/player2_attack8.png"]
         
         # Item management
         self.active_items = []
@@ -59,7 +58,7 @@ class GameLogic:
         if (len(self.active_items) < self.max_items and 
             current_time - self.last_item_spawn_time >= self.item_spawn_interval):
             # Generate a new item
-            new_item = generate_random_item(tilemap_1, self.width, self.height)
+            new_item = generate_random_item(self.width, self.height)
             if new_item:
                 self.active_items.append(new_item)
                 # Update last spawn time
@@ -128,15 +127,15 @@ class GameLogic:
         
         return point_scored
 
-    def handle_movement(self, keys, walls):
+    def handle_movement(self, keys, borders):
         """
         Handle player movement based on key presses
         
         Args:
             keys (pygame.key.ScancodeWrapper): Pressed keys
         """
-        self.player1.handle_movement("WASD", keys, self.width, self.height, walls)
-        self.player2.handle_movement("arrows", keys, self.width, self.height, walls)
+        self.player1.handle_movement("WASD", keys, self.width, self.height, borders)
+        self.player2.handle_movement("arrows", keys, self.width, self.height, borders)
 
     #animatetion here
     
@@ -190,12 +189,12 @@ class GameLogic:
             event (pygame.event.Event): Pygame event
         """
         if event.type == pygame.USEREVENT:
-            self.player1.speed = 5
-            self.player2.speed = 5
+            self.player1.speed = 7
+            self.player2.speed = 7
         
         if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
-            self.player1.speed = 5
-            self.player2.speed = 5
+            self.player1.speed = 7
+            self.player2.speed = 7
             self.player1.controls_reversed = False
             self.player2.controls_reversed = False
 

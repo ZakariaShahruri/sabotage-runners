@@ -4,8 +4,8 @@ import pygame
 from button import Button
 from game_logic import GameLogic
 from menu_screen import main_menu
-from tilemap import *
 from round_over import round_over_screen
+from collision import *
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -45,6 +45,10 @@ def game_loop():
     # set the background image
     background = pygame.image.load("../Images/default_map.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+    
+    hedges = pygame.image.load("../Images/hedges.png")
+    hedges = pygame.transform.scale(hedges, (WIDTH, HEIGHT))
+
 
     # Create game logic instance
     game_logic = GameLogic(WIDTH, HEIGHT, get_font)
@@ -52,9 +56,6 @@ def game_loop():
     # The game loop
     running = True
     clock = pygame.time.Clock()
-    
-    # Assign the tilemaps
-    first_map = tilemap_1
 
     timer_start = 0
     
@@ -62,7 +63,7 @@ def game_loop():
     while running:
         # Get pressed keys
         keys = pygame.key.get_pressed()
-        
+
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -118,6 +119,12 @@ def game_loop():
             game_logic.player1.getting_hit = True
             cooldown_start = pygame.time.get_ticks()
 
+        for rectangle in all_rectangles:
+                if rectangle.colliderect(game_logic.player2.get_rect()):
+                    game_logic.player2.x -= 30
+                elif rectangle.colliderect(game_logic.player1.get_rect()):
+                    game_logic.player1.x += 30
+
         if game_logic.player1.getting_hit:
             current_p2_cooldown = pygame.time.get_ticks()
             cooldown_elapsed = current_p2_cooldown - cooldown_start
@@ -137,12 +144,12 @@ def game_loop():
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
             
-        
+        screen.blit(hedges, (0,0))
         # Render walls
-        walls = draw_map(first_map, '../Images/Assets/stone.png', screen)
+        borders = render_border(map1_borders, screen)
 
         # Handle player movement
-        game_logic.handle_movement(keys, walls)
+        game_logic.handle_movement(keys, borders)
         
         # Animate players
         game_logic.animate_players()
