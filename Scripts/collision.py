@@ -5,7 +5,7 @@ from state import State
 # Initiliasation of pygame
 pygame.init()
 
-left_blocks = [
+left_blocks1 = [
     (4,254),(4,398),(36,254),(36,398),
     (66,76),(66,108),(66,140),(66,172),
     (66,204),(66,430),(66,462),(66,494),
@@ -32,7 +32,7 @@ left_blocks = [
     (594,358)
     ]
 
-copy_blocks = [
+copy_blocks1 = [
     (4,254),(4,398),(36,254),(36,398),
     (66,76),(66,108),(66,140),(66,172),
     (66,204),(66,430),(66,462),(66,494),
@@ -59,10 +59,10 @@ copy_blocks = [
     ]
 
 # Calculate mirrored positions
-right_blocks = [(1280-32-x, y) for x, y in copy_blocks]
+right_blocks1 = [(1280-32-x, y) for x, y in copy_blocks1]
 
 # Combine both lists
-map1_borders = left_blocks + right_blocks   
+map1_borders = left_blocks1 + right_blocks1   
 
 def render_border(map, screen):
     borders = []
