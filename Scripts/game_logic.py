@@ -1,11 +1,11 @@
-import os
+
 import pygame
 import sys
 import random
 from player import Player
-from items import generate_random_item
-from items import occupied_spawn_points
 from tilemap import tilemap_1
+from items import *
+from sound_effects import SoundEffects
 
 class GameLogic:
     def __init__(self, width, height, get_font):
@@ -50,6 +50,7 @@ class GameLogic:
         self.last_item_spawn_time = pygame.time.get_ticks()
         self.item_spawn_interval = 3000  # 3 seconds between item spawn attempts
         self.max_items = 4
+        self.sound_effects = SoundEffects()
 
     def manage_items(self, screen):
         current_time = pygame.time.get_ticks()
@@ -70,6 +71,20 @@ class GameLogic:
             if self.player1.check_collision(item) or self.player2.check_collision(item):
                 # Mark the spawn point as available again
                 occupied_spawn_points[(item.x, item.y)] = False
+                
+                # Play the appropriate sound based on item type
+                if isinstance(item, FreezeItem):
+                    self.sound_effects.play_freeze()
+                elif isinstance(item, SpeedUpItem):
+                    self.sound_effects.play_speed_up()
+                elif isinstance(item, SlowDownItem):
+                    self.sound_effects.play_slow_down()
+                elif isinstance(item, MirrorItem):
+                    self.sound_effects.play_mirrored()
+                elif isinstance(item, TeleportItem):
+                    self.sound_effects.play_teleport()
+                    
+                # Apply the item effect
                 if self.player1.check_collision(item):
                     item.use(self.player1, self.player2)
                 else:
@@ -156,7 +171,7 @@ class GameLogic:
         """
         # Render scores
         scoreboard = pygame.image.load("../Images/scoreboard_sign.png")
-        scoreboard = pygame.transform.scale(scoreboard,(83,94))
+        scoreboard = pygame.transform.scale(scoreboard,(84,95))
         screen.blit(scoreboard, (593,0))
         score_font = self.get_font(25)
         player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))

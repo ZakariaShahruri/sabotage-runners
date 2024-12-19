@@ -25,15 +25,6 @@ class Item(State):
         """Base method to be overridden by specific item types"""
         raise NotImplementedError("Subclasses must implement use method")
 
-# class BananaItem(Item):
-#     def __init__(self, x, y):
-#         super().__init__(x, y, banana_image)
-
-#     def use(self, player1, player2):
-#         """Throw the banana to stun the opponent when they collide."""
-#         target = player2 if player1 == player2.opponent else player1
-#         target.speed = 0  # Temporarily stop the player
-#         pygame.time.set_timer(pygame.USEREVENT, 2000)  # Reset speed after 2 seconds
 
 class FreezeItem(Item):
     def __init__(self, x, y):
@@ -63,7 +54,7 @@ class SlowDownItem(Item):
         """Slow down the opponent temporarily."""
         target = player2 if player1 == player2.opponent else player1
         target.speed *= 0.3  # Slow down
-        pygame.time.set_timer(pygame.USEREVENT + 3, 4000)  # Reset speed after 3 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 3, 4000)  # Reset speed after 4 seconds
 
 class MirrorItem(Item):
     def __init__(self, x, y):
@@ -73,7 +64,7 @@ class MirrorItem(Item):
         """Reverse the opponent's controls."""
         target = player2 if player1 == player2.opponent else player1
         target.controls_reversed = True
-        pygame.time.set_timer(pygame.USEREVENT + 5, 3000)  # Reset controls after 3 seconds
+        pygame.time.set_timer(pygame.USEREVENT + 5, 4000)  # Reset controls after 4 seconds
 
 class TeleportItem(Item):
     def __init__(self, x, y):

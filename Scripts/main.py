@@ -5,6 +5,7 @@ from button import Button
 from game_logic import GameLogic
 from menu_screen import main_menu
 from tilemap import *
+from round_over import round_over_screen
 from collision import *
 
 
@@ -24,7 +25,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
-    pygame.mixer.music.set_volume(0.02)
+    pygame.mixer.music.set_volume(0.15)
 
 # Function to stop music
 def stop_music():
@@ -77,7 +78,7 @@ def game_loop():
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
                 if not game_logic.player1.attack:  # Start attack only if not already active
                     game_logic.player1.attack = True
                     timer_start = pygame.time.get_ticks()
@@ -103,8 +104,30 @@ def game_loop():
             if elapsed_time >= 750:  # End attack after 300 ms
                 game_logic.player2.attack = False
                 game_logic.player2.current_frame = 0
-            
+
+
+        if game_logic.player1.check_collision(game_logic.player2) and game_logic.player2.getting_hit == False:       
+            game_logic.player1.knockback(game_logic.player2, knockback_force=150)
+            game_logic.player2.getting_hit = True
+            cooldown_start = pygame.time.get_ticks()
         
+        if game_logic.player2.check_collision(game_logic.player1) and game_logic.player1.getting_hit == False:       
+            game_logic.player2.knockback(game_logic.player1, knockback_force=150)
+            game_logic.player1.getting_hit = True
+            cooldown_start = pygame.time.get_ticks()
+
+        if game_logic.player1.getting_hit:
+            current_p2_cooldown = pygame.time.get_ticks()
+            cooldown_elapsed = current_p2_cooldown - cooldown_start
+            if cooldown_elapsed >= 500:
+                game_logic.player1.getting_hit = False
+
+        if game_logic.player2.getting_hit:
+            current_p1_cooldown = pygame.time.get_ticks()
+            cooldown_elapsed = current_p1_cooldown - cooldown_start
+            if cooldown_elapsed >= 500:
+                game_logic.player2.getting_hit = False
+
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
         
@@ -132,12 +155,12 @@ def game_loop():
         # Render scores
         game_logic.render_scores(screen)
 
-        # Check for game over
         game_state = game_logic.get_game_state()
         if game_state['game_over']:
-            # You can add a game over screen or restart logic here
-            print(f"{game_state['winner']} wins!")
-            main_menu()
+            winner = game_state['winner']
+            stop_music()  # Stop current music if needed
+            round_over_screen(screen, game_logic, winner, get_font)
+            play_music(MAIN_MUSIC)  # Restart main music if returning to the game
 
         # Update display
         pygame.display.flip()
