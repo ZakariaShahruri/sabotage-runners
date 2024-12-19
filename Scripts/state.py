@@ -43,8 +43,8 @@ class State:
 
         screen.blit(self.image, (self.x,self.y))
 
-        rect_color = (255,0,0)
-        pygame.draw.rect(screen, rect_color, self.get_rect(), 2)
+        # rect_color = (255,0,0)
+        # pygame.draw.rect(screen, rect_color, self.get_rect(), 2)
 
     def get_rect(self):
 
