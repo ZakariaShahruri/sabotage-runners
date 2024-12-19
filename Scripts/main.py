@@ -133,7 +133,7 @@ def menu():
     # Screen setup
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Sabotage Runners")
-    menu_cover = pygame.image.load("../Images/menucover.png")
+    menu_cover = pygame.image.load("../menu_images/menu_background.png")
     
 
         
@@ -148,11 +148,6 @@ def menu():
     running = True
     while running:
         screen.blit(menu_cover, (0, 0))
-        
-        menu_text = get_font(70).render("Sabotage Runners", True, "#FFD300")
-        menu_rect = menu_text.get_rect(center=(640, 100))
-        
-        screen.blit(menu_text, menu_rect)
         
         menu_mouse_pos = pygame.mouse.get_pos()
 
