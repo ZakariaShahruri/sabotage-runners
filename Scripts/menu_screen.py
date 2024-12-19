@@ -21,8 +21,9 @@ DARK_PURPLE = (35, 9, 35)  # RGB for #230922
 BRIGHT_PURPLE = (45, 19, 45)  # Lighter version of #230922 for hover effect
 
 # Fonts
-font = pygame.font.Font(None, 50)
+font = pygame.font.Font("../fonts/font.ttf", 50)
 header_font = pygame.font.SysFont("Arial", 30, bold=True)
+
 
 # Load Background Image
 BACKGROUND_IMAGE = pygame.image.load("../menu_images/menu_background.png")
@@ -47,7 +48,7 @@ class Button:
         self.callback = callback
         self.original_width = width
         self.original_height = height
-        self.scale_factor = 1.1
+        self.scale_factor = 2.1
 
     def draw(self, surface):
         """Draw button with hover effect and gradient text."""
@@ -69,20 +70,31 @@ class Button:
             pygame.draw.rect(surface, rect_color, self.rect)
 
         # Draw text
-        text_surface = font.render(self.text, True, WHITE)
-        text_rect = text_surface.get_rect(center=self.rect.center)
+        text_surface = font.render(self.text, False, WHITE)
+        rect_with_padding = self.rect.inflate(220, 25)
+        text_rect = text_surface.get_rect(center=rect_with_padding.center)
+        pygame.draw.rect(surface, rect_color, rect_with_padding)
         surface.blit(text_surface, text_rect)
 
 # Button Click Detection
 def detect_button_click(buttons):
-    """Check if any button is clicked."""
+    """Check if any button is clicked on a single mouse press and release."""
     mouse_pos = pygame.mouse.get_pos()
     mouse_pressed = pygame.mouse.get_pressed()
 
+    # Static variable to track mouse state
+    if not hasattr(detect_button_click, "mouse_held"):
+        detect_button_click.mouse_held = False
+
     if mouse_pressed[0]:  # Left-click
-        for button in buttons:
-            if button.rect.collidepoint(mouse_pos):
-                button.callback()
+        if not detect_button_click.mouse_held:  # Register click only once
+            detect_button_click.mouse_held = True
+            for button in buttons:
+                if button.rect.collidepoint(mouse_pos):
+                    button.callback()
+    else:
+        detect_button_click.mouse_held = False
+
 
 # Callbacks for Buttons
 def play_game():
@@ -132,41 +144,47 @@ def show_objective():
 
         pygame.display.update()
 
-def back_to_menu():
-    pygame.time.delay(200)
-    main_menu()  # Call main menu again to reset the state
-
-
 def show_options():
     """Display the options menu."""
     # Options settings
     options = {
-        "Music": True,  # Example toggle for music
-        "Fullscreen": False,  # Example toggle for fullscreen
+        "Music": True,
+        "Fullscreen": False,
     }
-    
+
     # Create buttons for each option
     option_buttons = []
-    y_offset = 150
-    for option, value in options.items():
-        button = Button(
-            f"{option}: {'ON' if value else 'OFF'}",
-            SCREEN_WIDTH // 2 - 200,
-            y_offset,
-            400,
-            50,
-            lambda opt=option: toggle_option(opt, options, option_buttons)
-        )
-        option_buttons.append(button)
-        y_offset += 70
+    
+    # Music button
+    Music_button = Button(
+        f"Music: {'ON' if options['Music'] else 'OFF'}",
+        SCREEN_WIDTH // 2 - 200,
+        160,
+        400,
+        50,
+        lambda opt="Music": toggle_option(opt, options, option_buttons)
+    )
+    option_buttons.append(Music_button)
+    
+    # Fullscreen button
+    Fullscreen_button = Button(
+        f"Fullscreen: {'ON' if options['Fullscreen'] else 'OFF'}",
+        SCREEN_WIDTH // 2 - 300,
+        300,
+        600,
+        50,
+        lambda opt="Fullscreen": toggle_option(opt, options, option_buttons)
+    )
+    option_buttons.append(Fullscreen_button)
 
+    # Back button
     back_button = Button(
         "Back to Menu",
-        SCREEN_WIDTH // 2 - 100,
-        y_offset,
-        200,
+        SCREEN_WIDTH // 2 - 200,
+        600,
+        400,
         50,
-        back_to_menu
+        main_menu  # This references the back_to_menu function
     )
     option_buttons.append(back_button)
 
@@ -208,9 +226,11 @@ def toggle_option(option, options, buttons):
         else:
             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # Update the text of the buttons
     for button in buttons:
         if option in button.text:
             button.text = f"{option}: {'ON' if options[option] else 'OFF'}" 
+
 
 def draw_credits():
     # Load and display the credits image
@@ -226,7 +246,7 @@ def draw_credits():
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return  # Go back to the main menu
-
+        
         pygame.display.update()
 
 def quit_game():
@@ -235,14 +255,14 @@ def quit_game():
 
 # Main Menu Function
 def main_menu():
-    # Button Instances
+    # Button Instances68
     buttons = [
-        Button("Play", SCREEN_WIDTH // 2 - 100, 150, 200, 50, play_game),
-        Button("Controls", SCREEN_WIDTH // 2 - 100, 220, 200, 50, show_controls),
-        Button("Objective", SCREEN_WIDTH // 2 - 100, 290, 200, 50, show_objective),
-        Button("Options", SCREEN_WIDTH // 2 - 100, 360, 200, 50, show_options),
-        Button("Credits", SCREEN_WIDTH // 2 - 100, 430, 200, 50, draw_credits),
-        Button("Quit", SCREEN_WIDTH // 2 - 100, 500, 200, 50, quit_game),
+        Button("Play", SCREEN_WIDTH // 2 - 150, 160, 300, 50, play_game),
+        Button("Controls", SCREEN_WIDTH // 2 - 150, 280, 300, 50, show_controls),
+        Button("Objective", SCREEN_WIDTH // 2 - 150, 400, 300, 50, show_objective),
+        Button("Credits", SCREEN_WIDTH // 2 - 150, 520, 300, 50, draw_credits),
+        Button("Quit", 1030 - 100, 650, 200, 50, quit_game),
+        Button("Options", 150, 650, 200, 50, show_options)
     ]
 
     pygame.mixer.music.load("../audios/menu_music.mp3")
@@ -260,9 +280,7 @@ def main_menu():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
         detect_button_click(buttons)
         pygame.display.update()
-
 if __name__ == "__main__":
     main_menu()
