@@ -9,6 +9,7 @@ class Player(State):
         self.image = pygame.image.load(self.path)
         self.image = pygame.transform.scale(self.image, (32, 48))
         self.facing_right = True
+        self.attack = False
         
         
         # New attributes for item interactions
