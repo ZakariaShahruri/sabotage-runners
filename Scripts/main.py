@@ -59,7 +59,7 @@ def game_loop():
     while running:
         # Get pressed keys
         keys = pygame.key.get_pressed()
-        
+
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
