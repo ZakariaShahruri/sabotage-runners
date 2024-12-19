@@ -1,91 +1,78 @@
-import pygame
-import sys
-import main
-import menu_screen
+import pygame 
 from button import Button
+import sys
 
-# Screen dimensions (you can adjust this)
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+def show_end_screen(screen, game_logic, winner_name, get_font):
 
-# Colors
-WHITE = (255, 255, 255)
-
-# Game outcomes
-def show_end_screen(winner, score, victory=True):
-    """Display the end screen with the winner, score, and options."""
-    # Initialize pygame mixer for background music
-    pygame.mixer.init()
+    pygame.mixer.music.load("../audios/end_screen_music.mp3")
+    pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
+    pygame.mixer.music.play(-1)  # Start the music
+    """
+    Display the round over screen with options to go to the main menu or the next map.
+    """
+    running = True
 
     # Load background image
-    END_SCREEN_BACKGROUND = pygame.image.load("../menu_images/background_darker.png")
-    END_SCREEN_BACKGROUND = pygame.transform.scale(END_SCREEN_BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    background = pygame.image.load("../menu_images/background_darker.png")
+    background = pygame.transform.scale(background, (screen.get_width(), screen.get_height()))
 
-    # Play background music
-    pygame.mixer.music.load("../audios/end_screen_music.mp3")
-    pygame.mixer.music.play(-1, 0.0)  # Loop the music indefinitely
+    # Button setup
+    font = get_font(50)
+    button_font = get_font(30)
 
-    # Font for the message and score
-    end_font = pygame.font.Font(None, 100)
-    score_font = pygame.font.Font(None, 50)
+    # Create buttons, Next Map comes before Main Menu
+    next_map_button = Button(
+        None, (640, 500), "Play Again", button_font, (255, 255, 255), (255, 255, 0)  # Yellow hover color
+    )
+    main_menu_button = Button(
+        None, (640, 580), "Main Menu", button_font, (255, 255, 255), (255, 255, 0)  # Yellow hover color
+    )
 
-    # Render the winner message
-    end_text = f"{winner} Wins!" if victory else "Game Over"
-    end_text_surface = end_font.render(end_text, True, WHITE)
-    end_text_rect = end_text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
+    # Create the round over and winner text
+    round_over_text = font.render("Game Over!", False, (255, 255, 255))
+    winner_text = font.render(f"Winner: {winner_name}", False, (255, 255, 0))
 
-    # Render the score message
-    score_text_surface = score_font.render(f"Score: {score}", True, WHITE)
-    score_text_rect = score_text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+    # Get the rect positions for text
+    round_over_text_rect = round_over_text.get_rect(center=(screen.get_width() // 2, 200))
+    winner_text_rect = winner_text.get_rect(center=(screen.get_width() // 2, 300))
 
-    # Render the thank you message
-    thank_you_text = "Thank you for playing!"
-    thank_you_surface = score_font.render(thank_you_text, True, WHITE)
-    thank_you_rect = thank_you_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 1.5))
+    while running:
+        screen.blit(background, (0, 0))
 
-    # Create buttons for replay and exit
-    replay_button = Button("Play Again", SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 80, 200, 50, replay_game)
-    exit_button = Button("Main Menu", SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 + 150, 200, 50, back_to_menu)
+        # Draw the round over text
+        screen.blit(round_over_text, round_over_text_rect)
+        screen.blit(winner_text, winner_text_rect)
 
-    # Draw the end screen
-    while True:
-        screen.blit(END_SCREEN_BACKGROUND, (0, 0))
+        # Update buttons with hover effects
+        mouse_pos = pygame.mouse.get_pos()
 
-        # Draw the winner message and score
-        screen.blit(end_text_surface, end_text_rect)
-        screen.blit(score_text_surface, score_text_rect)
-        screen.blit(thank_you_surface, thank_you_rect)
+        # Change button colors when hovered over
+        next_map_button.changeColor(mouse_pos)
+        main_menu_button.changeColor(mouse_pos)
 
-        # Draw buttons
-        replay_button.draw(screen)
-        exit_button.draw(screen)
+        # Render the buttons with the updated colors
+        next_map_button.update(screen)
+        main_menu_button.update(screen)
 
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if next_map_button.checkForInput(pos):
+                    pygame.time.delay(200)
+                      # Add a small delay for button feedback
+                    import main
+                    main.game_loop()
+                    return  # Ensure we exit this screen
+                elif main_menu_button.checkForInput(pos):
+                    pygame.time.delay(200)  # Add a small delay for button feedback
+                    pygame.mixer.music.stop()
+                    from menu_screen import main_menu
+                    main_menu()
+                    return  # Ensure we exit this screen
 
-        detect_button_click([replay_button, exit_button])
-        pygame.display.update()
-
-def replay_game():
-    """Reset the game and start again."""
-    main.game_loop()
-
-def back_to_menu():
-    """Return to the main menu."""
-    menu_screen.main_menu()
-
-# Function to detect button click, assuming Button class is defined
-def detect_button_click(buttons):
-    """Detect button clicks and handle events."""
-    for button in buttons:
-        if button.is_hovered():
-            if pygame.mouse.get_pressed()[0]:  # Left click
-                button.callback()
-
-# Main program to initialize pygame and the screen
-if __name__ == "__main__":
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption("End Screen")
+        pygame.display.flip()
+        pygame.time.Clock().tick(60)  # Add frame rate control

@@ -47,12 +47,39 @@ left_blocks2 = [
     (516,24),(548,24),(580,24),
     (612,24),
     
-    # Anything in between top and bottom
+    # Middle of the map
     (484,232),(516,232),(548,232),
     (580,232),(612,232),(484,264),
     (516,264),(548,264),(580,264),
     (612,264),(484,296),(516,296),
     (548,296),(580,296),(612,296),
+    (484,328),(516,328),(548,328),
+    (580,328),(612,328),(484,360),
+    (516,360),(548,360),(580,360),
+    (612,360),(484,392),(516,392),
+    (548,392),(580,392),(612,392),
+    (484,424),(516,424),(548,424),
+    (580,424),(612,424),(484,456),
+    (516,456),(548,456),(580,456),
+    (612,456),
+
+    # Anything in between top and bottom
+    (48,318),(80,318),(112,318),
+    (144,318),(176,318),(208,318),
+    (240,318),(260,318),(48,350),
+    (80,350),(112,350),(144,350),
+    (176,350),(208,350),(240,350),
+    (260,350),(48,382),(80,382),
+    (112,382),(144,382),(176,382),
+    (208,382),(240,382),(260,382),
+    (250,123),(250,155),(250,187),
+    (282,123),(282,155),(282,187),
+    (314,123),(314,155),(314,187),
+    (330,123),(330,155),(330,187),
+    (250,491),(250,523),(250,555),
+    (282,491),(282,523),(282,555),
+    (314,491),(314,523),(314,555),
+    (330,491),(330,523),(330,555),
 
     # Bottom half of map
     (4,460),(36,460),(68,460),(100,460),
@@ -68,18 +95,20 @@ left_blocks2 = [
 
 # Calculate mirrored positions
 right_blocks1 = [(1280-32-x, y) for x, y in left_blocks1]
-
 right_blocks2 = [(1280-32-x, y) for x, y in left_blocks2]
 
-left_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks1]
+left_rectangles1 = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks1]
+right_rectangles1 = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks1]
 
-right_rectangles = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks1]
-
-all_rectangles = left_rectangles + right_rectangles
+left_rectangles2 = [pygame.Rect(x, y, 32, 32) for x, y in left_blocks2]
+right_rectangles2 = [pygame.Rect(x, y, 32, 32) for x, y in right_blocks2]
 
 # Combine both lists
 map1_borders = left_blocks1 + right_blocks1
 map2_borders = left_blocks2 + right_blocks2
+
+all_rectangles1 = left_rectangles1 + right_rectangles1
+all_rectangles2 = left_rectangles2 + right_rectangles2
 
 def render_border(map, screen):
     borders = []

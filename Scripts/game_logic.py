@@ -1,7 +1,5 @@
 
 import pygame
-import sys
-import random
 from player import Player
 from items import *
 from sound_effects import SoundEffects
@@ -23,12 +21,23 @@ class GameLogic:
         # Scoring and game state
         self.player1_score = 0
         self.player2_score = 0
-        self.max_score = 5  # Win condition
+        self.max_score = 1  # Win condition
         self.game_over = False
         
-        # Create players
-        self.player1 = Player(path="../Images/player1/player1_idle1.png", x=20, y=300)
-        self.player2 = Player(path="../Images/player2/player2_idle1.png", x=1200, y=300)
+        # Define spawn positions for each map
+        self.spawn_positions = {
+            1: {'player1': (20, 300), 'player2': (1200, 300)},
+            2: {'player1': (0, 322), 'player2': (1280, 322)}
+        }
+        
+        # Initialize map and player positions
+        self.active_map = 1
+        self.player1 = Player(path="../Images/player1/player1_idle1.png", 
+                              x=self.spawn_positions[self.active_map]['player1'][0], 
+                              y=self.spawn_positions[self.active_map]['player1'][1])
+        self.player2 = Player(path="../Images/player2/player2_idle1.png", 
+                              x=self.spawn_positions[self.active_map]['player2'][0], 
+                              y=self.spawn_positions[self.active_map]['player2'][1])
         self.player2.image = pygame.transform.flip(self.player2.image, True, False)
         
         # Set opponents
@@ -48,17 +57,17 @@ class GameLogic:
         self.active_items = []
         self.last_item_spawn_time = pygame.time.get_ticks()
         self.item_spawn_interval = 3000  # 3 seconds between item spawn attempts
-        self.max_items = 4
+        self.max_items = 5
         self.sound_effects = SoundEffects()
 
-    def manage_items(self, screen):
+    def manage_items(self, screen, active_map=1):  # Default to map 1 if not specified
         current_time = pygame.time.get_ticks()
 
         # Check if it's time to spawn a new item
         if (len(self.active_items) < self.max_items and 
             current_time - self.last_item_spawn_time >= self.item_spawn_interval):
-            # Generate a new item
-            new_item = generate_random_item(self.width, self.height)
+            # Generate a new item for the active map
+            new_item = generate_random_item(self.width, self.height, active_map)
             if new_item:
                 self.active_items.append(new_item)
                 # Update last spawn time
@@ -69,7 +78,9 @@ class GameLogic:
             item.render(screen)
             if self.player1.check_collision(item) or self.player2.check_collision(item):
                 # Mark the spawn point as available again
-                occupied_spawn_points[(item.x, item.y)] = False
+                spawn_coord = (item.x, item.y)
+                if spawn_coord in occupied_spawn_points[active_map]:
+                    occupied_spawn_points[active_map][spawn_coord] = False
                 
                 # Play the appropriate sound based on item type
                 if isinstance(item, FreezeItem):
@@ -95,10 +106,8 @@ class GameLogic:
    
     def reset_players(self):
         """Reset players to their initial positions"""
-        self.player1.x = 20
-        self.player1.y = 300
-        self.player2.x = 1200
-        self.player2.y = 300
+        self.player1.x, self.player1.y = self.spawn_positions[self.active_map]['player1']
+        self.player2.x, self.player2.y = self.spawn_positions[self.active_map]['player2']
 
     def check_scoring(self):
         """
@@ -211,3 +220,14 @@ class GameLogic:
             'game_over': self.game_over,
             'winner': 'Player 1' if self.player2_score >= self.max_score else 'Player 2' if self.player1_score >= self.max_score else None
         }
+    
+
+
+
+    # player position reset
+    def change_map(self, new_map):
+        self.active_map = new_map
+        self.reset_players()
+
+
+    
