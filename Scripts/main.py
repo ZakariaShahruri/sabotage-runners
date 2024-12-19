@@ -105,16 +105,36 @@ def game_loop():
             if elapsed_time >= 750:  # End attack after 300 ms
                 game_logic.player2.attack = False
                 game_logic.player2.current_frame = 0
-            
+
+
+        if game_logic.player1.check_collision(game_logic.player2) and game_logic.player2.getting_hit == False:       
+            game_logic.player1.knockback(game_logic.player2, knockback_force=50)
+            game_logic.player2.getting_hit = True
+            cooldown_start = pygame.time.get_ticks()
         
+        if game_logic.player2.check_collision(game_logic.player1) and game_logic.player1.getting_hit == False:       
+            game_logic.player2.knockback(game_logic.player1, knockback_force=50)
+            game_logic.player1.getting_hit = True
+            cooldown_start = pygame.time.get_ticks()
+
+        if game_logic.player1.getting_hit:
+            current_p2_cooldown = pygame.time.get_ticks()
+            cooldown_elapsed = current_p2_cooldown - cooldown_start
+            if cooldown_elapsed >= 500:
+                game_logic.player1.getting_hit = False
+
+        if game_logic.player2.getting_hit:
+            current_p1_cooldown = pygame.time.get_ticks()
+            cooldown_elapsed = current_p1_cooldown - cooldown_start
+            if cooldown_elapsed >= 500:
+                game_logic.player2.getting_hit = False
+
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
         
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
-
-        print(game_logic.player1.check_collision(game_logic.player2))
             
         
         # Render walls
