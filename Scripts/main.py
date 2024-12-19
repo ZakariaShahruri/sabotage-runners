@@ -5,6 +5,7 @@ from button import Button
 from game_logic import GameLogic
 from menu_screen import main_menu
 from tilemap import *
+from round_over import round_over_screen
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -79,7 +80,7 @@ def game_loop():
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
                 if not game_logic.player1.attack:  # Start attack only if not already active
                     game_logic.player1.attack = True
                     timer_start = pygame.time.get_ticks()
@@ -108,12 +109,12 @@ def game_loop():
 
 
         if game_logic.player1.check_collision(game_logic.player2) and game_logic.player2.getting_hit == False:       
-            game_logic.player1.knockback(game_logic.player2, knockback_force=50)
+            game_logic.player1.knockback(game_logic.player2, knockback_force=150)
             game_logic.player2.getting_hit = True
             cooldown_start = pygame.time.get_ticks()
         
         if game_logic.player2.check_collision(game_logic.player1) and game_logic.player1.getting_hit == False:       
-            game_logic.player2.knockback(game_logic.player1, knockback_force=50)
+            game_logic.player2.knockback(game_logic.player1, knockback_force=150)
             game_logic.player1.getting_hit = True
             cooldown_start = pygame.time.get_ticks()
 
@@ -155,12 +156,12 @@ def game_loop():
         # Render scores
         game_logic.render_scores(screen)
 
-        # Check for game over
         game_state = game_logic.get_game_state()
         if game_state['game_over']:
-            # You can add a game over screen or restart logic here
-            print(f"{game_state['winner']} wins!")
-            main_menu()
+            winner = game_state['winner']
+            stop_music()  # Stop current music if needed
+            round_over_screen(screen, game_logic, winner, get_font)
+            play_music(MAIN_MUSIC)  # Restart main music if returning to the game
 
         # Update display
         pygame.display.flip()
