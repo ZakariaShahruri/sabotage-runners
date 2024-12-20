@@ -115,6 +115,7 @@ def load_map2():
         # Clear screen and draw background
         screen.blit(background, (0, 0))
         
+        game_logic.render_platform(screen, "map2")
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
