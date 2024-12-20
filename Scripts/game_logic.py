@@ -218,7 +218,7 @@ class GameLogic:
             screen.blit((platform_image), (175, 186))
             screen.blit((platform_image), (175, 493))
             screen.blit((platform_image), (602, 164))
-            screen.blit((platform_image), (602, 586))
+            screen.blit((platform_image), (602, 516))
             screen.blit((platform_image), (1038, 493))
             screen.blit((platform_image), (1038, 186))
 

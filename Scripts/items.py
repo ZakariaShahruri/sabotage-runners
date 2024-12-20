@@ -32,8 +32,6 @@ class Item(State):
     def get_rect(self):
         return pygame.Rect(self.x , self.y, self.size-10, self.size-10)
     
-    
-    
 class FreezeItem(Item):
     def __init__(self, x, y):
         super().__init__(x, y, freeze_image)
@@ -107,7 +105,7 @@ map_spawn_coordinates = {
     2: [(186, 173),
         (186, 480),
         (613, 151),
-        (613, 573),
+        (613, 500),
         (1049, 480),
         (1049, 173)
         ]
