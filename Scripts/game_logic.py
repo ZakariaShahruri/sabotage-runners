@@ -197,8 +197,8 @@ class GameLogic:
         scoreboard = pygame.transform.scale(scoreboard,(84,95))
         screen.blit(scoreboard, (593,0))
         score_font = self.get_font(25)
-        player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 255, 255))
-        player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
+        player1_score_text = score_font.render(f"{self.player2_score}", True, (255, 0, 0))
+        player2_score_text = score_font.render(f"{self.player1_score}", True, (0, 0, 255))
         screen.blit(player1_score_text, (605, 55))
         screen.blit(player2_score_text, (self.width - 635, 55))
         
