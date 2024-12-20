@@ -13,9 +13,8 @@ def round_over_screen(screen, game_logic, winner_name, get_font):
     running = True
 
     pygame.mixer.music.load("../audios/menu_music.mp3")
-    pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
+    pygame.mixer.music.set_volume(0.10)  # Optional: Set volume between 0.0 and 1.0
     pygame.mixer.music.play(-1)  # Start the music
- 
 
     # Load background image
     background = pygame.image.load("../menu_images/background_darker.png")

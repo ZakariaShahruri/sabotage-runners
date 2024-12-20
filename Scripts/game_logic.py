@@ -21,7 +21,7 @@ class GameLogic:
         # Scoring and game state
         self.player1_score = 0
         self.player2_score = 0
-        self.max_score = 1  # Win condition
+        self.max_score = 1 # Win condition
         self.game_over = False
         
         # Define spawn positions for each map
@@ -186,6 +186,18 @@ class GameLogic:
         player2_score_text = score_font.render(f"{self.player1_score}", True, (255, 255, 255))
         screen.blit(player1_score_text, (605, 55))
         screen.blit(player2_score_text, (self.width - 635, 55))
+        
+        
+    def render_platform(self, screen, map):
+        if map == "map1":
+            platform_image = pygame.image.load("../Images/platform.png")
+            screen.blit((platform_image), (266, 560))
+            screen.blit((platform_image), (625, 560))
+            screen.blit((platform_image), (1000, 560))
+            screen.blit((platform_image), (625, 138))
+            screen.blit((platform_image), (266, 138))
+            screen.blit((platform_image), (1000, 138))
+            
 
    
    
@@ -227,6 +239,11 @@ class GameLogic:
     # player position reset
     def change_map(self, new_map):
         self.active_map = new_map
+        # Update both current position and spawn positions
+        self.player1.spawn_x = self.spawn_positions[new_map]['player1'][0]
+        self.player1.spawn_y = self.spawn_positions[new_map]['player1'][1]
+        self.player2.spawn_x = self.spawn_positions[new_map]['player2'][0]
+        self.player2.spawn_y = self.spawn_positions[new_map]['player2'][1]
         self.reset_players()
 
 

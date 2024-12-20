@@ -11,8 +11,8 @@ pygame.mixer.init()
 # Screen Settings
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
-pygame.display.set_caption("Game Menu")
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
+pygame.display.set_caption("Sabotage Runners")
 
 # Colors
 WHITE = (255, 255, 255)
@@ -31,11 +31,6 @@ BACKGROUND_IMAGE = pygame.transform.scale(BACKGROUND_IMAGE, (SCREEN_WIDTH, SCREE
 
 OPTIONS_BACKGROUND = pygame.image.load("../menu_images/background_darker.png")
 OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
-
-# Load Music
-pygame.mixer.music.load("../audios/menu_music.mp3")
-pygame.mixer.music.set_volume(0.05)  # Optional: Set volume between 0.0 and 1.0
-pygame.mixer.music.play(-1)  # Start the music
 
 
 
@@ -100,9 +95,11 @@ def detect_button_click(buttons):
 def play_game():
     main.game_loop()
 
+
+
 def show_controls():
     # Load and display the controls image
-    controls_image = pygame.image.load("../menu_images/updated_controls.png")
+    controls_image = pygame.image.load("../menu_images/controls_image.png")
     controls_image = pygame.transform.scale(controls_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     while True:
@@ -120,8 +117,8 @@ def show_controls():
 def show_objective():
     # Load multiple images for objectives
     objective_images = [
-        pygame.image.load("../menu_images/updated_objective.png"),
-        pygame.image.load("../menu_images/updated_items.png")
+        pygame.image.load("../menu_images/objective_image.png"),
+        pygame.image.load("../menu_images/items_image.png")
     ]
     objective_images = [pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)) for img in objective_images]
     
@@ -255,6 +252,18 @@ def quit_game():
 
 # Main Menu Function
 def main_menu():
+
+
+    try:
+        pygame.mixer.music.stop()  # Stop any currently playing music
+        pygame.mixer.music.unload()  # Unload any currently loaded music
+        pygame.mixer.music.load("../audios/menu_music.mp3")
+        pygame.mixer.music.set_volume(0.10)
+        pygame.mixer.music.play(-1)
+    except:
+        print("Error reloading menu music")
+
+
     # Button Instances68
     buttons = [
         Button("Play", SCREEN_WIDTH // 2 - 150, 160, 300, 50, play_game),
