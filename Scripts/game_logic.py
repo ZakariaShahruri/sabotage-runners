@@ -21,7 +21,7 @@ class GameLogic:
         # Scoring and game state
         self.player1_score = 0
         self.player2_score = 0
-        self.max_score = 1  # Win condition
+        self.max_score = 1 # Win condition
         self.game_over = False
         
         # Define spawn positions for each map
@@ -250,6 +250,11 @@ class GameLogic:
     # player position reset
     def change_map(self, new_map):
         self.active_map = new_map
+        # Update both current position and spawn positions
+        self.player1.spawn_x = self.spawn_positions[new_map]['player1'][0]
+        self.player1.spawn_y = self.spawn_positions[new_map]['player1'][1]
+        self.player2.spawn_x = self.spawn_positions[new_map]['player2'][0]
+        self.player2.spawn_y = self.spawn_positions[new_map]['player2'][1]
         self.reset_players()
 
 

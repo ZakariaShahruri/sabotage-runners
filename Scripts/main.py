@@ -26,7 +26,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
-    pygame.mixer.music.set_volume(0.05)
+    pygame.mixer.music.set_volume(0.10)
 
 # Function to stop music
 def stop_music():
