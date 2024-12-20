@@ -129,8 +129,6 @@ def load_map2():
         
         # Animate players
         game_logic.animate_players()
-        
-
 
         # Check for scoring
         game_logic.check_scoring()
