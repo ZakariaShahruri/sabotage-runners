@@ -57,7 +57,7 @@ class GameLogic:
         self.active_items = []
         self.last_item_spawn_time = pygame.time.get_ticks()
         self.item_spawn_interval = 3000  # 3 seconds between item spawn attempts
-        self.max_items = 5
+        self.max_items = 4
         self.sound_effects = SoundEffects()
 
     def manage_items(self, screen, active_map=None):
