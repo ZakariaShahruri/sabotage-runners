@@ -292,6 +292,6 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
         detect_button_click(buttons)
-        pygame.display.update()
+        pygame.display.flip()
 if __name__ == "__main__":
     main_menu()

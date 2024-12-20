@@ -111,6 +111,7 @@ def load_map2():
         # Clear screen and draw background
         screen.blit(background, (0, 0))
         
+        game_logic.render_platform(screen, "map2")
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
@@ -124,15 +125,12 @@ def load_map2():
         
         # Animate players
         game_logic.animate_players()
-        
-        reset_spawn_points(2)
-        game_logic.manage_items(screen, active_map=2)
 
         # Check for scoring
-        game_logic.check_scoring()
+        game_logic.check_scoring(screen)
         
         # Manage items
-        game_logic.manage_items(screen)
+        game_logic.manage_items(screen, active_map=2)
 
         # Render scores
         game_logic.render_scores(screen)

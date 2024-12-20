@@ -158,7 +158,7 @@ def game_loop():
         game_logic.animate_players()
         
         # Check for scoring
-        game_logic.check_scoring()
+        game_logic.check_scoring(screen)
         
         # Manage items
         game_logic.manage_items(screen)

@@ -60,7 +60,17 @@ class GameLogic:
         self.max_items = 5
         self.sound_effects = SoundEffects()
 
-    def manage_items(self, screen, active_map=1):  # Default to map 1 if not specified
+    def manage_items(self, screen, active_map=None):
+        """
+        Manage items spawning and collection
+        
+        Args:
+            screen (pygame.Surface): Game screen
+            active_map (int): Current active map number
+        """
+        if active_map is None:
+            active_map = self.active_map
+            
         current_time = pygame.time.get_ticks()
 
         # Check if it's time to spawn a new item
@@ -70,17 +80,14 @@ class GameLogic:
             new_item = generate_random_item(self.width, self.height, active_map)
             if new_item:
                 self.active_items.append(new_item)
-                # Update last spawn time
                 self.last_item_spawn_time = current_time
 
         # Render and check item collisions
         for item in self.active_items[:]:
             item.render(screen)
             if self.player1.check_collision(item) or self.player2.check_collision(item):
-                # Mark the spawn point as available again
+                # Get spawn coordinates before removing the item
                 spawn_coord = (item.x, item.y)
-                if spawn_coord in occupied_spawn_points[active_map]:
-                    occupied_spawn_points[active_map][spawn_coord] = False
                 
                 # Play the appropriate sound based on item type
                 if isinstance(item, FreezeItem):
@@ -99,7 +106,11 @@ class GameLogic:
                     item.use(self.player1, self.player2)
                 else:
                     item.use(self.player2, self.player1)
+                    
+                # Remove the item and free up the spawn point
                 self.active_items.remove(item)
+                if spawn_coord in occupied_spawn_points[active_map]:
+                    occupied_spawn_points[active_map][spawn_coord] = False
 
    
    
@@ -109,7 +120,7 @@ class GameLogic:
         self.player1.x, self.player1.y = self.spawn_positions[self.active_map]['player1']
         self.player2.x, self.player2.y = self.spawn_positions[self.active_map]['player2']
 
-    def check_scoring(self):
+    def check_scoring(self, screen):
         """
         Check if players have scored and update scores
         
@@ -123,12 +134,16 @@ class GameLogic:
             self.player2_score += 1
             point_scored = True
             self.reset_players()
+            self.screen_shake(screen)
+            self.sound_effects.play_score_audio()
         
         if self.player2.x <= 0:
             # Player 2 reaches left side, Player 1 scores
             self.player1_score += 1
             point_scored = True
             self.reset_players()
+            self.screen_shake(screen)
+            self.sound_effects.play_score_audio()
         
         # Check for game over
         if self.player1_score >= self.max_score or self.player2_score >= self.max_score:
@@ -198,6 +213,17 @@ class GameLogic:
             screen.blit((platform_image), (266, 138))
             screen.blit((platform_image), (1000, 138))
             
+        if map == 'map2':
+            platform_image = pygame.image.load("../Images/platform.png")
+            screen.blit((platform_image), (175, 186))
+            screen.blit((platform_image), (175, 493))
+            screen.blit((platform_image), (602, 164))
+            screen.blit((platform_image), (602, 516))
+            screen.blit((platform_image), (1038, 493))
+            screen.blit((platform_image), (1038, 186))
+
+            
+            
 
    
    
@@ -246,5 +272,23 @@ class GameLogic:
         self.player2.spawn_y = self.spawn_positions[new_map]['player2'][1]
         self.reset_players()
 
+
+    def screen_shake(self, screen, intensity=10, duration=50):
+        """
+        Apply a screen shake effect.
+        
+        Args:
+            screen (pygame.Surface): The game screen.
+            intensity (int): Maximum shake offset in pixels.
+            duration (int): Duration of the shake in milliseconds.
+        """
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time < duration:
+            offset_x = intensity * (1 if pygame.time.get_ticks() % 2 == 0 else -1)
+            offset_y = intensity * (1 if pygame.time.get_ticks() % 3 == 0 else -1)
+            
+            # Offset screen rendering
+            screen.blit(pygame.Surface.copy(screen), (offset_x, offset_y))
+            pygame.display.flip()
 
     
