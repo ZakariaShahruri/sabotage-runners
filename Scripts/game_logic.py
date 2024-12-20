@@ -301,7 +301,7 @@ class GameLogic:
         Args:
             screen (pygame.Surface): The game screen to render the instruction on.
         """
-        instruction_font = self.get_font(19)  # Adjust size as needed
+        instruction_font = self.get_font(16)  # Adjust size as needed
         text = "GET TO THE OTHER PLAYER'S SPAWN"
         text_color = (255, 255, 255)  # White
         outline_color = (0, 0, 0)  # Black
