@@ -120,7 +120,7 @@ class GameLogic:
         self.player1.x, self.player1.y = self.spawn_positions[self.active_map]['player1']
         self.player2.x, self.player2.y = self.spawn_positions[self.active_map]['player2']
 
-    def check_scoring(self):
+    def check_scoring(self, screen):
         """
         Check if players have scored and update scores
         
@@ -134,12 +134,16 @@ class GameLogic:
             self.player2_score += 1
             point_scored = True
             self.reset_players()
+            self.screen_shake(screen)
+            self.sound_effects.play_score_audio()
         
         if self.player2.x <= 0:
             # Player 2 reaches left side, Player 1 scores
             self.player1_score += 1
             point_scored = True
             self.reset_players()
+            self.screen_shake(screen)
+            self.sound_effects.play_score_audio()
         
         # Check for game over
         if self.player1_score >= self.max_score or self.player2_score >= self.max_score:
@@ -268,5 +272,23 @@ class GameLogic:
         self.player2.spawn_y = self.spawn_positions[new_map]['player2'][1]
         self.reset_players()
 
+
+    def screen_shake(self, screen, intensity=10, duration=50):
+        """
+        Apply a screen shake effect.
+        
+        Args:
+            screen (pygame.Surface): The game screen.
+            intensity (int): Maximum shake offset in pixels.
+            duration (int): Duration of the shake in milliseconds.
+        """
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time < duration:
+            offset_x = intensity * (1 if pygame.time.get_ticks() % 2 == 0 else -1)
+            offset_y = intensity * (1 if pygame.time.get_ticks() % 3 == 0 else -1)
+            
+            # Offset screen rendering
+            screen.blit(pygame.Surface.copy(screen), (offset_x, offset_y))
+            pygame.display.flip()
 
     

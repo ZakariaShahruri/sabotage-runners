@@ -10,6 +10,7 @@ freezed_fx = "../audios/freezed_fx.mp3"
 speed_up_fx = "../audios/speed_up_fx.mp3"
 slow_down_fx = "../audios/slow_down_fx.mp3"
 teleport_fx = "../audios/teleport_fx.mp3"
+score_audio_fx = "../audios/score_audio.mp3"
 
 mirrored_fx = "../audios/mirrored_fx.mp3"
 
@@ -22,6 +23,7 @@ class SoundEffects:
         self.slow_down = pygame.mixer.Sound(slow_down_fx)
         self.teleport = pygame.mixer.Sound(teleport_fx)
         self.mirrored = pygame.mixer.Sound(mirrored_fx)
+        self.scored = pygame.mixer.Sound(score_audio_fx)
     
     
     def play_freeze(self):
@@ -38,3 +40,6 @@ class SoundEffects:
     
     def play_mirrored(self):
         self.mirrored.play()
+
+    def play_score_audio(self):
+        self.scored.play()
