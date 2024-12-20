@@ -239,12 +239,12 @@ class GameLogic:
             event (pygame.event.Event): Pygame event
         """
         if event.type == pygame.USEREVENT:
-            self.player1.speed = 7
-            self.player2.speed = 7
+            self.player1.speed = 5
+            self.player2.speed = 5
         
         if event.type in [pygame.USEREVENT + i for i in range(1, 6)]:
-            self.player1.speed = 7
-            self.player2.speed = 7
+            self.player1.speed = 5
+            self.player2.speed = 5
             self.player1.controls_reversed = False
             self.player2.controls_reversed = False
 
@@ -276,7 +276,7 @@ class GameLogic:
         self.reset_players()
 
 
-    def screen_shake(self, screen, intensity=10, duration=50):
+    def screen_shake(self, screen, intensity=10, duration=30):
         """
         Apply a screen shake effect.
         

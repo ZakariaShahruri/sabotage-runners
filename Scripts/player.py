@@ -2,7 +2,7 @@ import pygame
 from state import State
 
 class Player(State):
-    def __init__(self, x, y, path, size=30, speed=7):
+    def __init__(self, x, y, path, size=30, speed=5):
         super().__init__(x, y, path, size, is_collidable=True)
         self.speed = speed
         self.path = path

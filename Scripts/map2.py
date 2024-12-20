@@ -71,7 +71,7 @@ def load_map2():
                 if event.key == pygame.K_q and not game_logic.player1.attack:
                     game_logic.player1.attack = True
                     timer_start = pygame.time.get_ticks()
-                if event.key == pygame.K_RCTRL and not game_logic.player2.attack:
+                if event.key == pygame.K_RSHIFT and not game_logic.player2.attack:
                     game_logic.player2.attack = True
                     timer_start = pygame.time.get_ticks()
 
