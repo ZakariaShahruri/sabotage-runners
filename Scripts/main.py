@@ -3,9 +3,11 @@ import sys
 import pygame
 from button import Button
 from game_logic import GameLogic
-from menu_screen import main_menu
+from menu_screen import main_menu, screen
 from round_over import round_over_screen
 from collision import *
+from items import *
+
 
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -24,7 +26,7 @@ WIDTH, HEIGHT = 1280, 720
 def play_music(music_path, loop=True):
     pygame.mixer.music.load(music_path)
     pygame.mixer.music.play(-1 if loop else 0)
-    pygame.mixer.music.set_volume(0.15)
+    pygame.mixer.music.set_volume(0.10)
 
 # Function to stop music
 def stop_music():
@@ -37,14 +39,14 @@ def game_loop():
 
     # Play main game music
     play_music(MAIN_MUSIC)
-
-    # Screen setup
-    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-    pygame.display.set_caption("Sabotage Runners")
     
     # set the background image
-    background = pygame.image.load("../Images/default_map.png")
+    background = pygame.image.load("../Images/tilemapset/default_map.png")
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+    
+    hedges = pygame.image.load("../Images/tilemapset/hedges.png")
+    hedges = pygame.transform.scale(hedges, (WIDTH, HEIGHT))
+
 
     # Create game logic instance
     game_logic = GameLogic(WIDTH, HEIGHT, get_font)
@@ -59,7 +61,7 @@ def game_loop():
     while running:
         # Get pressed keys
         keys = pygame.key.get_pressed()
-        
+
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -115,6 +117,12 @@ def game_loop():
             game_logic.player1.getting_hit = True
             cooldown_start = pygame.time.get_ticks()
 
+        for rectangle in all_rectangles1:
+                if rectangle.colliderect(game_logic.player2.get_rect()):
+                    game_logic.player2.x -= 30
+                elif rectangle.colliderect(game_logic.player1.get_rect()):
+                    game_logic.player1.x += 30
+
         if game_logic.player1.getting_hit:
             current_p2_cooldown = pygame.time.get_ticks()
             cooldown_elapsed = current_p2_cooldown - cooldown_start
@@ -130,10 +138,15 @@ def game_loop():
         # Clear the screen and draw the background
         screen.blit(background, (0, 0))
         
+        game_logic.render_platform(screen, "map1")
+        
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
+        
+        
             
+        screen.blit(hedges, (0,0))
         
         # Render walls
         borders = render_border(map1_borders, screen)
@@ -144,8 +157,8 @@ def game_loop():
         # Animate players
         game_logic.animate_players()
         
-        # Check for scoringdddddddddd
-        game_logic.check_scoring()
+        # Check for scoring
+        game_logic.check_scoring(screen)
         
         # Manage items
         game_logic.manage_items(screen)

@@ -2,7 +2,7 @@ import pygame
 from state import State
 
 class Player(State):
-    def __init__(self, x, y, path, size=30, speed=5):
+    def __init__(self, x, y, path, size=30, speed=7):
         super().__init__(x, y, path, size, is_collidable=True)
         self.speed = speed
         self.path = path
@@ -29,7 +29,7 @@ class Player(State):
                 other_player.x += knockback_force  # Push to the right
             else:
                 other_player.x -= knockback_force
-
+    
     def handle_movement(self, controls, keys, screen_width, screen_height, borders):
         # Reset movement
         dx = 0
