@@ -104,14 +104,13 @@ map_spawn_coordinates = {
         (277, 126)
         ]
 ,
-    2: [  # Map 2 coordinates (new)
-        (210, 173),
-        (210, 480),
-        (637, 151),
-        (637, 573),
-        (1073, 475),
-        (1073, 225)
-    ]
+    2: [(186, 173),
+        (186, 480),
+        (613, 151),
+        (613, 573),
+        (1049, 480),
+        (1049, 173)
+        ]
 }
 
 # Dictionary to track occupied spawn points for each map
