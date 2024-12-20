@@ -224,7 +224,10 @@ class GameLogic:
 
             
             
-
+    def render_shadow(self, screen, player):
+        shadow_image = pygame.image.load("../Images/shadow.png")
+        shadow_image = pygame.transform.scale(shadow_image, (32,15))
+        screen.blit((shadow_image), (player.x, player.y+42))
    
    
    

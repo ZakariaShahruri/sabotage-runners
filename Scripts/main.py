@@ -144,12 +144,14 @@ def game_loop():
         
         game_logic.render_platform(screen, "map1")
         
+        game_logic.render_shadow(screen, game_logic.player1)
+        game_logic.render_shadow(screen, game_logic.player2)
+        
         # Render players
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
         
         
-            
         screen.blit(hedges, (0,0))
         
         # Render walls
