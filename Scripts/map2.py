@@ -68,10 +68,10 @@ def load_map2():
                     game_logic.player2.facing_right = True
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
-                if event.key == pygame.K_t and not game_logic.player1.attack:
+                if event.key == pygame.K_q and not game_logic.player1.attack:
                     game_logic.player1.attack = True
                     timer_start = pygame.time.get_ticks()
-                if event.key == pygame.K_SPACE and not game_logic.player2.attack:
+                if event.key == pygame.K_RCTRL and not game_logic.player2.attack:
                     game_logic.player2.attack = True
                     timer_start = pygame.time.get_ticks()
 
