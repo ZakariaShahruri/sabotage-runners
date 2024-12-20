@@ -90,9 +90,14 @@ class Fireworks:
             self.new_fireworks = True
 
 def show_end_screen(screen, game_logic, winner_name, get_font):
+    # Load background music
     pygame.mixer.music.load("../audios/end_screen_music.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
+
+    # Load click sound effect
+    click_sound = pygame.mixer.Sound("../audios/click_sound_fx.wav")
+    click_sound.set_volume(0.5)  # Adjust volume as needed
 
     running = True
     clock = pygame.time.Clock()
@@ -155,11 +160,13 @@ def show_end_screen(screen, game_logic, winner_name, get_font):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if next_map_button.checkForInput(pos):
+                    click_sound.play()  # Play click sound
                     pygame.time.delay(200)
                     import main
                     main.game_loop()
                     return
                 elif main_menu_button.checkForInput(pos):
+                    click_sound.play()  # Play click sound
                     pygame.time.delay(200)
                     pygame.mixer.music.stop()
                     from menu_screen import main_menu
