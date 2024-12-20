@@ -129,7 +129,7 @@ def load_map2():
 
 
         # Check for scoring
-        game_logic.check_scoring()
+        game_logic.check_scoring(screen)
         
         # Manage items
         game_logic.manage_items(screen, active_map=2)
