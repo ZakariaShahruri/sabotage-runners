@@ -125,14 +125,13 @@ def load_map2():
         # Animate players
         game_logic.animate_players()
         
-        reset_spawn_points(2)
-        game_logic.manage_items(screen, active_map=2)
+
 
         # Check for scoring
         game_logic.check_scoring()
         
         # Manage items
-        game_logic.manage_items(screen)
+        game_logic.manage_items(screen, active_map=2)
 
         # Render scores
         game_logic.render_scores(screen)

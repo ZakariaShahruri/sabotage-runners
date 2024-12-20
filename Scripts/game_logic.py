@@ -60,7 +60,17 @@ class GameLogic:
         self.max_items = 5
         self.sound_effects = SoundEffects()
 
-    def manage_items(self, screen, active_map=1):  # Default to map 1 if not specified
+    def manage_items(self, screen, active_map=None):
+        """
+        Manage items spawning and collection
+        
+        Args:
+            screen (pygame.Surface): Game screen
+            active_map (int): Current active map number
+        """
+        if active_map is None:
+            active_map = self.active_map
+            
         current_time = pygame.time.get_ticks()
 
         # Check if it's time to spawn a new item
@@ -70,17 +80,14 @@ class GameLogic:
             new_item = generate_random_item(self.width, self.height, active_map)
             if new_item:
                 self.active_items.append(new_item)
-                # Update last spawn time
                 self.last_item_spawn_time = current_time
 
         # Render and check item collisions
         for item in self.active_items[:]:
             item.render(screen)
             if self.player1.check_collision(item) or self.player2.check_collision(item):
-                # Mark the spawn point as available again
+                # Get spawn coordinates before removing the item
                 spawn_coord = (item.x, item.y)
-                if spawn_coord in occupied_spawn_points[active_map]:
-                    occupied_spawn_points[active_map][spawn_coord] = False
                 
                 # Play the appropriate sound based on item type
                 if isinstance(item, FreezeItem):
@@ -99,7 +106,11 @@ class GameLogic:
                     item.use(self.player1, self.player2)
                 else:
                     item.use(self.player2, self.player1)
+                    
+                # Remove the item and free up the spawn point
                 self.active_items.remove(item)
+                if spawn_coord in occupied_spawn_points[active_map]:
+                    occupied_spawn_points[active_map][spawn_coord] = False
 
    
    
