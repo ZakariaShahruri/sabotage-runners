@@ -4,7 +4,8 @@ import pygame
 pygame.init()
 WIDTH = 1280
 HEIGHT = 720
-screen = pygame.display.set_mode([WIDTH, HEIGHT])
+# Set display mode with transparency support
+screen = pygame.display.set_mode([WIDTH, HEIGHT], pygame.SRCALPHA)
 pygame.display.set_caption('Fireworks!')
 fps = 60
 timer = pygame.time.Clock()
@@ -75,7 +76,8 @@ def draw_fireworks(firework_list, projectile_list, frame_counter):
 run = True
 while run:
     timer.tick(fps)
-    screen.fill('black')
+    # Clear screen by filling it with transparent color
+    screen.fill((0, 0, 0, 0))
     counter += 1
 
     if new_fireworks:
