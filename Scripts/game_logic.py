@@ -205,7 +205,7 @@ class GameLogic:
         
     def render_platform(self, screen, map):
         if map == "map1":
-            platform_image = pygame.image.load("../Images/platform.png")
+            platform_image = pygame.image.load("../Images/Assets/platform.png")
             screen.blit((platform_image), (266, 560))
             screen.blit((platform_image), (625, 560))
             screen.blit((platform_image), (1000, 560))
@@ -214,7 +214,7 @@ class GameLogic:
             screen.blit((platform_image), (1000, 138))
             
         if map == 'map2':
-            platform_image = pygame.image.load("../Images/platform.png")
+            platform_image = pygame.image.load("../Images/Assets/platform.png")
             screen.blit((platform_image), (175, 186))
             screen.blit((platform_image), (175, 493))
             screen.blit((platform_image), (602, 164))

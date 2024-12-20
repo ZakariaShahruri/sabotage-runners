@@ -28,7 +28,7 @@ def load_map2():
     play_music("../audios/one_vs_one_music.mp3")
     
     # Set the background image for map 2
-    background = pygame.image.load("../Images/map2.png")  # Create this new background image
+    background = pygame.image.load("../Images/tilemapset/map2.png")  # Create this new background image
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     
 
