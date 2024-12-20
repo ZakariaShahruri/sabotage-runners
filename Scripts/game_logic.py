@@ -294,4 +294,32 @@ class GameLogic:
             screen.blit(pygame.Surface.copy(screen), (offset_x, offset_y))
             pygame.display.flip()
 
+    def render_instruction(self, screen):
+        """
+        Render the instruction text at the top center of the screen with a black outline.
+        
+        Args:
+            screen (pygame.Surface): The game screen to render the instruction on.
+        """
+        instruction_font = self.get_font(19)  # Adjust size as needed
+        text = "GET TO THE OTHER PLAYER'S SPAWN"
+        text_color = (255, 255, 255)  # White
+        outline_color = (0, 0, 0)  # Black
+
+        # Render the text surface
+        instruction_surface = instruction_font.render(text, True, text_color)
+        outline_surface = instruction_font.render(text, True, outline_color)
+
+        # Get text dimensions and center position
+        text_rect = instruction_surface.get_rect(center=(self.width // 2, 20))  # 30 pixels from the top
+
+        # Draw black outline (4-pixel offset in each direction)
+        offsets = [(-2, -2), (-2, 2), (2, -2), (2, 2)]
+        for dx, dy in offsets:
+            screen.blit(outline_surface, text_rect.move(dx, dy))
+
+        # Draw the main white text
+        screen.blit(instruction_surface, text_rect)
+
+
     

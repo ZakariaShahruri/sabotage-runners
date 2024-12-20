@@ -139,6 +139,8 @@ def load_map2():
         # Render scores
         game_logic.render_scores(screen)
 
+        game_logic.render_instruction(screen)
+
         # Check game state
         game_state = game_logic.get_game_state()
         if game_state['game_over']:

@@ -172,6 +172,8 @@ def game_loop():
         # Render scores
         game_logic.render_scores(screen)
 
+        game_logic.render_instruction(screen)
+
         game_state = game_logic.get_game_state()
         if game_state['game_over']:
             winner = game_state['winner']
