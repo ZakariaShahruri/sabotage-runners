@@ -11,8 +11,8 @@ pygame.mixer.init()
 # Screen Settings
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
-pygame.display.set_caption("Game Menu")
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SCALED)
+pygame.display.set_caption("Sabotage Runners")
 
 # Colors
 WHITE = (255, 255, 255)
