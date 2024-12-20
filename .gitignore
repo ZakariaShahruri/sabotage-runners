@@ -203,4 +203,8 @@ pyrightconfig.json
 *.rar
 *.kra
 
+# Ignore these files in specific
+MenuArt*.png
+menucover.png
+
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
