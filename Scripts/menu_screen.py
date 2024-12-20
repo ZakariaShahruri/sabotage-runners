@@ -8,6 +8,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 pygame.init()
 pygame.mixer.init()
 
+# Load Click Sound Effect
+click_sound = pygame.mixer.Sound("../audios/click_sound_fx.wav")
+
 # Screen Settings
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -86,6 +89,7 @@ def detect_button_click(buttons):
             detect_button_click.mouse_held = True
             for button in buttons:
                 if button.rect.collidepoint(mouse_pos):
+                    click_sound.play() #Plays the click sound effect
                     button.callback()
     else:
         detect_button_click.mouse_held = False
