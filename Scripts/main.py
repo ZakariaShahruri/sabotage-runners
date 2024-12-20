@@ -83,12 +83,12 @@ def game_loop():
                 if event.key == pygame.K_LEFT:
                     game_logic.player2.facing_right = False
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
                 if not game_logic.player1.attack:  # Start attack only if not already active
                     game_logic.player1.attack = True
                     timer_start = pygame.time.get_ticks()
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RCTRL:
                 if not game_logic.player2.attack:  # Start attack only if not already active
                     game_logic.player2.attack = True
                     timer_start = pygame.time.get_ticks()

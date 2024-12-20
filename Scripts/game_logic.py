@@ -21,7 +21,7 @@ class GameLogic:
         # Scoring and game state
         self.player1_score = 0
         self.player2_score = 0
-        self.max_score = 1 # Win condition
+        self.max_score = 5 # Win condition
         self.game_over = False
         
         # Define spawn positions for each map
