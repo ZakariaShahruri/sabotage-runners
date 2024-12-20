@@ -262,7 +262,7 @@ def main_menu():
         pygame.mixer.music.stop()  # Stop any currently playing music
         pygame.mixer.music.unload()  # Unload any currently loaded music
         pygame.mixer.music.load("../audios/menu_music.mp3")
-        pygame.mixer.music.set_volume(0.10)
+        pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)
     except:
         print("Error reloading menu music")

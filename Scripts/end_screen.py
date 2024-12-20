@@ -91,7 +91,7 @@ class Fireworks:
 
 def show_end_screen(screen, game_logic, winner_name, get_font):
     pygame.mixer.music.load("../audios/end_screen_music.mp3")
-    pygame.mixer.music.set_volume(0.10)
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
     running = True
