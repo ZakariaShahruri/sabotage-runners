@@ -1,6 +1,5 @@
 import pygame
 import sys
-import main
 import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -97,8 +96,9 @@ def detect_button_click(buttons):
 
 # Callbacks for Buttons
 def play_game():
+    # Local import prevents the circular dependency
+    import main
     main.game_loop()
-
 
 
 def show_controls():

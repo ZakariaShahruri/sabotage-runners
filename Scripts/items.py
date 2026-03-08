@@ -1,155 +1,124 @@
-import os
 import pygame
 import random
 from state import State
 
-# Paths to power-up images
-banana_image = "../images/items/banana_item.png"
-freeze_image = "../Images/items/freeze_item.png"
-mirror_image = "../Images/items/mirror_item.png"
-slow_image = "../Images/items/slow_item.png"
-speed_image = "../Images/items/speed_item.png"
-teleport_image = "../Images/items/teleport_item.png"
-
-# Timer durations (in milliseconds)
+# --- CONSTANTS ---
+ITEM_SIZE = 30
 FREEZE_DURATION = 4000
 SPEED_UP_DURATION = 5000
 SLOW_DOWN_DURATION = 4000
 MIRROR_DURATION = 5000
 
+# Item image paths
+IMAGE_PATHS = {
+    "banana": "../images/items/banana_item.png",
+    "freeze": "../Images/items/freeze_item.png",
+    "mirror": "../Images/items/mirror_item.png",
+    "slow": "../Images/items/slow_item.png",
+    "speed": "../Images/items/speed_item.png",
+    "teleport": "../Images/items/teleport_item.png"
+}
+
 class Item(State):
+    """Base class for all collectable items in the game."""
     def __init__(self, x, y, image_path):
-        """Base class for all items."""
         super().__init__(x, y, path=image_path, size=40, is_collidable=True)
-        # Resize the image to a consistent size
+        self._scale_image()
+
+    def _scale_image(self):
+        """Scales the item image to maintain aspect ratio with a consistent height."""
         original_width, original_height = self.image.get_size()
-        self.image = pygame.transform.scale(self.image, (int(30*(original_width / original_height)), 30))
-        
-    def use(self, player1, player2):
-        """Base method to be overridden by specific item types"""
-        raise NotImplementedError("Subclasses must implement use method")
+        aspect_ratio = original_width / original_height
+        new_width = int(ITEM_SIZE * aspect_ratio)
+        self.image = pygame.transform.scale(self.image, (new_width, ITEM_SIZE))
+
+    def use(self, activator, target):
+        """
+        Apply the item's effect. 
+        :param activator: The player who picked up the item.
+        :param target: The opposing player.
+        """
+        raise NotImplementedError("Subclasses must implement the 'use' method")
 
     def get_rect(self):
-        return pygame.Rect(self.x , self.y, self.size-10, self.size-10)
-    
+        # Slightly smaller hitbox than the render size
+        return pygame.Rect(self.x, self.y, self.size - 10, self.size - 10)
+
+
 class FreezeItem(Item):
     def __init__(self, x, y):
-        super().__init__(x, y, freeze_image)
+        super().__init__(x, y, IMAGE_PATHS["freeze"])
 
-    def use(self, player1, player2):
-        """Freeze the opponent instantly."""
-        target = player2 if player1 == player2.opponent else player1
-        target.speed = 0  # Freeze the player
-        pygame.time.set_timer(pygame.USEREVENT + 1, FREEZE_DURATION)  # Unfreeze after the duration
+    def use(self, activator, target):
+        target.speed = 0
+        pygame.time.set_timer(pygame.USEREVENT + 1, FREEZE_DURATION)
 
 
 class SpeedUpItem(Item):
     def __init__(self, x, y):
-        super().__init__(x, y, speed_image)
+        super().__init__(x, y, IMAGE_PATHS["speed"])
 
-    def use(self, player1, player2):
-        """Increase the player's speed temporarily."""
-        player = player1
-        player.speed *= 1.5  # Boost speed
-        pygame.time.set_timer(pygame.USEREVENT + 2, SPEED_UP_DURATION)  # Reset speed after the duration
+    def use(self, activator, target):
+        activator.speed *= 1.5
+        pygame.time.set_timer(pygame.USEREVENT + 2, SPEED_UP_DURATION)
 
 
 class SlowDownItem(Item):
     def __init__(self, x, y):
-        super().__init__(x, y, slow_image)
+        super().__init__(x, y, IMAGE_PATHS["slow"])
 
-    def use(self, player1, player2):
-        """Slow down the opponent temporarily."""
-        target = player2 if player1 == player2.opponent else player1
-        target.speed *= 0.3  # Slow down
-        pygame.time.set_timer(pygame.USEREVENT + 3, SLOW_DOWN_DURATION)  # Reset speed after the duration
+    def use(self, activator, target):
+        target.speed *= 0.3
+        pygame.time.set_timer(pygame.USEREVENT + 3, SLOW_DOWN_DURATION)
 
 
 class MirrorItem(Item):
     def __init__(self, x, y):
-        super().__init__(x, y, mirror_image)
+        super().__init__(x, y, IMAGE_PATHS["mirror"])
 
-    def use(self, player1, player2):
-        """Reverse the opponent's controls."""
-        target = player2 if player1 == player2.opponent else player1
+    def use(self, activator, target):
         target.controls_reversed = True
-        pygame.time.set_timer(pygame.USEREVENT + 5, MIRROR_DURATION)  # Reset controls after the duration
+        pygame.time.set_timer(pygame.USEREVENT + 5, MIRROR_DURATION)
 
 
 class TeleportItem(Item):
     def __init__(self, x, y):
-        super().__init__(x, y, teleport_image)
+        super().__init__(x, y, IMAGE_PATHS["teleport"])
 
-    def use(self, player1, player2):
-        """Teleport the opponent to their spawn point."""
-        target = player2 if player1 == player2.opponent else player1
+    def use(self, activator, target):
         target.x, target.y = target.spawn_x, target.spawn_y
 
-item_classes = [
-    FreezeItem,
-    SpeedUpItem,
-    SlowDownItem,
-    MirrorItem,
-    TeleportItem
-]
-    
-map_spawn_coordinates = {
-    1: [(277, 548),
-        (636, 548),
-        (1011, 548),
-        (1011, 126),
-        (636, 126),
-        (277, 126)
-        ]
-,
-    2: [(186, 173),
-        (186, 480),
-        (613, 151),
-        (613, 500),
-        (1049, 480),
-        (1049, 173)
-        ]
+
+# Configuration for item spawning
+ITEM_CLASSES = [FreezeItem, SpeedUpItem, SlowDownItem, MirrorItem, TeleportItem]
+
+MAP_SPAWN_COORDINATES = {
+    1: [(277, 548), (636, 548), (1011, 548), (1011, 126), (636, 126), (277, 126)],
+    2: [(186, 173), (186, 480), (613, 151), (613, 500), (1049, 480), (1049, 173)]
 }
 
-# Dictionary to track occupied spawn points for each map
-occupied_spawn_points = {
-    1: {},  # Will be initialized when needed
-    2: {}   # Will be initialized when needed
-}
+# State tracker for spawn points
+occupied_spawn_points = {1: {}, 2: {}}
 
 def initialize_spawn_points(map_number):
-    """Initialize or reset spawn points for a specific map"""
-    occupied_spawn_points[map_number] = {coord: False for coord in map_spawn_coordinates[map_number]}
+    """Resets all spawn points for a specific map to unoccupied."""
+    occupied_spawn_points[map_number] = {coord: False for coord in MAP_SPAWN_COORDINATES[map_number]}
 
 def generate_random_item(width, height, active_map):
-    """Generate a random item for the specified map"""
-    global occupied_spawn_points
-    
-    # Initialize spawn points for the map if not already done
+    """Selects a random unoccupied spawn point and returns a random Item instance."""
     if not occupied_spawn_points[active_map]:
         initialize_spawn_points(active_map)
     
-    # Get available spawn points for the current map
-    available_spawn_points = [coord for coord, occupied in occupied_spawn_points[active_map].items() 
-                            if not occupied]
+    available_points = [coord for coord, is_occupied in occupied_spawn_points[active_map].items() if not is_occupied]
 
-    if not available_spawn_points:
-        return None  # No available spawn points
+    if not available_points:
+        return None  
 
-    # Randomly choose an item class
-    chosen_item_class = random.choice(item_classes)
-
-    # Randomly select one of the available spawn coordinates
-    x, y = random.choice(available_spawn_points)
-
-    # Mark the spawn point as occupied for the current map
-    occupied_spawn_points[active_map][(x, y)] = True
-
-    # Return the chosen item class instantiated with the selected coordinates
-    return chosen_item_class(x, y)
+    spawn_pos = random.choice(available_points)
+    chosen_class = random.choice(ITEM_CLASSES)
+    
+    occupied_spawn_points[active_map][spawn_pos] = True
+    return chosen_class(spawn_pos[0], spawn_pos[1])
 
 def reset_spawn_points(map_number):
-    """Reset all spawn points for a specific map"""
     initialize_spawn_points(map_number)
-    
-
