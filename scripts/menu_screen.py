@@ -8,7 +8,7 @@ pygame.init()
 pygame.mixer.init()
 
 # Load Click Sound Effect
-click_sound = pygame.mixer.Sound("../audios/click_sound_fx.wav")
+click_sound = pygame.mixer.Sound("../assets/audio/click_sound_fx.wav")
 
 # Screen Settings
 SCREEN_WIDTH = 1280
@@ -28,10 +28,10 @@ header_font = pygame.font.SysFont("Arial", 30, bold=True)
 
 
 # Load Background Image
-BACKGROUND_IMAGE = pygame.image.load("../menu_images/menu_background.png")
+BACKGROUND_IMAGE = pygame.image.load("../images/menu/menu_background.png")
 BACKGROUND_IMAGE = pygame.transform.scale(BACKGROUND_IMAGE, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-OPTIONS_BACKGROUND = pygame.image.load("../menu_images/background_darker.png")
+OPTIONS_BACKGROUND = pygame.image.load("../images/menu/background_darker.png")
 OPTIONS_BACKGROUND = pygame.transform.scale(OPTIONS_BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
@@ -103,7 +103,7 @@ def play_game():
 
 def show_controls():
     # Load and display the controls image
-    controls_image = pygame.image.load("../menu_images/controls_image.png")
+    controls_image = pygame.image.load("../images/menu/controls_image.png")
     controls_image = pygame.transform.scale(controls_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     while True:
@@ -121,8 +121,8 @@ def show_controls():
 def show_objective():
     # Load multiple images for objectives
     objective_images = [
-        pygame.image.load("../menu_images/objective_image.png"),
-        pygame.image.load("../menu_images/items_image.png")
+        pygame.image.load("../images/menu/objective_image.png"),
+        pygame.image.load("../images/menu/items_image.png")
     ]
     objective_images = [pygame.transform.scale(img, (SCREEN_WIDTH, SCREEN_HEIGHT)) for img in objective_images]
     
@@ -235,7 +235,7 @@ def toggle_option(option, options, buttons):
 
 def draw_credits():
     # Load and display the credits image
-    credits_image = pygame.image.load("../menu_images/credits_image.png")
+    credits_image = pygame.image.load("../images/menu/credits_image.png")
     credits_image = pygame.transform.scale(credits_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     while True:
@@ -261,7 +261,7 @@ def main_menu():
     try:
         pygame.mixer.music.stop()  # Stop any currently playing music
         pygame.mixer.music.unload()  # Unload any currently loaded music
-        pygame.mixer.music.load("../audios/menu_music.mp3")
+        pygame.mixer.music.load("../assets/audio/menu_music.mp3")
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)
     except:

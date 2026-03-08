@@ -3,8 +3,8 @@ import pygame
 from button import Button
 
 # --- CONSTANTS ---
-BACKGROUND_IMAGE_PATH = "../menu_images/background_darker.png"
-MENU_MUSIC_PATH = "../audios/menu_music.mp3"
+BACKGROUND_IMAGE_PATH = "../images/menu/background_darker.png"
+MENU_MUSIC_PATH = "../assets/audio/menu_music.mp3"
 
 # Colors
 WHITE = (255, 255, 255)

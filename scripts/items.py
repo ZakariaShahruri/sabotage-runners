@@ -12,11 +12,11 @@ MIRROR_DURATION = 5000
 # Item image paths
 IMAGE_PATHS = {
     "banana": "../images/items/banana_item.png",
-    "freeze": "../Images/items/freeze_item.png",
-    "mirror": "../Images/items/mirror_item.png",
-    "slow": "../Images/items/slow_item.png",
-    "speed": "../Images/items/speed_item.png",
-    "teleport": "../Images/items/teleport_item.png"
+    "freeze": "../images/items/freeze_item.png",
+    "mirror": "../images/items/mirror_item.png",
+    "slow": "../images/items/slow_item.png",
+    "speed": "../images/items/speed_item.png",
+    "teleport": "../images/items/teleport_item.png"
 }
 
 class Item(State):

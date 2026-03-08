@@ -79,7 +79,7 @@ def render_border(map_coords, screen):
     if cache_key not in _border_cache:
         # Initialize the State objects only ONCE per map
         _border_cache[cache_key] = [
-            State(x, y, '../Images/Assets/wall.png', size=BLOCK_SIZE, is_collidable=True)
+            State(x, y, '../assets/wall.png', size=BLOCK_SIZE, is_collidable=True)
             for x, y in map_coords
         ]
         

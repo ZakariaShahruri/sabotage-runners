@@ -3,9 +3,12 @@ import sys
 import pygame
 from button import Button
 from game_logic import GameLogic
+from menu_screen import main_menu, screen
+from round_over import round_over_screen
 from collision import *
 from items import *
-from menu_screen import screen  # Restored missing import!
+
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # --- CONFIGURATION & CONSTANTS ---
 WIDTH, HEIGHT = 1280, 720
@@ -13,9 +16,8 @@ FPS_LIMIT = 60
 ATTACK_DURATION_MS = 750
 HIT_COOLDOWN_MS = 500
 
-MAP2_MUSIC = "../audios/one_vs_one_music.mp3"
-MAIN_MUSIC = "../audios/main_music.mp3"
-BACKGROUND_IMAGE_PATH = "../Images/tilemapset/map2.png"
+MENU_MUSIC = "../assets/audio/menu_music.mp3"
+MAIN_MUSIC = "../assets/audio/main_music.mp3"
 
 def get_font(size):
     return pygame.font.Font("../fonts/font.ttf", size)
@@ -29,7 +31,7 @@ def stop_music():
     pygame.mixer.music.stop()
 
 def handle_collisions(game_logic, current_time):
-    """Handles logic for physical collisions and knockbacks between players and walls."""
+    """Handles logic for physical collisions and knockbacks between players."""
     p1, p2 = game_logic.player1, game_logic.player2
     
     # Player vs Player Knockback
@@ -43,8 +45,8 @@ def handle_collisions(game_logic, current_time):
         p1.getting_hit = True
         p1.hit_cooldown_start = current_time
 
-    # Player vs Environment Bounds (Map 2 specific)
-    for rectangle in all_rectangles2:
+    # Player vs Environment Bounds (from collision module)
+    for rectangle in all_rectangles1:
         if rectangle.colliderect(p2.get_rect()):
             p2.x -= 30
         elif rectangle.colliderect(p1.get_rect()):
@@ -62,23 +64,20 @@ def update_player_states(game_logic, current_time):
         if player.getting_hit and (current_time - player.hit_cooldown_start >= HIT_COOLDOWN_MS):
             player.getting_hit = False
 
-
-def load_map2():
+def game_loop():
     pygame.init()
-    play_music(MAP2_MUSIC)
+    play_music(MAIN_MUSIC)
     
-    # Load and scale background
-    background = pygame.image.load(BACKGROUND_IMAGE_PATH).convert()
-    background = pygame.transform.scale(background, (WIDTH, HEIGHT))
-    
-    # Initialize game logic
-    game_logic = GameLogic(WIDTH, HEIGHT, get_font)
-    game_logic.change_map(2)
-    game_logic.player2.facing_right = False
+    # Load and scale static background elements
+    background = pygame.transform.scale(pygame.image.load("../images/tilemapset/default_map.png").convert(), (WIDTH, HEIGHT))
+    hedges = pygame.transform.scale(pygame.image.load("../images/tilemapset/hedges.png").convert_alpha(), (WIDTH, HEIGHT))
 
+    game_logic = GameLogic(WIDTH, HEIGHT, get_font)
+    game_logic.player2.facing_right = False
+    
     clock = pygame.time.Clock()
     running = True
-    
+
     while running:
         current_time = pygame.time.get_ticks()
         keys = pygame.key.get_pressed()
@@ -115,8 +114,8 @@ def load_map2():
         update_player_states(game_logic, current_time)
         handle_collisions(game_logic, current_time)
         
-        # Determine player movement
-        borders = render_border(map2_borders, screen) # Uses the imported screen
+        # Player movement
+        borders = render_border(map1_borders, screen) # Preserved external call
         game_logic.handle_movement(keys, borders)
         
         game_logic.animate_players()
@@ -126,7 +125,7 @@ def load_map2():
         # 3. RENDERING
         # ==========================================
         screen.blit(background, (0, 0))
-        game_logic.render_platform(screen, "map2")
+        game_logic.render_platform(screen, "map1")
         
         game_logic.render_shadow(screen, game_logic.player1)
         game_logic.render_shadow(screen, game_logic.player2)
@@ -134,7 +133,8 @@ def load_map2():
         game_logic.player1.render(screen)
         game_logic.player2.render(screen)
         
-        game_logic.manage_items(screen, active_map=2)
+        screen.blit(hedges, (0, 0))
+        game_logic.manage_items(screen)
         game_logic.render_scores(screen)
         game_logic.render_instruction(screen)
 
@@ -142,10 +142,8 @@ def load_map2():
         game_state = game_logic.get_game_state()
         if game_state['game_over']:
             stop_music()
-            # Local import required to prevent circular dependency
-            from end_screen import show_end_screen
-            show_end_screen(screen, game_logic, game_state['winner'], get_font)
-            play_music(MAIN_MUSIC)
+            round_over_screen(screen, game_logic, game_state['winner'], get_font)
+            play_music(MAIN_MUSIC) 
 
         pygame.display.flip()
         clock.tick(FPS_LIMIT)
@@ -154,5 +152,8 @@ def load_map2():
     pygame.quit()
     sys.exit()
 
+# ==========================================
+# 4. ENTRY POINT
+# ==========================================
 if __name__ == "__main__":
-    load_map2()
+    main_menu()

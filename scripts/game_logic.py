@@ -25,8 +25,8 @@ class GameLogic:
         p1_spawn = self.spawn_positions[self.active_map]['player1']
         p2_spawn = self.spawn_positions[self.active_map]['player2']
         
-        self.player1 = Player(x=p1_spawn[0], y=p1_spawn[1], path="../Images/player1/player1_idle1.png")
-        self.player2 = Player(x=p2_spawn[0], y=p2_spawn[1], path="../Images/player2/player2_idle1.png")
+        self.player1 = Player(x=p1_spawn[0], y=p1_spawn[1], path="../images/player1/player1_idle1.png")
+        self.player2 = Player(x=p2_spawn[0], y=p2_spawn[1], path="../images/player2/player2_idle1.png")
         self.player2.image = pygame.transform.flip(self.player2.image, True, False)
         
         self.player1.opponent = self.player2
@@ -34,13 +34,13 @@ class GameLogic:
         
         # Load animations into memory ONCE to prevent severe FPS drops
         self.animations = {
-            'p1_idle': self._load_frames("../Images/player1/player1_idle", 4),
-            'p1_walk': self._load_frames("../Images/player1/player1_walk", 4),
-            'p1_run': self._load_frames("../Images/player1/player1_run", 8),
-            'p1_attack': self._load_frames("../Images/player1/player1_attack", 8),
-            'p2_idle': self._load_frames("../Images/player2/player2_idle", 4),
-            'p2_run': self._load_frames("../Images/player2/player2_run", 8),
-            'p2_attack': self._load_frames("../Images/player2/player2_attack", 8)
+            'p1_idle': self._load_frames("../images/player1/player1_idle", 4),
+            'p1_walk': self._load_frames("../images/player1/player1_walk", 4),
+            'p1_run': self._load_frames("../images/player1/player1_run", 8),
+            'p1_attack': self._load_frames("../images/player1/player1_attack", 8),
+            'p2_idle': self._load_frames("../images/player2/player2_idle", 4),
+            'p2_run': self._load_frames("../images/player2/player2_run", 8),
+            'p2_attack': self._load_frames("../images/player2/player2_attack", 8)
         }
         
         # Item management
@@ -148,7 +148,7 @@ class GameLogic:
             self.player2.animate(self.animations['p2_idle'], 0.1)
 
     def render_scores(self, screen):
-        scoreboard = pygame.image.load("../Images/scoreboard_sign.png").convert_alpha()
+        scoreboard = pygame.image.load("../images/scoreboard_sign.png").convert_alpha()
         scoreboard = pygame.transform.scale(scoreboard, (84, 95))
         screen.blit(scoreboard, (593, 0))
         
@@ -160,7 +160,7 @@ class GameLogic:
         screen.blit(player2_score_text, (self.width - 635, 55))
         
     def render_platform(self, screen, map_name):
-        platform_image = pygame.image.load("../Images/Assets/platform.png").convert_alpha()
+        platform_image = pygame.image.load("../assets/platform.png").convert_alpha()
         
         platforms = {
             "map1": [(266, 560), (625, 560), (1000, 560), (625, 138), (266, 138), (1000, 138)],
@@ -171,7 +171,7 @@ class GameLogic:
             screen.blit(platform_image, pos)
             
     def render_shadow(self, screen, player):
-        shadow_image = pygame.image.load("../Images/shadow.png").convert_alpha()
+        shadow_image = pygame.image.load("../images/shadow.png").convert_alpha()
         shadow_image = pygame.transform.scale(shadow_image, (32, 15))
         screen.blit(shadow_image, (player.x, player.y + 42))
    

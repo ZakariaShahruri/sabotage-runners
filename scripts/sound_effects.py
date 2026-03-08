@@ -6,13 +6,13 @@ pygame.mixer.init()
 
 # Path to sound effects
 
-freezed_fx = "../audios/freezed_fx.mp3"
-speed_up_fx = "../audios/speed_up_fx.mp3"
-slow_down_fx = "../audios/slow_down_fx.mp3"
-teleport_fx = "../audios/teleport_fx.mp3"
-score_audio_fx = "../audios/score_audio.mp3"
+freezed_fx = "../assets/audio/freezed_fx.mp3"
+speed_up_fx = "../assets/audio/speed_up_fx.mp3"
+slow_down_fx = "../assets/audio/slow_down_fx.mp3"
+teleport_fx = "../assets/audio/teleport_fx.mp3"
+score_audio_fx = "../assets/audio/score_audio.mp3"
 
-mirrored_fx = "../audios/mirrored_fx.mp3"
+mirrored_fx = "../assets/audio/mirrored_fx.mp3"
 
 class SoundEffects:
     def __init__(self):

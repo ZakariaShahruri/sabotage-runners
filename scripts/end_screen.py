@@ -4,9 +4,9 @@ import random
 from button import Button
 
 # --- CONSTANTS ---
-BACKGROUND_MUSIC_PATH = "../audios/end_screen_music.mp3"
-CLICK_SOUND_PATH = "../audios/click_sound_fx.wav"
-BACKGROUND_IMAGE_PATH = "../menu_images/background_darker.png"
+BACKGROUND_MUSIC_PATH = "../assets/audio/end_screen_music.mp3"
+CLICK_SOUND_PATH = "../assets/audio/click_sound_fx.wav"
+BACKGROUND_IMAGE_PATH = "../images/menu/background_darker.png"
 
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
