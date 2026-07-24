@@ -207,3 +207,6 @@ MenuArt*.png
 menucover.png
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
+
+# macOS
+.DS_Store
